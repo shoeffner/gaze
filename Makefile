@@ -2,7 +2,7 @@
 # ################
 
 BUILD_DIR := $(abspath build)
-PROGRAM_NAME := gaze
+PROJECT_NAME := gaze
 
 
 # OpenCV
@@ -35,34 +35,38 @@ $(OPENCV_INSTALL_DIR): OpenCVConfig.cmake
 	cd $(OPENCV_BUILD_DIR) && make install
 
 OpenCVConfig.cmake: | $(OPENCV_BUILD_DIR)
-	cd $(abspath $|) && cmake $(OPENCV_FLAGS) $(abspath vendor/opencv)
+	cd $| && cmake $(OPENCV_FLAGS) $(abspath vendor/opencv)
 
 
-# Program
+# Project
 # #######
 
-LIBRARY_DIRS = $(OPENCV_INSTALL_DIR)/lib
-INCLUDE_DIRS = $(OPENCV_INSTALL_DIR)/include
-LIBRARY_FILES = $(addprefix opencv_,$(ENABLED_OPENCV_MODULES))
+PROJECT_BUILD_DIR := $(BUILD_DIR)/$(PROJECT_NAME)
+PROJECT_INSTALL_DIR := $(PROJECT_BUILD_DIR)/install
 
-vpath $(PROGRAM_NAME) $(BUILD_DIR)
+vpath $(PROJECT_NAME)Config.cmake $(PROJECT_BUILD_DIR)
+
+PROJECT_FLAGS = -DOpenCV_DIR=$(OPENCV_BUILD_DIR) \
+				-D$(PROJECT_NAME)_INSTALL_PREFIX=$(PROJECT_INSTALL_DIR)
+
+.PHONY: $(PROJECT_NAME)
+$(PROJECT_NAME): opencv $(PROJECT_INSTALL_DIR)
+
+$(PROJECT_INSTALL_DIR): $(PROJECT_NAME)Config.cmake
+	cd $(PROJECT_BUILD_DIR) && make install
+
+$(PROJECT_NAME)Config.cmake: | $(PROJECT_BUILD_DIR)
+	cd $| && cmake $(PROJECT_FLAGS) $(CURDIR)
+
 
 .DEFAULT_GOAL = run
 .PHONY: run
-run: $(PROGRAM_NAME)
-	$(BUILD_DIR)/$^
-
-$(PROGRAM_NAME): opencv
-	g++ $(PROGRAM_NAME).cpp \
-		$(addprefix -l,$(LIBRARY_FILES)) \
-		$(addprefix -I ,$(INCLUDE_DIRS)) \
-		$(addprefix -L ,$(LIBRARY_DIRS)) \
-		-o $(BUILD_DIR)/$@
-
+run: $(PROJECT_NAME)
+	cp $(PROJECT_INSTALL_DIR)/$^ $(CURDIR)
+	./$^
 
 # Helpers
 # #######
 
 $(BUILD_DIR)/%:
 	@mkdir -p $(BUILD_DIR)/$*
-

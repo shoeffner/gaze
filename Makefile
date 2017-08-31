@@ -38,6 +38,11 @@ OpenCVConfig.cmake: | $(OPENCV_BUILD_DIR)
 	cd $| && cmake $(OPENCV_FLAGS) $(abspath vendor/opencv)
 
 
+# Boost
+# #####
+
+BOOST_DIR = $(abspath vendor/boost)
+
 # Project
 # #######
 
@@ -48,6 +53,7 @@ vpath $(PROJECT_NAME)Config.cmake $(PROJECT_BUILD_DIR)
 
 PROJECT_FLAGS = -DPROJECT_NAME=$(PROJECT_NAME) \
 				-DOpenCV_DIR=$(OPENCV_BUILD_DIR) \
+				-DBOOST_ROOT=$(BOOST_DIR) \
 				-D$(PROJECT_NAME)_INSTALL_PREFIX=$(PROJECT_INSTALL_DIR)
 
 .PHONY: $(PROJECT_NAME)

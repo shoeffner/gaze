@@ -10,5 +10,7 @@ install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${${PROJECT_NAME}_INSTALL_PR
 
 # Libraries and linking
 find_package(OpenCV REQUIRED)
-target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
+find_package(Boost REQUIRED COMPONENTS lambda)
 
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBS})

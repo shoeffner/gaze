@@ -1,8 +1,14 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include <boost/lambda/lambda.hpp>
+#include <iterator>
+#include <algorithm>
 
 int main(int argc, char** argv )
 {
+    using namespace boost::lambda;
+    std::for_each(in(std::cin), in(), std::cout << (_1 * 3) << " " );
+
     cv::Mat frame;
     cv::VideoCapture videoCapture;
     videoCapture.open(0);

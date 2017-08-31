@@ -1,28 +1,22 @@
-#include <stdio.h>
+#include <iostream>
 #include <opencv2/opencv.hpp>
-
-using namespace cv;
 
 int main(int argc, char** argv )
 {
-    if ( argc != 2 )
+    cv::Mat frame;
+    cv::VideoCapture videoCapture;
+    videoCapture.open(0);
+
+    cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE );
+
+    for ( int i = 0; i < 100 ; ++i )
     {
-        printf("usage: DisplayImage.out <Image_Path>\n");
-        return -1;
+        videoCapture >> frame;
+        if (!frame.empty())
+        {
+            cv::imshow("Display Image", frame);
+            cv::waitKey(0);
+        }
     }
-
-    Mat image;
-    image = imread( argv[1], 1 );
-
-    if ( !image.data )
-    {
-        printf("No image data \n");
-        return -1;
-    }
-    namedWindow("Display Image", WINDOW_AUTOSIZE );
-    imshow("Display Image", image);
-
-    waitKey(0);
-
     return 0;
 }

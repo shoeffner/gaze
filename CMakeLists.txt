@@ -1,11 +1,14 @@
-cmake_minimum_required(VERSION 2.8)
+# Version settings, general settings
+cmake_minimum_required(VERSION 3.1.3)
+set(CMAKE_CXX_STANDARD 98)
 
-set(PROJECT_NAME "gaze")
 project(${PROJECT_NAME})
 
-find_package(OpenCV REQUIRED)
-
-add_executable( ${PROJECT_NAME} ${PROJECT_NAME}.cpp )
-target_link_libraries( ${PROJECT_NAME} ${OpenCV_LIBS} )
-
+# Executable
+add_executable(${PROJECT_NAME} ${PROJECT_NAME}.cpp)
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${${PROJECT_NAME}_INSTALL_PREFIX})
+
+# Libraries and linking
+find_package(OpenCV REQUIRED)
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
+

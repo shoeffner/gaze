@@ -11,8 +11,8 @@ PROJECT_NAME := gaze
 OPENCV_BUILD_DIR := $(BUILD_DIR)/opencv
 OPENCV_INSTALL_DIR := $(OPENCV_BUILD_DIR)/install
 
-ENABLED_OPENCV_MODULES = core highgui imgcodecs imgproc videoio
-DISABLED_OPENCV_MODULES = apps calib3d dnn features2d flann imgcodecs ml objdetect photo shape stitching superres video videostab
+ENABLED_OPENCV_MODULES = core highgui imgcodecs imgproc videoio objdetect
+DISABLED_OPENCV_MODULES = apps calib3d dnn features2d flann imgcodecs ml photo shape stitching superres video videostab
 ENABLED_OPENCV_FEATURES =
 DISABLED_OPENCV_FEATURES = SHARED_LIBS DOCS PERF_TESTS TESTS EXAMPLES
 

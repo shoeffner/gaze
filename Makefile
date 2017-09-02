@@ -63,8 +63,7 @@ $(PROJECT_NAME)Config.cmake: | $(PROJECT_BUILD_DIR)
 .DEFAULT_GOAL = run
 .PHONY: run
 run: $(PROJECT_NAME)
-	cp $(PROJECT_INSTALL_DIR)/$^ $(CURDIR)
-	./$^
+	cd $(PROJECT_INSTALL_DIR) && ./$^
 
 # Helpers
 # #######

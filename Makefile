@@ -62,11 +62,18 @@ $(PROJECT_NAME)Config.cmake: | $(PROJECT_BUILD_DIR)
 
 .DEFAULT_GOAL = run
 .PHONY: run
-run: $(PROJECT_NAME)
-	cd $(PROJECT_INSTALL_DIR) && ./$^
+run: $(PROJECT_NAME) $(PROJECT_INSTALL_DIR)/$(PROJECT_NAME)
+	cd $(PROJECT_INSTALL_DIR) && ./$<
 
 # Helpers
 # #######
 
 $(BUILD_DIR)/%:
 	@mkdir -p $(BUILD_DIR)/$*
+
+clean:
+	rm $(PROJECT_INSTALL_DIR)/$(PROJECT_NAME)
+
+.SECONDEXPANSION:
+clean%:
+	rm -rf $(BUILD_DIR)/$*

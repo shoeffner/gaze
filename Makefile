@@ -4,10 +4,16 @@
 BUILD_DIR := $(abspath build)
 PROJECT_NAME := gaze
 
+# subst tricks (see https://stackoverflow.com/a/7531247/3004221)
+_NULL :=
+_SPACE := $(_NULL) #
+_COMMA := ,
+
 
 # OpenCV
 # ######
 
+OPENCV_DIR = $(abspath vendor/opencv)
 OPENCV_BUILD_DIR := $(BUILD_DIR)/opencv
 OPENCV_INSTALL_DIR := $(OPENCV_BUILD_DIR)/install
 
@@ -28,6 +34,8 @@ OPENCV_FLAGS = -DCMAKE_BUILD_TYPE=RELEASE \
 				$(addsuffix =ON,$(addprefix -DBUILD_,$(ENABLED_OPENCV_FEATURES)) \
 								$(addprefix -DBUILD_opencv_,$(ENABLED_OPENCV_MODULES)))
 
+OPENCV_PROJECT_FLAGS = -DOpenCV_DIR=$(OPENCV_BUILD_DIR)
+
 .PHONY: opencv
 opencv: | $(OPENCV_INSTALL_DIR)
 
@@ -35,7 +43,43 @@ $(OPENCV_INSTALL_DIR): OpenCVConfig.cmake
 	cd $(OPENCV_BUILD_DIR) && make install
 
 OpenCVConfig.cmake: | $(OPENCV_BUILD_DIR)
-	cd $| && cmake $(OPENCV_FLAGS) $(abspath vendor/opencv)
+	cd $| && cmake $(OPENCV_FLAGS) $(OPENCV_DIR)
+
+
+# Boost
+# #####
+
+BOOST_DIR = $(abspath vendor/boost)
+BOOST_VERSION = 1.65.0
+BOOST_BUILD_DIR = $(BUILD_DIR)/boost
+BOOST_INCLUDE_DIR = $(BOOST_BUILD_DIR)/include
+BOOST_LIBRARY_DIR = $(BOOST_BUILD_DIR)/lib
+
+# Comma separated list
+BOOST_LIBRARIES = program_options
+WITH_OR_WITHOUT_BOOST_LIBRARIES = with
+
+BOOST_PROJECT_FLAGS = -DBOOST_ROOT=$(BOOST_BUILD_DIR) \
+					  -DBOOST_LIBRARYDIR=$(BOOST_LIBRARY_DIR) \
+					  -DBOOST_INCLUDEDIR=$(BOOST_INCLUDE_DIR) \
+					  -DBOOST_VERSION=$(BOOST_VERSION) \
+					  -DBOOST_COMPONENTS="$(BOOST_LIBRARIES)"
+
+vpath version.hpp $(BOOST_INCLUDE_DIR)/boost
+
+.PHONY: boost
+boost: | version.hpp
+
+version.hpp:
+	cd $(BOOST_DIR) \
+	&& git fetch --tags \
+	&& git checkout tags/boost-$(BOOST_VERSION) \
+	&& git submodule update --init --recursive \
+	&& ./bootstrap.sh --prefix=$(BOOST_BUILD_DIR) \
+	                  --libdir=$(BOOST_LIBRARY_DIR) \
+	                  --includedir=$(BOOST_INCLUDE_DIR) \
+	                  --$(WITH_OR_WITHOUT_BOOST_LIBRARIES)-libraries=$(subst $(_SPACE),$(_COMMA),$(BOOST_LIBRARIES)) \
+	&& ./b2 install
 
 
 # Project
@@ -47,11 +91,12 @@ PROJECT_INSTALL_DIR := $(PROJECT_BUILD_DIR)/install
 vpath $(PROJECT_NAME)Config.cmake $(PROJECT_BUILD_DIR)
 
 PROJECT_FLAGS = -DPROJECT_NAME=$(PROJECT_NAME) \
-				-DOpenCV_DIR=$(OPENCV_BUILD_DIR) \
+				$(OPENCV_PROJECT_FLAGS) \
+				$(BOOST_PROJECT_FLAGS) \
 				-D$(PROJECT_NAME)_INSTALL_PREFIX=$(PROJECT_INSTALL_DIR)
 
 .PHONY: $(PROJECT_NAME)
-$(PROJECT_NAME): opencv $(PROJECT_INSTALL_DIR)
+$(PROJECT_NAME): opencv boost $(PROJECT_INSTALL_DIR)
 
 $(PROJECT_INSTALL_DIR): $(PROJECT_NAME)Config.cmake
 	cd $(PROJECT_BUILD_DIR) && make install
@@ -59,11 +104,11 @@ $(PROJECT_INSTALL_DIR): $(PROJECT_NAME)Config.cmake
 $(PROJECT_NAME)Config.cmake: | $(PROJECT_BUILD_DIR)
 	cd $| && cmake $(PROJECT_FLAGS) $(CURDIR)
 
-
 .DEFAULT_GOAL = run
 .PHONY: run
 run: $(PROJECT_NAME) $(PROJECT_INSTALL_DIR)/$(PROJECT_NAME)
 	cd $(PROJECT_INSTALL_DIR) && ./$<
+
 
 # Helpers
 # #######

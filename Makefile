@@ -28,11 +28,11 @@ vpath libopencv_%.a $(OPENCV_INSTALL_DIR)/lib
 vpath OpenCVConfig.cmake $(OPENCV_BUILD_DIR)
 
 OPENCV_FLAGS = -DCMAKE_BUILD_TYPE=RELEASE \
- 	 			-DCMAKE_INSTALL_PREFIX=$(OPENCV_INSTALL_DIR) \
-				$(addsuffix =OFF,$(addprefix -DBUILD_,$(DISABLED_OPENCV_FEATURES)) \
-				 			     $(addprefix -DBUILD_opencv_,$(DISABLED_OPENCV_MODULES))) \
-				$(addsuffix =ON,$(addprefix -DBUILD_,$(ENABLED_OPENCV_FEATURES)) \
-								$(addprefix -DBUILD_opencv_,$(ENABLED_OPENCV_MODULES)))
+               -DCMAKE_INSTALL_PREFIX=$(OPENCV_INSTALL_DIR) \
+               $(addsuffix =OFF,$(addprefix -DBUILD_,$(DISABLED_OPENCV_FEATURES)) \
+                                $(addprefix -DBUILD_opencv_,$(DISABLED_OPENCV_MODULES))) \
+               $(addsuffix =ON,$(addprefix -DBUILD_,$(ENABLED_OPENCV_FEATURES)) \
+                               $(addprefix -DBUILD_opencv_,$(ENABLED_OPENCV_MODULES)))
 
 OPENCV_PROJECT_FLAGS = -DOpenCV_DIR=$(OPENCV_BUILD_DIR)
 
@@ -60,10 +60,13 @@ BOOST_LIBRARIES = program_options
 WITH_OR_WITHOUT_BOOST_LIBRARIES = with
 
 BOOST_PROJECT_FLAGS = -DBOOST_ROOT=$(BOOST_BUILD_DIR) \
-					  -DBOOST_LIBRARYDIR=$(BOOST_LIBRARY_DIR) \
-					  -DBOOST_INCLUDEDIR=$(BOOST_INCLUDE_DIR) \
-					  -DBOOST_VERSION=$(BOOST_VERSION) \
-					  -DBOOST_COMPONENTS="$(BOOST_LIBRARIES)"
+                      -DBOOST_LIBRARYDIR=$(BOOST_LIBRARY_DIR) \
+                      -DBOOST_INCLUDEDIR=$(BOOST_INCLUDE_DIR) \
+                      -DBOOST_VERSION=$(BOOST_VERSION) \
+                      -DBoost_NO_BOOST_CMAKE=TRUE \
+                      -DBoost_SYSTEM_PATHS=TRUE \
+                      -DBoost_DEBUG=1 \
+                      -DBOOST_COMPONENTS="$(BOOST_LIBRARIES)"
 
 vpath version.hpp $(BOOST_INCLUDE_DIR)/boost
 
@@ -91,9 +94,9 @@ PROJECT_INSTALL_DIR := $(PROJECT_BUILD_DIR)/install
 vpath $(PROJECT_NAME)Config.cmake $(PROJECT_BUILD_DIR)
 
 PROJECT_FLAGS = -DPROJECT_NAME=$(PROJECT_NAME) \
-				$(OPENCV_PROJECT_FLAGS) \
-				$(BOOST_PROJECT_FLAGS) \
-				-D$(PROJECT_NAME)_INSTALL_PREFIX=$(PROJECT_INSTALL_DIR)
+                $(OPENCV_PROJECT_FLAGS) \
+                $(BOOST_PROJECT_FLAGS) \
+                -D$(PROJECT_NAME)_INSTALL_PREFIX=$(PROJECT_INSTALL_DIR)
 
 .PHONY: $(PROJECT_NAME)
 $(PROJECT_NAME): opencv boost $(PROJECT_INSTALL_DIR)

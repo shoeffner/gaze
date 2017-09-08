@@ -4,6 +4,20 @@ message(STATUS "Configuring boost")
 
 
 ##
+## SEARCH FOR SYSTEM BOOST
+##
+
+message(STATUS "Checking for system boost")
+find_package(Boost ${Boost_FIND_VERSION} QUIET NO_MODULE COMPONENTS ${Boost_FIND_COMPONENTS})
+if(Boost_FOUND)
+    message(STATUS "System boost found")
+    return()
+else(Boost_FOUND)
+    message(STATUS "Boost was not found on the system, will download it")
+endif(Boost_FOUND)
+
+
+##
 ## SET VARIABLES
 ##
 
@@ -110,4 +124,4 @@ endif(Boost_DEBUG)
 ## UPDATE PROJECT DEPENDENCY LIST
 ##
 
-list(APPEND ${PROJECT_NAME}_DEPENDENCIES "boost")
+list(APPEND ${PROJECT_NAME}_DEPENDENCIES boost)

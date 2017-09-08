@@ -8,17 +8,17 @@ message(STATUS "Configuring boost")
 ##
 
 if(NOT BOOST_ROOT)
-  set(BOOST_ROOT ${CMAKE_BINARY_DIR}/boost)
+    set(BOOST_ROOT ${CMAKE_BINARY_DIR}/boost)
 endif(NOT BOOST_ROOT)
 if(Boost_DEBUG)
-  message(STATUS "BOOST_ROOT=" ${BOOST_ROOT})
+    message(STATUS "BOOST_ROOT=" ${BOOST_ROOT})
 endif(Boost_DEBUG)
 
 if(NOT BOOST_SOURCE_DIR)
-  set(BOOST_SOURCE_DIR ${CMAKE_SOURCE_DIR}/vendor/boost)
+    set(BOOST_SOURCE_DIR ${CMAKE_SOURCE_DIR}/vendor/boost)
 endif(NOT BOOST_SOURCE_DIR)
 if(Boost_DEBUG)
-  message(STATUS "BOOST_SOURCE_DIR=" ${BOOST_SOURCE_DIR})
+    message(STATUS "BOOST_SOURCE_DIR=" ${BOOST_SOURCE_DIR})
 endif(Boost_DEBUG)
 
 
@@ -41,8 +41,8 @@ set(_BOOST_INSTALL_COMMAND ./b2 ${_BOOST_BUILD_OPTIONS} install)
 
 # Add components to configure
 if(Boost_FIND_COMPONENTS)
-  string(REPLACE ";" "," _BOOST_LIBRARIES "${Boost_FIND_COMPONENTS}")
-  set(_BOOST_CONFIGURE_COMMAND ${_BOOST_CONFIGURE_COMMAND} --with-libraries=${_BOOST_LIBRARIES})
+    string(REPLACE ";" "," _BOOST_LIBRARIES "${Boost_FIND_COMPONENTS}")
+    set(_BOOST_CONFIGURE_COMMAND ${_BOOST_CONFIGURE_COMMAND} --with-libraries=${_BOOST_LIBRARIES})
 endif(Boost_FIND_COMPONENTS)
 
 
@@ -62,7 +62,7 @@ endif(Boost_DEBUG)
 
 set(_BOOST_GIT_TAG "master")
 if(Boost_FIND_VERSION)
-  set(_BOOST_GIT_TAG "boost-${Boost_FIND_VERSION}")
+    set(_BOOST_GIT_TAG "boost-${Boost_FIND_VERSION}")
 endif(Boost_FIND_VERSION)
 
 
@@ -71,19 +71,19 @@ endif(Boost_FIND_VERSION)
 ##
 
 ExternalProject_Add(boost
-  GIT_REPOSITORY "https://github.com/boostorg/boost.git"
-  GIT_TAG ${_BOOST_GIT_TAG}
+    GIT_REPOSITORY "https://github.com/boostorg/boost.git"
+    GIT_TAG ${_BOOST_GIT_TAG}
 
-  UPDATE_COMMAND ""
-  PATCH_COMMAND ""
-  CMAKE_COMMAND ""
+    UPDATE_COMMAND ""
+    PATCH_COMMAND ""
+    CMAKE_COMMAND ""
 
-  SOURCE_DIR "${BOOST_SOURCE_DIR}"
+    SOURCE_DIR "${BOOST_SOURCE_DIR}"
 
-  BUILD_IN_SOURCE 1
-  CONFIGURE_COMMAND "${_BOOST_CONFIGURE_COMMAND}"
-  BUILD_COMMAND "${_BOOST_BUILD_COMMAND}"
-  INSTALL_COMMAND "${_BOOST_INSTALL_COMMAND}"
+    BUILD_IN_SOURCE 1
+    CONFIGURE_COMMAND "${_BOOST_CONFIGURE_COMMAND}"
+    BUILD_COMMAND "${_BOOST_BUILD_COMMAND}"
+    INSTALL_COMMAND "${_BOOST_INSTALL_COMMAND}"
 )
 
 
@@ -95,10 +95,9 @@ set(Boost_FOUND True)
 set(Boost_LIBRARY_DIRS ${BOOST_ROOT}/lib)
 set(Boost_INCLUDE_DIRS ${BOOST_ROOT}/include)
 message(STATUS "Boost_FIND_COMPONENTS=" ${Boost_FIND_COMPONENTS})
-foreach(library ${Boost_FIND_COMPONENTS})
-  message(STATUS "library=" ${library})
-  list(APPEND Boost_LIBRARIES "${BOOST_ROOT}/lib/libboost${library}.a")
-endforeach(library)
+foreach(LIBRARY ${Boost_FIND_COMPONENTS})
+    list(APPEND Boost_LIBRARIES boost_${LIBRARY})
+endforeach(LIBRARY)
 
 if(Boost_DEBUG)
     message(STATUS "Boost_FOUND=" ${Boost_FOUND})
@@ -106,7 +105,7 @@ if(Boost_DEBUG)
     message(STATUS "Boost_INCLUDE_DIRS=" ${Boost_INCLUDE_DIRS})
     message(STATUS "Boost_LIBRARIES=" ${Boost_LIBRARIES})
 endif(Boost_DEBUG)
-# add_custom_target(boost/lib/libboostprogram_options.a
+
 
 ##
 ## UPDATE PROJECT DEPENDENCY LIST

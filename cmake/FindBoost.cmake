@@ -94,7 +94,6 @@ ExternalProject_Add(boost
 set(Boost_FOUND True)
 set(Boost_LIBRARY_DIRS ${BOOST_ROOT}/lib)
 set(Boost_INCLUDE_DIRS ${BOOST_ROOT}/include)
-message(STATUS "Boost_FIND_COMPONENTS=" ${Boost_FIND_COMPONENTS})
 foreach(LIBRARY ${Boost_FIND_COMPONENTS})
     list(APPEND Boost_LIBRARIES boost_${LIBRARY})
 endforeach(LIBRARY)

@@ -1,20 +1,9 @@
 include(ExternalProject)
+include(SearchSystemPackage)
 
 message(STATUS "Configuring OpenCV")
-
-
-##
-## SEARCH FOR SYSTEM OPENCV
-##
-
-message(STATUS "Checking for system OpenCV")
-find_package(OpenCV ${OpenCV_FIND_VERSION} QUIET NO_MODULE COMPONENTS ${OpenCV_FIND_COMPONENTS})
-if(OpenCV_FOUND)
-    message(STATUS "System OpenCV found")
-    return()
-else(OpenCV_FOUND)
-    message(STATUS "OpenCV was not found on the system, will download it")
-endif(OpenCV_FOUND)
+maybe_find_system_package_and_return()
+message(STATUS "Setting up OpenCV download and build process.")
 
 
 ##

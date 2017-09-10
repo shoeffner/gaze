@@ -1,21 +1,9 @@
 include(ExternalProject)
+include(SearchSystemPackage)
 
-message(STATUS "Configuring boost")
-
-
-##
-## SEARCH FOR SYSTEM BOOST
-##
-
-message(STATUS "Checking for system boost")
-find_package(Boost ${Boost_FIND_VERSION} QUIET NO_MODULE COMPONENTS ${Boost_FIND_COMPONENTS})
-if(Boost_FOUND)
-    message(STATUS "System boost found")
-    return()
-else(Boost_FOUND)
-    message(STATUS "Boost was not found on the system, will download it")
-endif(Boost_FOUND)
-
+message(STATUS "Configuring Boost")
+maybe_find_system_package_and_return()
+message(STATUS "Setting up Boost download and build process.")
 
 ##
 ## SET VARIABLES

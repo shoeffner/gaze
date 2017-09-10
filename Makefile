@@ -11,7 +11,7 @@ $(PROJECT_NAME): CMakeCache.txt
 
 .PHONY: run
 run: $(PROJECT_NAME)
-	@cd $(INSTALL_DIR) && ./$<
+	cd $(INSTALL_DIR) && ./$(PROJECT_NAME)
 
 $(BUILD_DIR):
 	@mkdir $(BUILD_DIR)

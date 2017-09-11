@@ -16,20 +16,28 @@ set(Boost_COMPONENTS program_options)
 set(OpenCV_VERSION 3.3.0)
 set(OpenCV_COMPONENTS core highgui imgcodecs imgproc videoio objdetect)
 
+set(GTK_MODULE gtk+-3.0)
+
 
 # Find packages
+find_package(PkgConfig REQUIRED)
 find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_COMPONENTS})
 find_package(OpenCV ${OpenCV_VERSION} REQUIRED COMPONENTS ${OpenCV_COMPONENTS})
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK REQUIRED ${GTK_MODULE})
 
 
 # Includes and libraries
 include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
+    ${GTK_INCLUDE_DIRS}
 )
 link_directories(
     ${Boost_LIBRARY_DIRS}
     ${OpenCV_LIBRARY_DIRS}
+    ${GTK_LIBRARY_DIRS}
 )
 
 
@@ -44,6 +52,7 @@ endif(${PROJECT_NAME}_DEPENDENCIES)
 target_link_libraries(${PROJECT_NAME}
     ${Boost_LIBRARIES}
     ${OpenCV_LIBRARIES}
+    ${GTK_LIBRARIES}
 )
 
 

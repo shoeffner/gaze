@@ -10,10 +10,15 @@ set(CMAKE_INSTALL_MESSAGE LAZY)
 
 
 # Package options
-set(Boost_VERSION 1.65.0)
+if(NOT Boost_VERSION)
+    cmake_minimum_required(VERSION 3.9.1)
+    set(Boost_VERSION 1.65.0)
+endif(NOT Boost_VERSION)
 set(Boost_COMPONENTS program_options)
 
-set(OpenCV_VERSION 3.3.0)
+if(NOT OpenCV_VERSION)
+    set(OpenCV_VERSION 3.3.0)
+endif(NOT OpenCV_VERSION)
 set(OpenCV_COMPONENTS core highgui imgcodecs imgproc videoio objdetect)
 
 set(GTK_MODULE gtk+-3.0)
@@ -62,8 +67,29 @@ if("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr/local")
 endif("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr/local")
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+
+# Install cascade files on systems where they are not in /usr/share/OpenCV
+# but /usr/share/opencv
+list(APPEND CASCADE_DIRS
+    "${OpenCV_DIR}/haarcascades"
+    "${OpenCV_DIR}/lbpcascades"
+)
+foreach(CASCADE_DIR ${CASCADE_DIRS})
+    if(NOT EXISTS ${CASCADE_DIR})
+        list(REMOVE_ITEM CASCADE_DIRS ${CASCADE_DIR})
+        string(TOLOWER ${CASCADE_DIR} CASCADE_DIR)
+        if(EXISTS ${CASCADE_DIR})
+            list(APPEND CASCADE_DIRS ${CASCADE_DIR})
+        endif(EXISTS ${CASCADE_DIR})
+    endif(NOT EXISTS ${CASCADE_DIR})
+endforeach(CASCADE_DIR)
+list(LENGTH CASCADE_DIRS CASCADE_DIRS_LENGTH)
+if(NOT ${CASCADE_DIRS_LENGTH} EQUAL 2)
+    message(ERROR "Can not find all cascade directories.")
+endif(NOT ${CASCADE_DIRS_LENGTH} EQUAL 2)
+
 install(DIRECTORY
-    ${OpenCV_DIR}/haarcascades
-    ${OpenCV_DIR}/lbpcascades
+    ${CASCADE_DIRS}
     DESTINATION ${CMAKE_INSTALL_PREFIX}/assets
 )

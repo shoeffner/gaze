@@ -55,6 +55,8 @@ int main( int argc, const char** argv ) {
         break;
       }
     }
+  } else {
+      cout << "No capture device found." << endl;
   }
   return 0;
 }

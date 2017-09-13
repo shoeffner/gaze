@@ -12,7 +12,7 @@
 
 namespace {
 
-boost::program_options::variables_map
+static boost::program_options::variables_map
 parse_program_options(int argc, const char** argv) {
   boost::program_options::options_description
     commandline("Command line arguments");

@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 
-# Project options
+#################
+# PROJECT OPTIONS
+#################
+
 project(gaze VERSION 0.1 LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -9,7 +12,10 @@ set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_INSTALL_MESSAGE LAZY)
 
 
-# Package options
+#################
+# LIBRARY OPTIONS
+#################
+
 if(NOT Boost_VERSION)
     cmake_minimum_required(VERSION 3.9.1)
     set(Boost_VERSION 1.65.0)
@@ -21,11 +27,9 @@ if(NOT OpenCV_VERSION)
 endif(NOT OpenCV_VERSION)
 set(OpenCV_COMPONENTS core highgui imgcodecs imgproc videoio objdetect)
 
-
 # Find packages
 find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_COMPONENTS})
 find_package(OpenCV ${OpenCV_VERSION} REQUIRED COMPONENTS ${OpenCV_COMPONENTS})
-
 
 # Includes and libraries
 include_directories(
@@ -36,7 +40,6 @@ link_directories(
     ${Boost_LIBRARY_DIRS}
     ${OpenCV_LIBRARY_DIRS}
 )
-
 
 # Library
 list(APPEND LIBRARY_SOURCE_FILES
@@ -55,7 +58,14 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 
-set(SIMPLE_VIEWER_TARGET gaze_viewer)
-add_executable(${SIMPLE_VIEWER_TARGET} src/demo/simple_viewer.cpp)
-add_dependencies(${SIMPLE_VIEWER_TARGET} ${PROJECT_NAME})
+###########################
+# DEMO PROJECTS AND OPTIONS
+###########################
+
+if(NOT BUILD_EXAMPLES)
+    set(EXCLUDE_EXAMPLES EXCLUDE_FROM_ALL)
+endif(NOT BUILD_EXAMPLES)
+
+set(SIMPLE_VIEWER_TARGET gaze_debug_viewer)
+add_executable(${SIMPLE_VIEWER_TARGET} ${EXCLUDE_EXAMPLES} src/demo/gaze_debug_viewer.cpp)
 target_link_libraries(${SIMPLE_VIEWER_TARGET} ${PROJECT_NAME})

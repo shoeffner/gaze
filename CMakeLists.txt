@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.5)
 project(gaze VERSION 0.1 LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-set(CMAKE_CXX_STANDARD 98)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_INSTALL_MESSAGE LAZY)
 
@@ -46,14 +46,17 @@ link_directories(
 )
 
 
-# Executable and dependencies
-add_executable(${PROJECT_NAME} src/${PROJECT_NAME}.cpp)
+# Library
+list(APPEND LIBRARY_SOURCE_FILES
+  src/gaze.cpp
+)
+
+add_library(${PROJECT_NAME} ${LIBRARY_SOURCE_FILES})
+target_include_directories(${PROJECT_NAME} PUBLIC include)
 if(${PROJECT_NAME}_DEPENDENCIES)
     add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_DEPENDENCIES})
 endif(${PROJECT_NAME}_DEPENDENCIES)
 
-
-# Linking
 target_link_libraries(${PROJECT_NAME}
     ${Boost_LIBRARIES}
     ${OpenCV_LIBRARIES}
@@ -61,35 +64,7 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 
-# Installation
-if("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr/local")
-    set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
-endif("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr/local")
-
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX})
-
-
-# Install cascade files on systems where they are not in /usr/share/OpenCV
-# but /usr/share/opencv
-list(APPEND CASCADE_DIRS
-    "${OpenCV_DIR}/haarcascades"
-    "${OpenCV_DIR}/lbpcascades"
-)
-foreach(CASCADE_DIR ${CASCADE_DIRS})
-    if(NOT EXISTS ${CASCADE_DIR})
-        list(REMOVE_ITEM CASCADE_DIRS ${CASCADE_DIR})
-        string(TOLOWER ${CASCADE_DIR} CASCADE_DIR)
-        if(EXISTS ${CASCADE_DIR})
-            list(APPEND CASCADE_DIRS ${CASCADE_DIR})
-        endif(EXISTS ${CASCADE_DIR})
-    endif(NOT EXISTS ${CASCADE_DIR})
-endforeach(CASCADE_DIR)
-list(LENGTH CASCADE_DIRS CASCADE_DIRS_LENGTH)
-if(NOT ${CASCADE_DIRS_LENGTH} EQUAL 2)
-    message(ERROR "Can not find all cascade directories.")
-endif(NOT ${CASCADE_DIRS_LENGTH} EQUAL 2)
-
-install(DIRECTORY
-    ${CASCADE_DIRS}
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/assets
-)
+set(SIMPLE_VIEWER_TARGET gaze_viewer)
+add_executable(${SIMPLE_VIEWER_TARGET} src/demo/simple_viewer.cpp)
+add_dependencies(${SIMPLE_VIEWER_TARGET} ${PROJECT_NAME})
+target_link_libraries(${SIMPLE_VIEWER_TARGET} ${PROJECT_NAME})

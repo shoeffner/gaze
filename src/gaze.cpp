@@ -1,100 +1,58 @@
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
+// Copyright 2017 Sebastian Höffner
 
-#include "boost/program_options.hpp"
+#include "gaze/gaze.h"
 
 #include <iostream>
-#include <stdio.h>
+#include <memory>
+#include <string>
 
-using namespace std;
-using namespace cv;
+#include "opencv2/videoio.hpp"
+#include "opencv2/highgui.hpp"
 
-/** Function Headers */
-void detectAndDisplay(Mat frame);
 
-/** Global variables */
-String face_cascade_name = "assets/haarcascades/haarcascade_frontalface_alt.xml";
-String eyes_cascade_name = "assets/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
-CascadeClassifier face_cascade;
-CascadeClassifier eyes_cascade;
-string window_name = "Capture - Face detection";
-RNG rng(12345);
+namespace gaze {
 
-/** @function main */
-int main( int argc, const char** argv ) {
-  VideoCapture capture;
-  Mat frame;
-
-  //-- 1. Load the cascades
-  if (!face_cascade.load(face_cascade_name)) {
-    printf("--(!)Error loading\n");
-    return -1;
-  };
-  if (!eyes_cascade.load(eyes_cascade_name)) {
-    printf("--(!)Error loading\n");
-    return -1;
-  };
-
-  //-- 2. Read the video stream
-  capture = VideoCapture(0);
-  if (capture.isOpened()) {
-    while (true) {
-      capture >> frame;
-
-      //-- 3. Apply the classifier to the frame
-      if(!frame.empty()) {
-        detectAndDisplay(frame);
-      } else {
-        printf(" --(!) No captured frame -- Break!");
-        break;
-      }
-
-      int c = waitKey(10);
-      if ((char)c == 'c') {
-        break;
-      }
-    }
-  } else {
-      cout << "No capture device found." << endl;
+GazeTracker::GazeTracker(std::string source) {
+  video_source = source;
+  // Try to parse source as an integer to select webcam device.
+  // Otherwise assume filepath and open video file.
+  try {
+    video_capture = std::unique_ptr<cv::VideoCapture>(
+        new cv::VideoCapture(std::stoi(video_source)));
+    // Set goal FPS to 60, still often webcams cap much lower.
+    video_capture->set(cv::CAP_PROP_FPS, 60.0);
+    source_type = SourceType::WEBCAM;
+  } catch (const std::invalid_argument& no_int_ignoring_exception) {
+    video_capture = std::unique_ptr<cv::VideoCapture>(
+        new cv::VideoCapture(video_source));
+    source_type = SourceType::VIDEO;
   }
-  return 0;
 }
 
-/** @function detectAndDisplay */
-void detectAndDisplay(Mat frame)
-{
-    std::vector<Rect> faces;
-    Mat frame_gray;
-
-    cvtColor(frame, frame_gray, CV_BGR2GRAY);
-    equalizeHist(frame_gray, frame_gray);
-
-    //-- Detect faces
-    face_cascade.detectMultiScale(frame_gray, faces, 1.1, 2,
-                                  0|CV_HAAR_SCALE_IMAGE, Size(30, 30));
-
-    for (size_t i = 0; i < faces.size(); i++) {
-        Point center(faces[i].x + faces[i].width * 0.5,
-                     faces[i].y + faces[i].height * 0.5);
-        ellipse(frame, center,
-                Size(faces[i].width * 0.5, faces[i].height * 0.5), 0, 0, 360,
-                Scalar(255, 0, 255), 4, 8, 0);
-
-        Mat faceROI = frame_gray(faces[i]);
-        std::vector<Rect> eyes;
-
-        //-- In each face, detect eyes
-        eyes_cascade.detectMultiScale(faceROI, eyes, 1.1, 2,
-                                      0|CV_HAAR_SCALE_IMAGE, Size(30, 30));
-
-        for (size_t j = 0; j < eyes.size(); j++) {
-            Point center(faces[i].x + eyes[j].x + eyes[j].width * 0.5,
-                         faces[i].y + eyes[j].y + eyes[j].height * 0.5);
-            int radius = cvRound((eyes[j].width + eyes[j].height) * 0.25);
-            circle(frame, center, radius, Scalar(255, 0, 0), 4, 8, 0);
-        }
-    }
-    //-- Show what you got
-    imshow(window_name, frame);
+GazeTracker::~GazeTracker() {
+  video_capture->release();
 }
+
+void GazeTracker::print_capture_info() {
+  if (source_type == SourceType::WEBCAM) {
+    std::cout << "GazeTracker source is webcam " << video_source
+      << ", w x h: " << video_capture->get(cv::CAP_PROP_FRAME_WIDTH)
+      << "x" << video_capture->get(cv::CAP_PROP_FRAME_HEIGHT)
+      << ", FPS: " << video_capture->get(cv::CAP_PROP_FPS)
+      << std::endl;
+  } else {
+    // TODO(shoeffner): Add more information for video files
+    std::cout << "GazeTracker source is video file " <<  video_source <<
+      std::endl;
+  }
+}
+
+void GazeTracker::show_debug_screen() {
+  cv::Mat image;
+  *video_capture >> image;
+  cv::imshow("gaze debug screen", image);
+  cv::waitKey(1);
+}
+
+
+}  // namespace gaze

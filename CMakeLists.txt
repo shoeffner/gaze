@@ -28,17 +28,25 @@ endif(NOT OpenCV_VERSION)
 set(OpenCV_COMPONENTS core highgui imgcodecs imgproc videoio objdetect)
 
 # Find packages
-find_package(Boost ${Boost_VERSION} REQUIRED COMPONENTS ${Boost_COMPONENTS})
 find_package(OpenCV ${OpenCV_VERSION} REQUIRED COMPONENTS ${OpenCV_COMPONENTS})
+
+# Packages only needed for examples
+if(BUILD_EXAMPLES)
+    find_package(Boost ${Boost_VERSION} COMPONENTS ${Boost_COMPONENTS})
+    find_package(PkgConfig)
+    pkg_check_modules(GTK gtk+-3.0)
+endif(BUILD_EXAMPLES)
 
 # Includes and libraries
 include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
+    ${GTK_INCLUDE_DIRS}
 )
 link_directories(
     ${Boost_LIBRARY_DIRS}
     ${OpenCV_LIBRARY_DIRS}
+    ${GTK_LIBRARY_DIRS}
 )
 
 # Library
@@ -62,10 +70,26 @@ target_link_libraries(${PROJECT_NAME}
 # DEMO PROJECTS AND OPTIONS
 ###########################
 
-if(NOT BUILD_EXAMPLES)
-    set(EXCLUDE_EXAMPLES EXCLUDE_FROM_ALL)
-endif(NOT BUILD_EXAMPLES)
+if(BUILD_EXAMPLES)
 
-set(SIMPLE_VIEWER_TARGET gaze_debug_viewer)
-add_executable(${SIMPLE_VIEWER_TARGET} ${EXCLUDE_EXAMPLES} src/demo/gaze_debug_viewer.cpp)
-target_link_libraries(${SIMPLE_VIEWER_TARGET} ${PROJECT_NAME})
+# Debug viewer: Just show input stream
+if(Boost_FOUND)
+    set(SIMPLE_VIEWER_TARGET gaze_debug_viewer)
+    add_executable(${SIMPLE_VIEWER_TARGET} src/demo/gaze_debug_viewer.cpp)
+    target_link_libraries(${SIMPLE_VIEWER_TARGET} ${PROJECT_NAME})
+else(Boost_FOUND)
+    message(WARNING "Can not build gaze_debug_viewer example, did not find Boost.")
+endif(Boost_FOUND)
+
+
+# Where People Look, Judd et al. 2009
+
+if(GTK_FOUND)
+    set(WPL_TARGET where_people_look)
+    add_executable(${WPL_TARGET} src/demo/where_people_look.cpp)
+    target_link_libraries(${WPL_TARGET} ${PROJECT_NAME} ${GTK_LIBRARIES})
+else(GTK_FOUND)
+    message(WARNING "Can not build where_people_look example, did not find GTK 3.")
+endif(GTK_FOUND)
+
+endif(BUILD_EXAMPLES)

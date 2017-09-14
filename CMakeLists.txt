@@ -7,6 +7,7 @@ cmake_minimum_required(VERSION 3.5)
 project(gaze VERSION 0.1 LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+include(MessageVariables)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(CMAKE_INSTALL_MESSAGE LAZY)

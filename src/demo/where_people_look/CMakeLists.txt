@@ -7,7 +7,7 @@ pkg_check_modules(GTK gtk+-3.0)
 
 if(GTK_FOUND)
     include_directories(${GTK_INCLUDE_DIRS})
-    link_directories(${GTK_LINK_DIRS})
+    link_directories(${GTK_LIBRARY_DIRS})
 
     set(WPL_TARGET where_people_look)
     set(WPL_STIMULI wpl_stimuli)

@@ -72,7 +72,8 @@ endif(Boost_FIND_VERSION)
 ## SETUP EXTERNAL PROJECT
 ##
 
-ExternalProject_Add(boost
+set(Boost_TARGET boost)
+ExternalProject_Add(${Boost_TARGET}
     GIT_REPOSITORY "https://github.com/boostorg/boost.git"
     GIT_TAG ${_BOOST_GIT_TAG}
 
@@ -106,10 +107,3 @@ if(Boost_DEBUG)
     message(STATUS "Boost_INCLUDE_DIRS=" ${Boost_INCLUDE_DIRS})
     message(STATUS "Boost_LIBRARIES=" ${Boost_LIBRARIES})
 endif(Boost_DEBUG)
-
-
-##
-## UPDATE PROJECT DEPENDENCY LIST
-##
-
-list(APPEND ${PROJECT_NAME}_DEPENDENCIES boost)

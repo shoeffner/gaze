@@ -78,7 +78,8 @@ endif(OpenCV_FIND_VERSION)
 ## SETUP EXTERNAL PROJECT
 ##
 
-ExternalProject_Add(opencv
+set(OpenCV_TARGET opencv)
+ExternalProject_Add(${OpenCV_TARGET}
     GIT_REPOSITORY "https://github.com/opencv/opencv.git"
     GIT_TAG ${_OPENCV_GIT_TAG}
 
@@ -115,10 +116,3 @@ if(OpenCV_DEBUG)
     message(STATUS "OpenCV_LIBRARIES=" ${OpenCV_LIBRARIES})
     message(STATUS "OpenCV_DIR=" ${OpenCV_DIR})
 endif(OpenCV_DEBUG)
-
-
-##
-## UPDATE PROJECT DEPENDENCY LIST
-##
-
-list(APPEND ${PROJECT_NAME}_DEPENDENCIES opencv)

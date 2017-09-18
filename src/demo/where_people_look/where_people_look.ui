@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkWindow" id="mainwindow">
+    <property name="fullscreen">true</property>
+  </object>
+</interface>

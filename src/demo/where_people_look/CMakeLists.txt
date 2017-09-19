@@ -41,23 +41,50 @@ ExternalProject_Add(${WPL_STIMULI}
     INSTALL_COMMAND ""
 )
 
-set(WPL_RESOURCES_FILE ${CMAKE_CURRENT_BINARY_DIR}/wpl_gresources.c)
+
 # Compile gresources
+# Find dependency files and make proper list
+execute_process(COMMAND
+    ${GLIB_COMPILE_RESOURCES} --generate-dependencies
+    ${CMAKE_CURRENT_SOURCE_DIR}/${WPL_TARGET}.gresource.xml
+    OUTPUT_VARIABLE WPL_RESOURCES
+)
+string(REPLACE "\n" ";" WPL_RESOURCES ${WPL_RESOURCES})
+list(APPEND WPL_RESOURCES ${WPL_TARGET}.gresource.xml)
+# Prepend full paths
+foreach(WPL_RESOURCE ${WPL_RESOURCES})
+  list(REMOVE_ITEM WPL_RESOURCES ${WPL_RESOURCE})
+  list(APPEND WPL_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WPL_RESOURCE})
+endforeach(WPL_RESOURCE)
+
+# Create gresources compilation command
+set(WPL_RESOURCES_C ${CMAKE_CURRENT_BINARY_DIR}/wpl_gresources.c)
 add_custom_command(
-    OUTPUT ${WPL_RESOURCES_FILE}
+    OUTPUT ${WPL_RESOURCES_C}
+    DEPENDS ${WPL_RESOURCES} ${WPL_RESOURCES_H}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMAND ${GLIB_COMPILE_RESOURCES} --target=${WPL_RESOURCES_FILE} --generate-source ${WPL_TARGET}.gresource.xml --)
+    COMMAND ${GLIB_COMPILE_RESOURCES} --target=${WPL_RESOURCES_C}
+            --generate-source
+            --internal
+            ${CMAKE_CURRENT_SOURCE_DIR}/${WPL_TARGET}.gresource.xml
+)
 
 
-# Executable
+# Compile executable
 include_directories(${GTK_INCLUDE_DIRS})
 link_directories(${GTK_LIBRARY_DIRS})
 
-add_executable(${WPL_TARGET} ${CMAKE_CURRENT_SOURCE_DIR}/where_people_look.cpp ${WPL_RESOURCES_FILE})
+add_executable(${WPL_TARGET}
+    ${CMAKE_CURRENT_SOURCE_DIR}/where_people_look.cpp
+    ${WPL_RESOURCES_C})
+set_target_properties(${WPL_TARGET}
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+)
 target_link_libraries(${WPL_TARGET} ${PROJECT_NAME} ${GTK_LIBRARIES})
+add_dependencies(${WPL_TARGET} ${WPL_STIMULI})
 
 
 # Install stimuli
-add_dependencies(${WPL_TARGET} ${WPL_STIMULI})
 install(DIRECTORY ${${WPL_STIMULI}_SOURCE_DIR}
-        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+        DESTINATION "${CMAKE_BINARY_DIR}")

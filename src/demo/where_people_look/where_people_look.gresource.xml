@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-    <gresource prefix="wherepeoplelook">
+    <gresource prefix="wpl">
         <file>where_people_look.ui</file>
         <file>where_people_look.css</file>
     </gresource>

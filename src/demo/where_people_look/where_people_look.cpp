@@ -23,7 +23,8 @@ namespace {
 
 namespace gui {
 
-static void cb_key_press(GtkWidget* widget, GdkEventKey* event_key) {
+static const void cb_key_press(const GtkWidget* widget,
+                               const GdkEventKey* event_key) {
   switch (event_key->keyval) {
     case GDK_KEY_F4:
       if (event_key->state & GDK_MOD1_MASK) {
@@ -44,14 +45,11 @@ static bool cb_swap_image(GtkWidget* image) {
   return true;
 }
 
-// TODO(shoeffner): Remove this when using CSS.
-static GdkRGBA get_color(double r, gdouble g, double b, double a) {
-  GdkRGBA color;
-  color.red = r;
-  color.green = g;
-  color.blue = b;
-  color.alpha = a;
-  return color;
+const void register_and_connect_callbacks(GtkBuilder* builder) {
+  gtk_builder_add_callback_symbol(builder,
+      "cb_key_press", G_CALLBACK(cb_key_press));
+
+  gtk_builder_connect_signals(builder, NULL);
 }
 
 }  // namespace gui
@@ -63,33 +61,16 @@ int main(int argc, char** argv) {
   // Initialize program
   gtk_init(&argc, &argv);
 
-  // Prepare window properties
-  // TODO(shoeffner): Use proper ui builder
-  GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  GtkWidget* image = gtk_image_new_from_file("./wpl_stimuli/i1843924285.jpeg");
+  GtkBuilder* builder = gtk_builder_new_from_resource("/wpl/where_people_look.ui");  // NOLINT
+  ::gui::register_and_connect_callbacks(builder);
 
-  gtk_container_add(GTK_CONTAINER(window), image);
-  gtk_window_fullscreen(GTK_WINDOW(window));
-  gtk_widget_show_all(window);
-  gtk_window_set_keep_above(GTK_WINDOW(window), true);
+  GObject* window = gtk_builder_get_object(builder, "MainWindow");
+  gtk_window_present(GTK_WINDOW(window));
 
-  // TODO(shoeffner): Use CSS instead of deprecated gtk_widget_override...
-  GdkRGBA gray = ::gui::get_color(.3, .3, .3, 1);
-  gtk_widget_override_background_color(window, GTK_STATE_FLAG_NORMAL, &gray);
-
-  // Set callbacks
-  g_signal_connect(window, "key-press-event", G_CALLBACK(::gui::cb_key_press),
-      NULL);
-  g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-  // TODO(shoeffner): Figure out a proper way to swap images
-  // g_timeout_add_seconds(3, ::gui::cb_swap_image, &image);
+  g_object_unref(builder);
 
   // Start GUI loop
   gtk_main();
-
-  // Clean up
-  // g_object_unref(image);
-  // g_object_unref(window);
 
   return 0;
 }

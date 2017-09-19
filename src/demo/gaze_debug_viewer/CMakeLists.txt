@@ -17,6 +17,10 @@ if(Boost_FOUND)
 
     set(SIMPLE_VIEWER_TARGET gaze_debug_viewer)
     add_executable(${SIMPLE_VIEWER_TARGET} ${CMAKE_CURRENT_SOURCE_DIR}/gaze_debug_viewer.cpp)
+    set_target_properties(${SIMPLE_VIEWER_TARGET}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+    )
     if(Boost_TARGET)
         add_dependencies(${SIMPLE_VIEWER_TARGET} ${Boost_TARGET})
     endif(Boost_TARGET)

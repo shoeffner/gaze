@@ -3,6 +3,18 @@
 message(STATUS "Configuring demo where_people_look.")
 
 
+if(NOT Boost_VERSION)
+    cmake_minimum_required(VERSION 3.9.1)
+    set(Boost_VERSION 1.65.0)
+endif(NOT Boost_VERSION)
+
+find_package(Boost ${Boost_VERSION} COMPONENTS filesystem)
+if(NOT Boost_FOUND)
+  message(WARNING "Can not build where_people_look example, did not find Boost.")
+  return()
+endif(NOT Boost_FOUND)
+
+
 # PkgConfig
 find_package(PkgConfig)
 
@@ -71,8 +83,8 @@ add_custom_command(
 
 
 # Compile executable
-include_directories(${GTK_INCLUDE_DIRS})
-link_directories(${GTK_LIBRARY_DIRS})
+include_directories(${GTK_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+link_directories(${GTK_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS})
 
 add_executable(${WPL_TARGET}
     ${CMAKE_CURRENT_SOURCE_DIR}/where_people_look.cpp
@@ -81,7 +93,7 @@ set_target_properties(${WPL_TARGET}
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
-target_link_libraries(${WPL_TARGET} ${PROJECT_NAME} ${GTK_LIBRARIES})
+target_link_libraries(${WPL_TARGET} ${PROJECT_NAME} ${GTK_LIBRARIES} ${Boost_LIBRARIES})
 add_dependencies(${WPL_TARGET} ${WPL_STIMULI})
 
 

@@ -18,6 +18,7 @@
 #include "gaze/gaze.h"
 #include "gtk/gtk.h"
 
+#include "where_people_look/config.h"
 #include "where_people_look/gui_cb.h"
 
 int main(int argc, char** argv) {
@@ -29,8 +30,10 @@ int main(int argc, char** argv) {
   GtkWidget* window = GTK_WIDGET(gtk_builder_get_object(builder, "MainWindow"));
   GtkWidget* image = GTK_WIDGET(gtk_builder_get_object(builder, "Image"));
 
+  wpl::WPLConfig* config = new wpl::WPLConfig();
+
   wpl::gui::set_css_style(window, "/wpl/where_people_look.css");
-  wpl::gui::register_and_connect_callbacks(builder);
+  wpl::gui::register_and_connect_callbacks(builder, config);
 
   g_object_unref(builder);
 

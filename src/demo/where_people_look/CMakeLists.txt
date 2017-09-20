@@ -83,11 +83,12 @@ add_custom_command(
 
 
 # Compile executable
-include_directories(${GTK_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+include_directories(${GTK_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/include)
 link_directories(${GTK_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS})
 
 add_executable(${WPL_TARGET}
     ${CMAKE_CURRENT_SOURCE_DIR}/where_people_look.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gui_cb.cpp
     ${WPL_RESOURCES_C})
 set_target_properties(${WPL_TARGET}
     PROPERTIES

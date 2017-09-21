@@ -83,19 +83,31 @@ add_custom_command(
 
 
 # Compile executable
-include_directories(${GTK_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/include)
-link_directories(${GTK_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS})
+include_directories(
+    ${GTK_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/include
+)
+link_directories(
+    ${GTK_LIBRARY_DIRS}
+    ${Boost_LIBRARY_DIRS}
+)
 
 add_executable(${WPL_TARGET}
     ${CMAKE_CURRENT_SOURCE_DIR}/where_people_look.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/gui_cb.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/config.cpp
-    ${WPL_RESOURCES_C})
+    ${WPL_RESOURCES_C}
+)
 set_target_properties(${WPL_TARGET}
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
-target_link_libraries(${WPL_TARGET} ${PROJECT_NAME} ${GTK_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(${WPL_TARGET}
+    ${PROJECT_NAME}
+    ${GTK_LIBRARIES}
+    ${Boost_LIBRARIES}
+)
 add_dependencies(${WPL_TARGET} ${WPL_STIMULI})
 
 

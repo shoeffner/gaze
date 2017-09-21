@@ -29,6 +29,7 @@
     <property name="window_position">center-always</property>
     <signal name="apply" handler="cb_finish_assistant" object="MainWindow" swapped="no"/>
     <signal name="cancel" handler="gtk_main_quit" swapped="no"/>
+    <signal name="close" handler="gtk_widget_destroy" swapped="no"/>
     <child>
       <object class="GtkGrid">
         <property name="visible">True</property>

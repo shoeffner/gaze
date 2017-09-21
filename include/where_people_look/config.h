@@ -3,14 +3,13 @@
 #ifndef INCLUDE_WHERE_PEOPLE_LOOK_CONFIG_H_
 #define INCLUDE_WHERE_PEOPLE_LOOK_CONFIG_H_
 
-#include <map>
 #include <string>
 
 
 namespace wpl {
 
 struct WPLConfig {
-  bool assistant_data_complete();
+  const bool assistant_data_complete();
 
   std::string subject_id;
 

@@ -19,7 +19,13 @@
 #include "gtk/gtk.h"
 
 #include "where_people_look/config.h"
+#include "where_people_look/experiment.h"
 #include "where_people_look/gui_cb.h"
+
+
+namespace {
+
+}  // namespace
 
 int main(int argc, char** argv) {
   // Initialize program
@@ -31,6 +37,7 @@ int main(int argc, char** argv) {
   GtkWidget* image = GTK_WIDGET(gtk_builder_get_object(builder, "Image"));
 
   wpl::WPLConfig* config = new wpl::WPLConfig();
+  wpl::Experiment* experiment = new wpl::Experiment(config);
 
   wpl::gui::set_css_style(window, "/wpl/where_people_look.css");
   wpl::gui::register_and_connect_callbacks(builder, config);
@@ -38,6 +45,9 @@ int main(int argc, char** argv) {
   g_object_unref(builder);
 
   gtk_main();
+
+  delete config;
+  delete experiment;
 
   return 0;
 }

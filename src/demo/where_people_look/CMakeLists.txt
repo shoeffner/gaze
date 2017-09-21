@@ -95,8 +95,9 @@ link_directories(
 
 add_executable(${WPL_TARGET}
     ${CMAKE_CURRENT_SOURCE_DIR}/where_people_look.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/gui_cb.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/config.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/experiment.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gui_cb.cpp
     ${WPL_RESOURCES_C}
 )
 set_target_properties(${WPL_TARGET}

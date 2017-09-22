@@ -13,8 +13,6 @@
 // Check out their fantastic website, showing off their results:
 // http://people.csail.mit.edu/tjudd/WherePeopleLook/interactiveWebsite/seeFixations.html
 
-#include <iostream>
-
 #include "gaze/gaze.h"
 #include "gtk/gtk.h"
 
@@ -22,10 +20,6 @@
 #include "where_people_look/experiment.h"
 #include "where_people_look/gui_cb.h"
 
-
-namespace {
-
-}  // namespace
 
 int main(int argc, char** argv) {
   // Initialize program

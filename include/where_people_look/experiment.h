@@ -3,30 +3,41 @@
 #ifndef INCLUDE_WHERE_PEOPLE_LOOK_EXPERIMENT_H_
 #define INCLUDE_WHERE_PEOPLE_LOOK_EXPERIMENT_H_
 
+#include <memory>
+#include <mutex>  // NOLINT
+
+#include "gaze/gaze.h"
+#include "gtk/gtk.h"
+
 #include "where_people_look/config.h"
 
-#include "gtk/gtk.h"
 
 namespace wpl {
 
 class Experiment {
+  std::mutex mutex;
+
   GtkImage* image;
   Config* config;
-
-  bool running = false;
+  std::unique_ptr<gaze::GazeTracker> gaze_tracker;
 
  public:
-    explicit Experiment(GtkImage* image, Config* config);
+    explicit Experiment(GtkImage* const image, Config* const config);
 
-    Config* get_config() const;
+    ~Experiment();
+
+    Config* const get_config() const;
 
     const void prepare();
 
     const void start();
 
-    static bool start_experiment(GtkWidget* widget,
-                                 GdkEventKey* event_key,
-                                 Experiment* experiment);
+    static const bool prepare_experiment(const GtkWidget* const assistant,
+                                         Experiment* const experiment);
+
+    static const bool start_experiment(const GtkWidget* const window,
+                                       const GdkEventKey* const event_key,
+                                       Experiment* const experiment);
 };
 
 }  // namespace wpl

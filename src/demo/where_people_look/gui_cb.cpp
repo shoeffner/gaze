@@ -14,9 +14,7 @@ namespace wpl {
 namespace gui {
 
 const bool cb_finish_assistant(const GtkWidget* assistant,
-                               const GtkWidget* window,
-                               Experiment* experiment) {
-  experiment->prepare();
+                               const GtkWidget* window) {
   gtk_window_present(GTK_WINDOW(window));
   gtk_window_fullscreen(GTK_WINDOW(window));
   return false;
@@ -39,8 +37,8 @@ const bool cb_key_press(const GtkWidget* widget,
   return false;
 }
 
-const bool cb_update_config(GtkWidget* widget,
-                            Experiment* experiment) {
+const bool cb_update_config(GtkWidget* const widget,
+                            Experiment* const experiment) {
   std::string widget_name = std::string(gtk_widget_get_name(widget));
   if (!widget_name.compare("subject_id")) {
     experiment->get_config()->subject_id =
@@ -62,19 +60,21 @@ const bool cb_update_config(GtkWidget* widget,
   return false;
 }
 
-const void register_and_connect_callbacks(GtkBuilder* builder,
-                                          Experiment* experiment) {
+const void register_and_connect_callbacks(GtkBuilder* const builder,
+                                          Experiment* const experiment) {
   gtk_builder_add_callback_symbols(builder,
-      "cb_experiment_start", G_CALLBACK(Experiment::start_experiment),
       "cb_finish_assistant", G_CALLBACK(cb_finish_assistant),
       "cb_key_press", G_CALLBACK(cb_key_press),
+      "cb_prepare_experiment", G_CALLBACK(Experiment::prepare_experiment),
+      "cb_start_experiment", G_CALLBACK(Experiment::start_experiment),
       "cb_update_config", G_CALLBACK(cb_update_config),
-      NULL);
+      static_cast<void*>(0));
 
   gtk_builder_connect_signals(builder, experiment);
 }
 
-const void set_css_style(GtkWidget* window, const char* css_resource) {
+const void set_css_style(GtkWidget* const window,
+                         const char* const css_resource) {
   GtkStyleContext* style_context = gtk_widget_get_style_context(window);
   GtkCssProvider* style_provider = gtk_css_provider_new();
   gtk_css_provider_load_from_resource(style_provider, css_resource);

@@ -13,18 +13,19 @@ namespace wpl {
 namespace gui {
 
 const bool cb_finish_assistant(const GtkWidget* assistant,
-                               const GtkWidget* window,
-                               Experiment* experiment);
+                               const GtkWidget* window);
 
 const bool cb_key_press(const GtkWidget* widget,
                         const GdkEventKey* event_key);
 
-const bool cb_update_config(GtkWidget* widget, Experiment* experiment);
+const bool cb_update_config(GtkWidget* const widget,
+                            Experiment* const experiment);
 
-const void register_and_connect_callbacks(GtkBuilder* builder,
-                                          Experiment* experiment);
+const void register_and_connect_callbacks(GtkBuilder* const builder,
+                                          Experiment* const experiment);
 
-const void set_css_style(GtkWidget* window, const char* css_resource);
+const void set_css_style(GtkWidget* const window,
+                         const char* const css_resource);
 
 }  // namespace gui
 

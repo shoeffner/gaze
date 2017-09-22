@@ -5,14 +5,28 @@
 
 #include "where_people_look/config.h"
 
+#include "gtk/gtk.h"
 
 namespace wpl {
 
 class Experiment {
-  WPLConfig* config;
+  GtkImage* image;
+  Config* config;
+
+  bool running = false;
 
  public:
-    explicit Experiment(WPLConfig*);
+    explicit Experiment(GtkImage* image, Config* config);
+
+    Config* get_config() const;
+
+    const void prepare();
+
+    const void start();
+
+    static bool start_experiment(GtkWidget* widget,
+                                 GdkEventKey* event_key,
+                                 Experiment* experiment);
 };
 
 }  // namespace wpl

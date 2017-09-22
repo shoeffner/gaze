@@ -8,8 +8,8 @@
 
 namespace wpl {
 
-struct WPLConfig {
-  const bool assistant_data_complete();
+struct Config {
+  const bool assistant_data_complete() const;
 
   std::string subject_id;
 

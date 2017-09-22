@@ -12,6 +12,7 @@
     <property name="icon_name">face-glasses</property>
     <property name="show_menubar">False</property>
     <signal name="destroy" handler="gtk_main_quit" swapped="no"/>
+    <signal name="key-press-event" handler="cb_experiment_start" swapped="no"/>
     <signal name="key-press-event" handler="cb_key_press" swapped="no"/>
     <child>
       <object class="GtkImage" id="Stimulus">

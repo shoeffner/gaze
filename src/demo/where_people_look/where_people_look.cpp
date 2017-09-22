@@ -36,13 +36,11 @@ int main(int argc, char** argv) {
   GtkWidget* window = GTK_WIDGET(gtk_builder_get_object(builder, "MainWindow"));
   GtkWidget* image = GTK_WIDGET(gtk_builder_get_object(builder, "Image"));
 
-  wpl::WPLConfig* config = new wpl::WPLConfig();
-  wpl::Experiment* experiment = new wpl::Experiment(config);
+  wpl::Config* config = new wpl::Config();
+  wpl::Experiment* experiment = new wpl::Experiment(GTK_IMAGE(image), config);
 
   wpl::gui::set_css_style(window, "/wpl/where_people_look.css");
-  wpl::gui::register_and_connect_callbacks(builder, config);
-
-  g_object_unref(builder);
+  wpl::gui::register_and_connect_callbacks(builder, experiment);
 
   gtk_main();
 

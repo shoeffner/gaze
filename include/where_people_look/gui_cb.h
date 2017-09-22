@@ -5,23 +5,26 @@
 
 #include "gtk/gtk.h"
 
-#include "where_people_look/config.h"
+#include "where_people_look/experiment.h"
 
 
 namespace wpl {
 
 namespace gui {
 
-const void cb_key_press(const GtkWidget* widget,
+const bool cb_finish_assistant(const GtkWidget* assistant,
+                               const GtkWidget* window,
+                               Experiment* experiment);
+
+const bool cb_key_press(const GtkWidget* widget,
                         const GdkEventKey* event_key);
 
-const void cb_finish_assistant(const GtkWidget* assistant,
-                               const GtkWidget* window);
-
-const void set_css_style(GtkWidget* window, const char* css_resource);
+const bool cb_update_config(GtkWidget* widget, Experiment* experiment);
 
 const void register_and_connect_callbacks(GtkBuilder* builder,
-                                          WPLConfig* config);
+                                          Experiment* experiment);
+
+const void set_css_style(GtkWidget* window, const char* css_resource);
 
 }  // namespace gui
 

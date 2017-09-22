@@ -5,7 +5,7 @@
 
 namespace wpl {
 
-const bool WPLConfig::assistant_data_complete() {
+const bool Config::assistant_data_complete() const {
   if (subject_id.empty()
       ||result_dir_path.empty()
       ||stimuli_dir_path.empty()) {

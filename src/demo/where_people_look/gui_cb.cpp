@@ -2,19 +2,27 @@
 
 #include "where_people_look/gui_cb.h"
 
-#include <iostream>
 #include <string>
 
 #include "gtk/gtk.h"
 
-#include "where_people_look/config.h"
+#include "where_people_look/experiment.h"
 
 
 namespace wpl {
 
 namespace gui {
 
-const void cb_key_press(const GtkWidget* widget,
+const bool cb_finish_assistant(const GtkWidget* assistant,
+                               const GtkWidget* window,
+                               Experiment* experiment) {
+  experiment->prepare();
+  gtk_window_present(GTK_WINDOW(window));
+  gtk_window_fullscreen(GTK_WINDOW(window));
+  return false;
+}
+
+const bool cb_key_press(const GtkWidget* widget,
                         const GdkEventKey* event_key) {
   switch (event_key->keyval) {
     case GDK_KEY_F4:
@@ -28,34 +36,42 @@ const void cb_key_press(const GtkWidget* widget,
       }
       break;
   }
+  return false;
 }
 
-const void cb_update_config(GtkWidget* widget,
-                            WPLConfig* config) {
+const bool cb_update_config(GtkWidget* widget,
+                            Experiment* experiment) {
   std::string widget_name = std::string(gtk_widget_get_name(widget));
   if (!widget_name.compare("subject_id")) {
-    config->subject_id =
+    experiment->get_config()->subject_id =
       std::string(gtk_entry_get_text(GTK_ENTRY(widget)));
   } else if (!widget_name.compare("result_dir_path")) {
-    config->result_dir_path =
+    experiment->get_config()->result_dir_path =
       std::string(gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(widget)));
   } else if (!widget_name.compare("stimuli_dir_path")) {
-    config->stimuli_dir_path =
+    experiment->get_config()->stimuli_dir_path =
       std::string(gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(widget)));
   }
 
-  if (config->assistant_data_complete()) {
+  if (experiment->get_config()->assistant_data_complete()) {
     GtkWidget* grid = gtk_widget_get_parent(widget);
     GtkWidget* assistant = gtk_widget_get_ancestor(grid, GTK_TYPE_ASSISTANT);
     gtk_assistant_set_page_complete(GTK_ASSISTANT(assistant),
                                     grid, true);
   }
+  return false;
 }
 
-const void cb_finish_assistant(const GtkWidget* assistant,
-                               const GtkWidget* window) {
-  gtk_window_present(GTK_WINDOW(window));
-  gtk_window_fullscreen(GTK_WINDOW(window));
+const void register_and_connect_callbacks(GtkBuilder* builder,
+                                          Experiment* experiment) {
+  gtk_builder_add_callback_symbols(builder,
+      "cb_experiment_start", G_CALLBACK(Experiment::start_experiment),
+      "cb_finish_assistant", G_CALLBACK(cb_finish_assistant),
+      "cb_key_press", G_CALLBACK(cb_key_press),
+      "cb_update_config", G_CALLBACK(cb_update_config),
+      NULL);
+
+  gtk_builder_connect_signals(builder, experiment);
 }
 
 const void set_css_style(GtkWidget* window, const char* css_resource) {
@@ -65,17 +81,6 @@ const void set_css_style(GtkWidget* window, const char* css_resource) {
   gtk_style_context_add_provider(style_context,
       GTK_STYLE_PROVIDER(style_provider),
       GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-}
-
-const void register_and_connect_callbacks(GtkBuilder* builder,
-                                          WPLConfig* config) {
-  gtk_builder_add_callback_symbols(builder,
-      "cb_key_press", G_CALLBACK(cb_key_press),
-      "cb_finish_assistant", G_CALLBACK(cb_finish_assistant),
-      "cb_update_config", G_CALLBACK(cb_update_config),
-      NULL);
-
-  gtk_builder_connect_signals(builder, config);
 }
 
 }  // namespace gui

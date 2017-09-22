@@ -12,47 +12,72 @@
 
 namespace gaze {
 
+GazeTracker::GazeTracker() {
+  this->initialized = false;
+}
+
+GazeTracker::GazeTracker(int source) {
+  this->init(source);
+}
+
 GazeTracker::GazeTracker(std::string source) {
-  video_source = source;
+  this->init(source);
+}
+
+const void GazeTracker::init(int source) {
+  this->video_source = std::to_string(source);
+  this->video_capture = std::unique_ptr<cv::VideoCapture>(
+        new cv::VideoCapture(source));
+  // Set goal FPS to 60, still often webcams cap much lower.
+  this->video_capture->set(cv::CAP_PROP_FPS, 60.0);
+  this->source_type = SourceType::WEBCAM;
+  this->initialized = true;
+}
+
+const void GazeTracker::init(std::string source) {
+  this->video_source = source;
   // Try to parse source as an integer to select webcam device.
   // Otherwise assume filepath and open video file.
   try {
-    video_capture = std::unique_ptr<cv::VideoCapture>(
-        new cv::VideoCapture(std::stoi(video_source)));
-    // Set goal FPS to 60, still often webcams cap much lower.
-    video_capture->set(cv::CAP_PROP_FPS, 60.0);
-    source_type = SourceType::WEBCAM;
-  } catch (const std::invalid_argument& no_int_ignoring_exception) {
-    video_capture = std::unique_ptr<cv::VideoCapture>(
+    this->init(std::stoi(video_source));
+  } catch (const std::invalid_argument&) {
+    this->video_capture = std::unique_ptr<cv::VideoCapture>(
         new cv::VideoCapture(video_source));
-    source_type = SourceType::VIDEO;
+    this->source_type = SourceType::VIDEO;
   }
+  this->initialized = true;
 }
 
 GazeTracker::~GazeTracker() {
-  video_capture->release();
+  if (this->initialized) {
+    this->video_capture->release();
+  }
 }
 
-void GazeTracker::print_capture_info() {
+const void GazeTracker::print_capture_info() const {
+  if (!this->initialized) {
+    std::cerr << "GazeTracker is not initialized." << std::endl;
+    return;
+  }
+
   if (source_type == SourceType::WEBCAM) {
-    std::cout << "GazeTracker source is webcam " << video_source
-      << ", w x h: " << video_capture->get(cv::CAP_PROP_FRAME_WIDTH)
-      << "x" << video_capture->get(cv::CAP_PROP_FRAME_HEIGHT)
-      << ", FPS: " << video_capture->get(cv::CAP_PROP_FPS)
+    std::cout << "GazeTracker source is webcam " << this->video_source
+      << ", w x h: " << this->video_capture->get(cv::CAP_PROP_FRAME_WIDTH)
+      << "x" << this->video_capture->get(cv::CAP_PROP_FRAME_HEIGHT)
+      << ", FPS: " << this->video_capture->get(cv::CAP_PROP_FPS)
       << std::endl;
   } else {
     // TODO(shoeffner): Add more information for video files
-    std::cout << "GazeTracker source is video file " <<  video_source <<
+    std::cout << "GazeTracker source is video file " << this->video_source <<
       std::endl;
   }
 }
 
-void GazeTracker::show_debug_screen() {
+const void GazeTracker::show_debug_screen() const {
   cv::Mat image;
-  *video_capture >> image;
+  *(this->video_capture) >> image;
   cv::imshow("gaze debug screen", image);
   cv::waitKey(1);
 }
-
 
 }  // namespace gaze

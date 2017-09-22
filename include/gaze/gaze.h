@@ -18,15 +18,25 @@ class GazeTracker {
   std::unique_ptr<cv::VideoCapture> video_capture;
   std::string video_source;
 
+  bool initialized;
+
 
  public:
-    explicit GazeTracker(std::string);
+    GazeTracker();
+
+    explicit GazeTracker(const int source);
+
+    explicit GazeTracker(const std::string source);
 
     ~GazeTracker();
 
-    void print_capture_info();
+    const void init(const int source);
 
-    void show_debug_screen();
+    const void init(const std::string source);
+
+    const void print_capture_info() const;
+
+    const void show_debug_screen() const;
 };
 
 }  // namespace gaze

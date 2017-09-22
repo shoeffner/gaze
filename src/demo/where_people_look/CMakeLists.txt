@@ -8,7 +8,7 @@ if(NOT Boost_VERSION)
     set(Boost_VERSION 1.65.0)
 endif(NOT Boost_VERSION)
 
-find_package(Boost ${Boost_VERSION} COMPONENTS filesystem)
+find_package(Boost ${Boost_VERSION} COMPONENTS filesystem system)
 if(NOT Boost_FOUND)
   message(WARNING "Can not build where_people_look example, did not find Boost.")
   return()

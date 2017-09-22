@@ -3,7 +3,9 @@
 #include "where_people_look/experiment.h"
 
 #include <memory>
+#include <string>
 
+#include "boost/filesystem.hpp"
 #include "gaze/gaze.h"
 #include "gtk/gtk.h"
 

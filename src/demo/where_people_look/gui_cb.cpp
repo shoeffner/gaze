@@ -41,14 +41,14 @@ const bool cb_update_config(GtkWidget* const widget,
                             Experiment* const experiment) {
   std::string widget_name = std::string(gtk_widget_get_name(widget));
   if (!widget_name.compare("subject_id")) {
-    experiment->get_config()->subject_id =
-      std::string(gtk_entry_get_text(GTK_ENTRY(widget)));
+    experiment->get_config()->set_subject_id(
+      std::string(gtk_entry_get_text(GTK_ENTRY(widget))));
   } else if (!widget_name.compare("result_dir_path")) {
-    experiment->get_config()->result_dir_path =
-      std::string(gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(widget)));
+    experiment->get_config()->set_result_dir_path(
+      std::string(gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(widget))));
   } else if (!widget_name.compare("stimuli_dir_path")) {
-    experiment->get_config()->stimuli_dir_path =
-      std::string(gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(widget)));
+    experiment->get_config()->set_stimuli_dir_path(
+      std::string(gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(widget))));
   }
 
   if (experiment->get_config()->assistant_data_complete()) {

@@ -17,35 +17,11 @@ GazeTracker::GazeTracker() {
 }
 
 GazeTracker::GazeTracker(int source) {
-  this->init(source);
+  this->init(source, "default_subject");
 }
 
 GazeTracker::GazeTracker(std::string source) {
-  this->init(source);
-}
-
-const void GazeTracker::init(int source) {
-  this->video_source = std::to_string(source);
-  this->video_capture = std::unique_ptr<cv::VideoCapture>(
-        new cv::VideoCapture(source));
-  // Set goal FPS to 60, still often webcams cap much lower.
-  this->video_capture->set(cv::CAP_PROP_FPS, 60.0);
-  this->source_type = SourceType::WEBCAM;
-  this->initialized = true;
-}
-
-const void GazeTracker::init(std::string source) {
-  this->video_source = source;
-  // Try to parse source as an integer to select webcam device.
-  // Otherwise assume filepath and open video file.
-  try {
-    this->init(std::stoi(video_source));
-  } catch (const std::invalid_argument&) {
-    this->video_capture = std::unique_ptr<cv::VideoCapture>(
-        new cv::VideoCapture(video_source));
-    this->source_type = SourceType::VIDEO;
-  }
-  this->initialized = true;
+  this->init(source, "default_subject");
 }
 
 GazeTracker::~GazeTracker() {
@@ -54,23 +30,66 @@ GazeTracker::~GazeTracker() {
   }
 }
 
+const void GazeTracker::calibrate() {
+  std::cout << "[GT Stub] Calibrating." << std::endl;
+}
+
+const void GazeTracker::init(const int source,
+                             const std::string subject_id,
+                             const std::string result_dir) {
+  this->video_source = std::to_string(source);
+  this->video_capture = std::unique_ptr<cv::VideoCapture>(
+        new cv::VideoCapture(source));
+  // Set goal FPS to 60, still often webcams cap much lower.
+  this->video_capture->set(cv::CAP_PROP_FPS, 60.0);
+  this->source_type = SourceType::WEBCAM;
+  this->initialized = true;
+  this->result_dir = result_dir;
+  this->subject_id = subject_id;
+}
+
+const void GazeTracker::init(const std::string source,
+                             const std::string subject_id,
+                             const std::string result_dir) {
+  this->video_source = source;
+  // Try to parse source as an integer to select webcam device.
+  // Otherwise assume filepath and open video file.
+  try {
+    this->init(std::stoi(video_source), subject_id, result_dir);
+  } catch (const std::invalid_argument&) {
+    this->video_capture = std::unique_ptr<cv::VideoCapture>(
+        new cv::VideoCapture(video_source));
+    this->source_type = SourceType::VIDEO;
+  }
+  this->initialized = true;
+  this->result_dir = result_dir;
+  this->subject_id = subject_id;
+}
+
 const void GazeTracker::print_capture_info() const {
   if (!this->initialized) {
-    std::cerr << "GazeTracker is not initialized." << std::endl;
+    std::cerr << "[GazeTracker] is not initialized." << std::endl;
     return;
   }
 
   if (source_type == SourceType::WEBCAM) {
-    std::cout << "GazeTracker source is webcam " << this->video_source
+    std::cout << "[GazeTracker] source is webcam " << this->video_source
       << ", w x h: " << this->video_capture->get(cv::CAP_PROP_FRAME_WIDTH)
       << "x" << this->video_capture->get(cv::CAP_PROP_FRAME_HEIGHT)
       << ", FPS: " << this->video_capture->get(cv::CAP_PROP_FPS)
       << std::endl;
   } else {
     // TODO(shoeffner): Add more information for video files
-    std::cout << "GazeTracker source is video file " << this->video_source <<
+    std::cout << "[GazeTracker] source is video file " << this->video_source <<
       std::endl;
   }
+}
+
+const void GazeTracker::print_info() const {
+  this->print_capture_info();
+  std::cout << "[GazeTracker] Subject ID: " << this->subject_id << std::endl;
+  std::cout << "[GazeTracker] Result directory: " << this->result_dir
+    << std::endl;
 }
 
 const void GazeTracker::show_debug_screen() const {
@@ -78,6 +97,18 @@ const void GazeTracker::show_debug_screen() const {
   *(this->video_capture) >> image;
   cv::imshow("gaze debug screen", image);
   cv::waitKey(1);
+}
+
+const void GazeTracker::start_trial(const std::string identifier) {
+  this->current_trial_id = identifier;
+  std::cout << "[GT Stub] Starting trial " << this->current_trial_id
+    << std::endl;
+}
+
+const void GazeTracker::stop_trial() {
+  std::cout << "[GT Stub] Stopping trial " << this->current_trial_id
+    << std::endl;
+  this->current_trial_id = "";
 }
 
 }  // namespace gaze

@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
   GtkBuilder* builder = gtk_builder_new_from_resource("/wpl/where_people_look.ui");  // NOLINT
   GtkWidget* assistant = GTK_WIDGET(gtk_builder_get_object(builder, "SetupWindow"));  // NOLINT
   GtkWidget* window = GTK_WIDGET(gtk_builder_get_object(builder, "MainWindow"));
-  GtkWidget* image = GTK_WIDGET(gtk_builder_get_object(builder, "Image"));
+  GtkWidget* image = GTK_WIDGET(gtk_builder_get_object(builder, "Stimulus"));
 
   wpl::Config* config = new wpl::Config();
   wpl::Experiment* experiment = new wpl::Experiment(GTK_IMAGE(image), config);

@@ -45,10 +45,10 @@ const bool cb_update_config(GtkWidget* const widget,
       std::string(gtk_entry_get_text(GTK_ENTRY(widget))));
   } else if (!widget_name.compare("result_dir_path")) {
     experiment->get_config()->set_result_dir_path(
-      std::string(gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(widget))));
+      std::string(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget))));
   } else if (!widget_name.compare("stimuli_dir_path")) {
     experiment->get_config()->set_stimuli_dir_path(
-      std::string(gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(widget))));
+      std::string(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget))));
   }
 
   if (experiment->get_config()->assistant_data_complete()) {
@@ -65,8 +65,8 @@ const void register_and_connect_callbacks(GtkBuilder* const builder,
   gtk_builder_add_callback_symbols(builder,
       "cb_finish_assistant", G_CALLBACK(cb_finish_assistant),
       "cb_key_press", G_CALLBACK(cb_key_press),
-      "cb_prepare_experiment", G_CALLBACK(Experiment::prepare_experiment),
-      "cb_start_experiment", G_CALLBACK(Experiment::start_experiment),
+      "cb_prepare_experiment", G_CALLBACK(Experiment::experiment_prepare),
+      "cb_start_experiment", G_CALLBACK(Experiment::experiment_start),
       "cb_update_config", G_CALLBACK(cb_update_config),
       static_cast<void*>(0));
 

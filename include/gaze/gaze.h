@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "opencv2/videoio.hpp"
 
@@ -25,13 +26,19 @@ class GazeTracker {
  public:
     GazeTracker();
 
-    explicit GazeTracker(const int source);
+    explicit GazeTracker(const int source,
+                         const std::string subject_id = "default_subject",
+                         const std::string result_dir = "./");
 
-    explicit GazeTracker(const std::string source);
+    explicit GazeTracker(const std::string source,
+                         const std::string subject_id = "default_subject",
+                         const std::string result_dir = "./");
 
     ~GazeTracker();
 
     const void calibrate();
+
+    const std::pair<int, int> get_current_gaze_point() const;
 
     const void init(const int source,
                     const std::string subject_id,

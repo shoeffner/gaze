@@ -16,12 +16,16 @@ GazeTracker::GazeTracker() {
   this->initialized = false;
 }
 
-GazeTracker::GazeTracker(int source) {
-  this->init(source, "default_subject");
+GazeTracker::GazeTracker(const int source,
+                         const std::string subject_id,
+                         const std::string result_dir) {
+  this->init(source, subject_id, result_dir);
 }
 
-GazeTracker::GazeTracker(std::string source) {
-  this->init(source, "default_subject");
+GazeTracker::GazeTracker(const std::string source,
+                         const std::string subject_id,
+                         const std::string result_dir) {
+  this->init(source, subject_id, result_dir);
 }
 
 GazeTracker::~GazeTracker() {
@@ -32,6 +36,11 @@ GazeTracker::~GazeTracker() {
 
 const void GazeTracker::calibrate() {
   std::cout << "[GT Stub] Calibrating." << std::endl;
+}
+
+const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
+  // TODO(shoeffner): Remove dummy values once tracking is implemented.
+  return std::pair<int, int>(120, 130);
 }
 
 const void GazeTracker::init(const int source,

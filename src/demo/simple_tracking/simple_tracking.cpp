@@ -13,8 +13,6 @@
 
 
 namespace {
-  const double PI = std::acos(-1);
-
   cv::Mat Blank(int height, int width) {
      return cv::Mat(height, width, CV_8UC3, cv::Scalar::all(255));
   }

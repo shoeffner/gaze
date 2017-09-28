@@ -5,7 +5,7 @@
 
 #include <deque>
 #include <mutex>  // NOLINT
-#include <shared_mutex>
+#include <shared_mutex>  // NOLINT
 
 
 namespace gaze {
@@ -16,44 +16,66 @@ template<typename T> class SPMCDeque {
   std::deque<T> _deque;
   std::shared_mutex _mutex;
 
-  const void push_back(const T elem) {
-    std::unique_lock<std::shared_mutex> lock(this->_mutex);
-    this->_deque.push_back(elem);
-  }
+ public:
+    const void push_back(const T elem) {
+      std::unique_lock<std::shared_mutex> lock(this->_mutex);
+      this->_deque.push_back(elem);
+    }
 
-  const void push_front(const T elem) {
-    std::unique_lock<std::shared_mutex> lock(this->_mutex);
-    this->_deque.push_front(elem);
-  }
+    const void push_front(const T elem) {
+      std::unique_lock<std::shared_mutex> lock(this->_mutex);
+      this->_deque.push_front(elem);
+    }
 
-  const bool empty() {
-    std::shared_lock<std::shared_mutex> lock(this->_mutex);
-    return this->_deque.empty();
-  }
+    const bool empty() {
+      std::shared_lock<std::shared_mutex> lock(this->_mutex);
+      return this->_deque.empty();
+    }
 
-  const T front() {
-    std::shared_lock<std::shared_mutex> lock(this->_mutex);
-    return this->_deque.front();
-  }
+    const T front() {
+      std::shared_lock<std::shared_mutex> lock(this->_mutex);
+      return this->_deque.front();
+    }
 
-  const T back() {
-    std::shared_lock<std::shared_mutex> lock(this->_mutex);
-    return this->_deque.back();
-  }
+    const T back() {
+      std::shared_lock<std::shared_mutex> lock(this->_mutex);
+      return this->_deque.back();
+    }
 
-  const T pop_front() {
-    std::unique_lock<std::shared_mutex> lock(this->_mutex);
-    T elem = this->_deque.front();
-    this->_deque.pop_front();
-    return elem;
-  }
+    const T front_or_default(T _default) {
+      std::shared_lock<std::shared_mutex> lock(this->_mutex);
+      if (!this->_deque.empty()) {
+        return this->_deque.front();
+      }
+      return _default;
+    }
 
-  const T pop_back() {
-    std::unique_lock<std::shared_mutex> lock(this->_mutex);
-    T elem = this->_deque.back();
-    this->_deque.pop_back();
-    return elem;
-  }
+    const T back_or_default(T _default) {
+      std::shared_lock<std::shared_mutex> lock(this->_mutex);
+      if (!this->_deque.empty()) {
+        return this->_deque.back();
+      }
+      return _default;
+    }
+
+    const T pop_front() {
+      std::unique_lock<std::shared_mutex> lock(this->_mutex);
+      T elem = this->_deque.front();
+      this->_deque.pop_front();
+      return elem;
+    }
+
+    const T pop_back() {
+      std::unique_lock<std::shared_mutex> lock(this->_mutex);
+      T elem = this->_deque.back();
+      this->_deque.pop_back();
+      return elem;
+    }
+
+    const int size() {
+      std::shared_lock<std::shared_mutex> lock(this->_mutex);
+      return this->_deque.size();
+    }
 };
 
 }  // namespace util

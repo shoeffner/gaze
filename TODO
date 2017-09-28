@@ -1,0 +1,3 @@
+src/gaze/gaze_tracker.cpp:54:  // TODO(shoeffner): Remove dummy values once tracking is implemented.
+src/gaze/gaze_tracker.cpp:90:  // TODO(shoeffner): Add more information about video sources
+src/gaze/source_capture.cpp:68:    // TODO(shoeffner): Add consumer for image deque

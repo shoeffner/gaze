@@ -3,6 +3,7 @@
 #include "where_people_look/experiment.h"
 
 #include <memory>
+#include <mutex>  // NOLINT
 #include <string>
 
 #include "boost/filesystem.hpp"

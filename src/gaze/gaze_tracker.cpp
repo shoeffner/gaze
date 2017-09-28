@@ -5,9 +5,13 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "opencv2/videoio.hpp"
 #include "opencv2/highgui.hpp"
+
+#include "gaze/source_capture.h"
+#include "gaze/util/spmc_deque.h"
 
 
 namespace gaze {
@@ -30,12 +34,20 @@ GazeTracker::GazeTracker(const std::string source,
 
 GazeTracker::~GazeTracker() {
   if (this->initialized) {
-    this->video_capture->release();
+    this->source_capture_thread->join();
+    delete this->source_capture_thread;
+    delete this->source_capture;
+    delete this->source_image_queue;
   }
 }
 
 const void GazeTracker::calibrate() {
   std::cout << "[GT Stub] Calibrating." << std::endl;
+}
+
+const cv::Mat GazeTracker::get_current_frame() const {
+  return this->source_image_queue->back_or_default(
+                this->source_capture->get_empty_frame());
 }
 
 const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
@@ -46,33 +58,27 @@ const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
 const void GazeTracker::init(const int source,
                              const std::string subject_id,
                              const std::string result_dir) {
-  this->video_source = std::to_string(source);
-  this->video_capture = std::unique_ptr<cv::VideoCapture>(
-        new cv::VideoCapture(source));
-  // Set goal FPS to 60, still often webcams cap much lower.
-  this->video_capture->set(cv::CAP_PROP_FPS, 60.0);
-  this->source_type = SourceType::WEBCAM;
-  this->initialized = true;
-  this->result_dir = result_dir;
-  this->subject_id = subject_id;
+  this->init(std::to_string(source), subject_id, result_dir);
 }
 
 const void GazeTracker::init(const std::string source,
                              const std::string subject_id,
                              const std::string result_dir) {
-  this->video_source = source;
-  // Try to parse source as an integer to select webcam device.
-  // Otherwise assume filepath and open video file.
   try {
-    this->init(std::stoi(video_source), subject_id, result_dir);
+    int cam_source = std::stoi(source);
+    this->source_type = SourceType::WEBCAM;
+    this->source_capture = new SourceCapture(cam_source);
   } catch (const std::invalid_argument&) {
-    this->video_capture = std::unique_ptr<cv::VideoCapture>(
-        new cv::VideoCapture(video_source));
     this->source_type = SourceType::VIDEO;
+    this->source_capture = new SourceCapture(source);
   }
-  this->initialized = true;
+  this->source_image_queue = new util::SPMCDeque<cv::Mat>();
+  this->source_capture_thread = new std::thread(
+      std::ref(*(this->source_capture)),
+      std::ref(this->source_image_queue));
   this->result_dir = result_dir;
   this->subject_id = subject_id;
+  this->initialized = true;
 }
 
 const void GazeTracker::print_capture_info() const {
@@ -81,16 +87,13 @@ const void GazeTracker::print_capture_info() const {
     return;
   }
 
+  // TODO(shoeffner): Add more information about video sources
   if (source_type == SourceType::WEBCAM) {
     std::cout << "[GazeTracker] source is webcam " << this->video_source
-      << ", w x h: " << this->video_capture->get(cv::CAP_PROP_FRAME_WIDTH)
-      << "x" << this->video_capture->get(cv::CAP_PROP_FRAME_HEIGHT)
-      << ", FPS: " << this->video_capture->get(cv::CAP_PROP_FPS)
       << std::endl;
   } else {
-    // TODO(shoeffner): Add more information for video files
-    std::cout << "[GazeTracker] source is video file " << this->video_source <<
-      std::endl;
+    std::cout << "[GazeTracker] source is video file " << this->video_source
+      << std::endl;
   }
 }
 
@@ -102,10 +105,16 @@ const void GazeTracker::print_info() const {
 }
 
 const void GazeTracker::show_debug_screen() const {
-  cv::Mat image;
-  *(this->video_capture) >> image;
-  cv::imshow("gaze debug screen", image);
-  cv::waitKey(1);
+  cv::Mat image = this->source_capture->get_empty_frame();
+  int key = -1;
+  while (true) {
+    image = this->source_image_queue->back_or_default(image);
+    cv::imshow("GazeTracker Debug", image);
+    key = cv::waitKey(1);
+    if (key != -1) {
+      break;
+    }
+  }
 }
 
 const void GazeTracker::start_trial(const std::string identifier) {

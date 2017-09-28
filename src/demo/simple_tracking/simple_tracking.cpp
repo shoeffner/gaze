@@ -58,6 +58,7 @@ namespace {
     cv::Mat storage = image.clone();
 
     cv::namedWindow("Simple Tracker");
+    cv::namedWindow("Debug Screen");
     tracker->start_trial("simple tracker");
     while (true) {
       storage.copyTo(image);
@@ -67,7 +68,7 @@ namespace {
                      cv::Scalar(0, 255, 0));
 
       cv::imshow("Simple Tracker", image);
-      tracker->show_debug_screen();
+      cv::imshow("Debug Screen", tracker->get_current_frame());
 
       if (cv::waitKey(1) == 27 /* ESC key */) {
         break;

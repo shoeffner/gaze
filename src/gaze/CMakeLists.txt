@@ -16,7 +16,8 @@ link_directories(
 
 # Library
 list(APPEND LIBRARY_SOURCE_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/gaze.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gaze_tracker.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/source_capture.cpp
 )
 
 add_library(${PROJECT_NAME} ${LIBRARY_SOURCE_FILES})

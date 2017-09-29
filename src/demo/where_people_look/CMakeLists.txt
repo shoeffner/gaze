@@ -1,4 +1,5 @@
 # Where People Look, Judd et al. 2009
+include(ExternalProject)
 
 message(STATUS "Configuring demo where_people_look.")
 

@@ -18,29 +18,5 @@ if(BUILD_EXAMPLES)
 endif(BUILD_EXAMPLES)
 
 
-# Build tags file if available
-find_program(CTAGS NAMES ctags)
-if(CTAGS)
-    set(CTAGS_FILE tags)
-    add_custom_target(${CTAGS_FILE}
-                       COMMAND ${CTAGS} -R -f ${CTAGS_FILE}
-                               ${CMAKE_SOURCE_DIR}/src
-                               ${CMAKE_SOURCE_DIR}/include
-                       BYPRODUCTS ${CTAGS_FILE}
-                       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/.git)
-    add_dependencies(${PROJECT_NAME} ${CTAGS_FILE})
-endif(CTAGS)
-
-
-# Create to-do list if `ack` is available
-find_program(ACK NAMES ack)
-if(ACK)
-    add_custom_target(todo
-                      COMMAND ${ACK} TODO
-                              cmake include src
-                              >
-                              ${CMAKE_SOURCE_DIR}/TODO
-                      BYPRODUCTS ${CMAKE_SOURCE_DIR}/TODO
-                      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-    add_dependencies(${PROJECT_NAME} todo)
-endif(ACK)
+include(CTagsTarget)
+include(TodoTarget)

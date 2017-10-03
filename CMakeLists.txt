@@ -20,4 +20,3 @@ endif(BUILD_EXAMPLES)
 
 include(DocsTarget)
 include(CTagsTarget)
-include(TodoTarget)

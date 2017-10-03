@@ -4,6 +4,7 @@ if(ACK)
     add_custom_target(todo
                       COMMAND ${ACK} TODO
                               cmake include src
+                              --ignore-file=is:TodoTarget.cmake
                               >
                               ${CMAKE_SOURCE_DIR}/TODO
                       BYPRODUCTS ${CMAKE_SOURCE_DIR}/TODO

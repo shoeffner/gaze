@@ -11,7 +11,7 @@
 #include "opencv2/highgui.hpp"
 
 #include "gaze/source_capture.h"
-#include "gaze/util/spmc_deque.h"
+#include "gaze/util/spsc_deque.h"
 
 
 namespace gaze {
@@ -72,7 +72,7 @@ const void GazeTracker::init(const std::string source,
     this->source_type = SourceType::VIDEO;
     this->source_capture = new SourceCapture(source);
   }
-  this->source_image_queue = new util::SPMCDeque<cv::Mat>();
+  this->source_image_queue = new util::SPSCDeque<cv::Mat>();
   this->source_capture_thread = new std::thread(
       std::ref(*(this->source_capture)),
       std::ref(this->source_image_queue));

@@ -12,7 +12,7 @@
 #include "opencv2/videoio.hpp"
 
 #include "gaze/source_capture.h"
-#include "gaze/util/spmc_deque.h"
+#include "gaze/util/spsc_deque.h"
 
 
 namespace gaze {
@@ -31,7 +31,7 @@ class GazeTracker {
   std::string current_trial_id;
   bool initialized;
   std::string result_dir;
-  util::SPMCDeque<cv::Mat>* source_image_queue;
+  util::SPSCDeque<cv::Mat>* source_image_queue;
   SourceCapture* source_capture;
   std::thread* source_capture_thread;
   SourceType source_type;

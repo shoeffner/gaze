@@ -9,7 +9,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
 
-#include "gaze/util/spmc_deque.h"
+#include "gaze/util/spsc_deque.h"
 
 
 namespace gaze {
@@ -38,7 +38,7 @@ class SourceCapture {
 
     const void init();
 
-    const void operator()(util::SPMCDeque<cv::Mat>* const share_deque) const;
+    const void operator()(util::SPSCDeque<cv::Mat>* const share_deque) const;
 };
 
 }  // namespace gaze

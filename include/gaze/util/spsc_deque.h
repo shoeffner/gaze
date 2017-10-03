@@ -1,7 +1,7 @@
 // Copyright 2017 Sebastian Höffner
 
-#ifndef INCLUDE_GAZE_UTIL_SPMC_DEQUE_H_
-#define INCLUDE_GAZE_UTIL_SPMC_DEQUE_H_
+#ifndef INCLUDE_GAZE_UTIL_SPSC_DEQUE_H_
+#define INCLUDE_GAZE_UTIL_SPSC_DEQUE_H_
 
 #include <deque>
 #include <mutex>  // NOLINT
@@ -12,7 +12,17 @@ namespace gaze {
 
 namespace util {
 
-template<typename T> class SPMCDeque {
+/**
+ * This implements a single producer single consumer thread-safe deque.
+ *
+ * There can be multiple "listeners" getting the front or back items,
+ * but as soon as one of them consumes them using SPSCDeque::pop_front() or
+ * SPSCDeque::pop_back(), those items are no longer available.
+ *
+ * Thread-safety is guaranteed using std::unique_lock for write and
+ * std::shared_lock for read accesses.
+ */
+template<typename T> class SPSCDeque {
   std::deque<T> _deque;
   std::shared_mutex _mutex;
 
@@ -82,4 +92,4 @@ template<typename T> class SPMCDeque {
 
 }  // namespace gaze
 
-#endif  // INCLUDE_GAZE_UTIL_SPMC_DEQUE_H_
+#endif  // INCLUDE_GAZE_UTIL_SPSC_DEQUE_H_

@@ -10,7 +10,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
 
-#include "gaze/util/spmc_deque.h"
+#include "gaze/util/spsc_deque.h"
 
 
 namespace gaze {
@@ -57,7 +57,7 @@ const void SourceCapture::init() {
 }
 
 const void SourceCapture::operator()(
-    util::SPMCDeque<cv::Mat>* const share_deque)
+    util::SPSCDeque<cv::Mat>* const share_deque)
   const {
   cv::Mat image;
   while (true) {

@@ -18,8 +18,8 @@
 namespace gaze {
 
 /**
- * \class GazeTracker gaze_tracker.h "gaze/gaze_tracker.h"
- * \brief This class wraps the gaze tracking process.
+ * @class GazeTracker gaze_tracker.h "gaze/gaze_tracker.h"
+ * @brief This class wraps the gaze tracking process.
  *
  * This is the GazeTracker, the heart of gaze. It allows
  * for easy initialization, tracking, and trial definitions.

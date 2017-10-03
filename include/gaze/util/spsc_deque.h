@@ -13,8 +13,8 @@ namespace gaze {
 namespace util {
 
 /**
- * \class SPSCDeque spsc_deque.h "gaze/util/spsc_deque.h"
- * \brief This implements a single producer single consumer thread-safe deque
+ * @class SPSCDeque spsc_deque.h "gaze/util/spsc_deque.h"
+ * @brief This implements a single producer single consumer thread-safe deque
  * ("double ended queue").
  *
  * There can be multiple "listeners" getting the front or back items,

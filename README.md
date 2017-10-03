@@ -64,7 +64,7 @@ video file as well: `./gaze_debug_viewer my_video.avi`.
 
 #### `where_people_look`
 
-This is a reimplementation of Judd et al. (2009)'s data acquisition experiment.
+This is a reimplementation of Judd et al. (2009)'s data acquisition experiment \cite judd2009.
 
 It needs to be *installed* using `make install` to put the images into the
 correct location. You can run it by simply typing `./where_people_look` from

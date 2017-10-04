@@ -15,6 +15,13 @@
 
 namespace gaze {
 
+const void SourceCapture::init() {
+  this->fps = this->video_capture->get(cv::CAP_PROP_FPS);
+  this->height = this->video_capture->get(cv::CAP_PROP_FRAME_HEIGHT);
+  this->width = this->video_capture->get(cv::CAP_PROP_FRAME_WIDTH);
+  this->empty_frame = cv::Mat::zeros(this->height, this->width, CV_8UC3);
+}
+
 SourceCapture::SourceCapture(int source) {
   this->video_capture = std::unique_ptr<cv::VideoCapture>(
       new cv::VideoCapture(source));
@@ -49,24 +56,17 @@ const int SourceCapture::get_width() const {
   return this->width;
 }
 
-const void SourceCapture::init() {
-  this->fps = this->video_capture->get(cv::CAP_PROP_FPS);
-  this->height = this->video_capture->get(cv::CAP_PROP_FRAME_HEIGHT);
-  this->width = this->video_capture->get(cv::CAP_PROP_FRAME_WIDTH);
-  this->empty_frame = cv::Mat::zeros(this->height, this->width, CV_8UC3);
-}
-
 const void SourceCapture::operator()(
     util::SPSCDeque<cv::Mat>* const share_deque)
   const {
   cv::Mat image;
   while (true) {
+    // TODO(shoeffner): Stop if stream has no more frames, or return black images?
     *(this->video_capture) >> image;
     share_deque->push_back(image);
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
 
-    // TODO(shoeffner): Add consumer for image deque
-    // then remove the consumption here!
+    // TODO(shoeffner): Add consumer for image deque then remove the consumption here!
     if (share_deque->size() > 10) {
       share_deque->pop_front();
     }

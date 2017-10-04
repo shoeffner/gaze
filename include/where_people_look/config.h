@@ -10,6 +10,10 @@
 
 namespace wpl {
 
+/**
+ * @class Config config.h "where_people_look/config.h"
+ * @brief Holds all configuration options for the experiment.
+ */
 class Config {
   std::string subject_id;
 
@@ -17,14 +21,29 @@ class Config {
   boost::filesystem::path stimuli_dir_path = boost::filesystem::initial_path();
 
  public:
+  /**
+   * Checks if the data fromt the wizard at program start is complete.
+   * This function can be used to set the completed flag for the assistant.
+   *
+   * @returns true if all information is provided.
+   */
   const bool assistant_data_complete() const;
 
+  /** @name Getters */
+  //@{
   const boost::filesystem::path get_result_dir_path() const;
 
   const boost::filesystem::path get_stimuli_dir_path() const;
 
   const std::string get_subject_id() const;
+  //@}
 
+  /** @name Setters
+   *
+   * Some setters are overloaded to provide easy usage with
+   * boost::filesystem::path and std::string.
+   */
+  //@{
   const void set_result_dir_path(const std::string path);
 
   const void set_result_dir_path(const boost::filesystem::path path);
@@ -34,6 +53,7 @@ class Config {
   const void set_stimuli_dir_path(const boost::filesystem::path path);
 
   const void set_subject_id(const std::string id);
+  //@}
 };
 
 }  // namespace wpl

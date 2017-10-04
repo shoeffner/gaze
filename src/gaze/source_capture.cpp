@@ -61,11 +61,13 @@ const void SourceCapture::operator()(
   const {
   cv::Mat image;
   while (true) {
+    // NOLINTNEXTLINE
     // TODO(shoeffner): Stop if stream has no more frames, or return black images?
     *(this->video_capture) >> image;
     share_deque->push_back(image);
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
 
+    // NOLINTNEXTLINE
     // TODO(shoeffner): Add consumer for image deque then remove the consumption here!
     if (share_deque->size() > 10) {
       share_deque->pop_front();

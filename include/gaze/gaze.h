@@ -1,4 +1,10 @@
 // Copyright 2017 Sebastian Höffner
+/**
+ * @namespace gaze
+ * @brief The gaze library provides gaze tracking capabilities.
+ *
+ * TODO(shoeffner): Describe the gaze namespace more.
+ */
 
 #ifndef INCLUDE_GAZE_GAZE_H_
 #define INCLUDE_GAZE_GAZE_H_

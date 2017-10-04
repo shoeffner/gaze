@@ -24,7 +24,6 @@ namespace gaze {
  * This is the GazeTracker, the heart of gaze. It allows
  * for easy initialization, tracking, and trial definitions.
  */
-// TODO(shoeffner): Check for initialization in all members functions.
 class GazeTracker {
   enum SourceType { WEBCAM, VIDEO };
 
@@ -79,14 +78,14 @@ class GazeTracker {
     const void calibrate();
 
     /**
-     * @returns the most recent frame from the capture source.
+     * @returns the most recent frame from the capture source. If not initialized, returns a black frame of size @f$720\times1280@f$.
      */
     const cv::Mat get_current_frame() const;
 
     /** @name Trial handling */
     //@{
     /**
-     * @returns the most recent calculated gaze point.
+     * @returns the most recent calculated gaze point. If not initialized, returns @f$(-1, -1)@f$.
      */
     const std::pair<int, int> get_current_gaze_point() const;
     //@}

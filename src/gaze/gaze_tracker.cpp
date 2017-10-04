@@ -7,6 +7,7 @@
 #include <string>
 #include <utility>
 
+#include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
 #include "opencv2/highgui.hpp"
 
@@ -42,15 +43,29 @@ GazeTracker::~GazeTracker() {
 }
 
 const void GazeTracker::calibrate() {
+  if (!this->initialized) {
+    std::cerr << "[GazeTracker] Not initialized (calibrate())." << std::endl;
+    return;
+  }
   std::cout << "[GT Stub] Calibrating." << std::endl;
 }
 
 const cv::Mat GazeTracker::get_current_frame() const {
+  if (!this->initialized) {
+    std::cerr << "[GazeTracker] Not initialized (get_current_frame())." <<
+      std::endl;
+    return cv::Mat::zeros(720, 1280, CV_8UC3);
+  }
   return this->source_image_queue->back_or_default(
                 this->source_capture->get_empty_frame());
 }
 
 const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
+  if (!this->initialized) {
+    std::cerr << "[GazeTracker] Not initialized (get_current_gaze_point())." <<
+      std::endl;
+    return std::pair<int, int>(-1, -1);
+  }
   // TODO(shoeffner): Remove dummy values once tracking is implemented.
   return std::pair<int, int>(120, 130);
 }
@@ -64,6 +79,9 @@ const void GazeTracker::init(const int source,
 const void GazeTracker::init(const std::string source,
                              const std::string subject_id,
                              const std::string result_dir) {
+  if (this->initialized) {
+    return;
+  }
   try {
     int cam_source = std::stoi(source);
     this->source_type = SourceType::WEBCAM;
@@ -83,21 +101,27 @@ const void GazeTracker::init(const std::string source,
 
 const void GazeTracker::print_capture_info() const {
   if (!this->initialized) {
-    std::cerr << "[GazeTracker] is not initialized." << std::endl;
+    std::cerr << "[GazeTracker] Not initialized (print_capture_info())." <<
+      std::endl;
     return;
   }
 
   // TODO(shoeffner): Add more information about video sources
   if (source_type == SourceType::WEBCAM) {
-    std::cout << "[GazeTracker] source is webcam " << this->video_source
+    std::cout << "[GazeTracker] Source is webcam " << this->video_source
       << std::endl;
   } else {
-    std::cout << "[GazeTracker] source is video file " << this->video_source
+    std::cout << "[GazeTracker] Source is video file " << this->video_source
       << std::endl;
   }
 }
 
 const void GazeTracker::print_info() const {
+  if (!this->initialized) {
+    std::cerr << "[GazeTracker] Not initialized (print_info())." <<
+      std::endl;
+    return;
+  }
   this->print_capture_info();
   std::cout << "[GazeTracker] Subject ID: " << this->subject_id << std::endl;
   std::cout << "[GazeTracker] Result directory: " << this->result_dir
@@ -105,6 +129,11 @@ const void GazeTracker::print_info() const {
 }
 
 const void GazeTracker::show_debug_screen() const {
+  if (!this->initialized) {
+    std::cerr << "[GazeTracker] Not initialized (show_debug_screen())." <<
+      std::endl;
+    return;
+  }
   cv::Mat image = this->source_capture->get_empty_frame();
   int key = -1;
   while (true) {
@@ -118,13 +147,23 @@ const void GazeTracker::show_debug_screen() const {
 }
 
 const void GazeTracker::start_trial(const std::string identifier) {
+  if (!this->initialized) {
+    std::cerr << "[GazeTracker] Not initialized (start_trial())." <<
+      std::endl;
+    return;
+  }
   this->current_trial_id = identifier;
-  std::cout << "[GT Stub] Starting trial " << this->current_trial_id
+  std::cout << "[GazeTracker] [Stub] Starting trial " << this->current_trial_id
     << std::endl;
 }
 
 const void GazeTracker::stop_trial() {
-  std::cout << "[GT Stub] Stopping trial " << this->current_trial_id
+  if (!this->initialized) {
+    std::cerr << "[GazeTracker] Not initialized (stop_trial())." <<
+      std::endl;
+    return;
+  }
+  std::cout << "[GazeTracker] [Stub] Stopping trial " << this->current_trial_id
     << std::endl;
   this->current_trial_id = "";
 }

@@ -139,7 +139,10 @@ class Experiment {
     //@}
 
     /**
-     * Calibrates the GazeTracker.
+     * Calibrates the GazeTracker of the specified experiment.
+     *
+     * @param experiment Must be a gpointer to an Experiment.
+     * @returns false
      */
     static gboolean experiment_calibrate(gpointer experiment);
 

@@ -3,6 +3,7 @@
 #ifndef INCLUDE_GAZE_SOURCE_CAPTURE_H_
 #define INCLUDE_GAZE_SOURCE_CAPTURE_H_
 
+#include <atomic>
 #include <memory>
 #include <string>
 
@@ -34,6 +35,7 @@ class SourceCapture {
   cv::Mat empty_frame;
   int fps;
   int height;
+  std::atomic<bool> running;
   std::unique_ptr<cv::VideoCapture> video_capture;
   int width;
 
@@ -105,15 +107,26 @@ class SourceCapture {
     const int get_width() const;
     //@}
 
+    /** @name Threading */
+    //@{
     /**
      * Appends each frame of the internal cv::VideoCapture to the provided
-     * deque. This is done in an endless loop.
+     * deque. This is done in an endless loop. Use stop() before calling
+     * std::thread::join on the thread.
      *
-     * @note You should use this function with a std::thread.
+     * @note You should use this function with a std::thread. Don't forget to
+     *       stop() the source capture.
      *
      * @param share_deque The deque to share the captured frames.
      */
-    const void operator()(util::SPSCDeque<cv::Mat>* const share_deque) const;
+    const void operator()(util::SPSCDeque<cv::Mat>* const share_deque);
+
+    /**
+     * Signals the thread that it should stop reading images. Allows the thread
+     * to be properly joined.
+     */
+    const void stop();
+    //@}
 };
 
 }  // namespace gaze

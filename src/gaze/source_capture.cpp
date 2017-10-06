@@ -16,6 +16,7 @@
 namespace gaze {
 
 const void SourceCapture::init() {
+  this->running = false;
   this->fps = this->video_capture->get(cv::CAP_PROP_FPS);
   this->height = this->video_capture->get(cv::CAP_PROP_FRAME_HEIGHT);
   this->width = this->video_capture->get(cv::CAP_PROP_FRAME_WIDTH);
@@ -57,10 +58,10 @@ const int SourceCapture::get_width() const {
 }
 
 const void SourceCapture::operator()(
-    util::SPSCDeque<cv::Mat>* const share_deque)
-  const {
+    util::SPSCDeque<cv::Mat>* const share_deque) {
+  this->running = true;
   cv::Mat image;
-  while (true) {
+  while (this->running) {
     // NOLINTNEXTLINE
     // TODO(shoeffner): Stop if stream has no more frames, or return black images?
     *(this->video_capture) >> image;
@@ -73,6 +74,10 @@ const void SourceCapture::operator()(
       share_deque->pop_front();
     }
   }
+}
+
+const void SourceCapture::stop() {
+  this->running = false;
 }
 
 }  // namespace gaze

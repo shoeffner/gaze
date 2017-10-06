@@ -49,7 +49,7 @@ parse_program_options(int argc, const char** argv) {
 
 void register_exit_handlers() {
   for (int signal : {SIGINT, SIGTERM}) {
-    std::signal(signal, [](int) -> void { exit(0); });
+    std::signal(signal, [](int) -> void { std::exit(0); });
   }
 }
 
@@ -67,7 +67,5 @@ int main(int argc, const char** argv) {
       new gaze::GazeTracker(input_source));
 
   gaze_tracker->print_capture_info();
-  while (true) {
-    gaze_tracker->show_debug_screen();
-  }
+  gaze_tracker->show_debug_screen();
 }

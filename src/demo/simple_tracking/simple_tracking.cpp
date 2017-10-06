@@ -70,7 +70,7 @@ namespace {
       cv::imshow("Simple Tracker", image);
       cv::imshow("Debug Screen", tracker->get_current_frame());
 
-      if (cv::waitKey(1) == 27 /* ESC key */) {
+      if (cv::waitKey(1) != -1) {
         break;
       }
     }

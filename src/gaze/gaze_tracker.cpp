@@ -35,6 +35,7 @@ GazeTracker::GazeTracker(const std::string source,
 
 GazeTracker::~GazeTracker() {
   if (this->initialized) {
+    this->source_capture->stop();
     this->source_capture_thread->join();
     delete this->source_capture_thread;
     delete this->source_capture;

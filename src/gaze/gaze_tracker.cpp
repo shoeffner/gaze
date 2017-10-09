@@ -1,6 +1,6 @@
 // Copyright 2017 Sebastian Höffner
 
-#include "gaze/gaze.h"
+#include "gaze/gaze_tracker.h"
 
 #include <iostream>
 #include <memory>
@@ -11,6 +11,7 @@
 #include "opencv2/videoio.hpp"
 #include "opencv2/highgui.hpp"
 
+#include "gaze/util/data.h"
 #include "gaze/source_capture.h"
 #include "gaze/util/spsc_deque.h"
 
@@ -57,8 +58,8 @@ const cv::Mat GazeTracker::get_current_frame() const {
       std::endl;
     return cv::Mat::zeros(720, 1280, CV_8UC3);
   }
-  return this->source_image_queue->back_or_default(
-                this->source_capture->get_empty_frame());
+  return this->source_image_queue->
+    back_or_default(util::DATA_PLACEHOLDER).raw_capture_image;
 }
 
 const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
@@ -91,13 +92,29 @@ const void GazeTracker::init(const std::string source,
     this->source_type = SourceType::VIDEO;
     this->source_capture = new SourceCapture(source);
   }
-  this->source_image_queue = new util::SPSCDeque<cv::Mat>();
-  this->source_capture_thread = new std::thread(
-      std::ref(*(this->source_capture)),
-      std::ref(this->source_image_queue));
+  this->init_pipeline();
   this->result_dir = result_dir;
   this->subject_id = subject_id;
   this->initialized = true;
+}
+
+const void GazeTracker::init_pipeline() {
+  // TODO(shoeffner): Create cond. var for all threads to start ->
+  //                  inheritance from "PipelineStep" or something to enforce
+  //                  this?
+  // TODO(shoeffner): Create actual pipeline object!
+  this->source_image_queue = new util::SPSCDeque<util::Data>();
+  this->source_capture_thread = new std::thread(
+      std::ref(*(this->source_capture)),
+      std::ref(this->source_image_queue));
+  // TODO(shoeffner): Fill Placeholder by each PipelineStep
+  // TODO(shoeffner): How generic can the data object become?
+  //                  Ideally no need to change it on adding additional
+  //                  pipeline steps!
+  util::DATA_PLACEHOLDER = util::Data(
+      cv::Mat::zeros(this->source_capture->get_height(),
+                     this->source_capture->get_width(),
+                     CV_8UC3));
 }
 
 const void GazeTracker::print_capture_info() const {
@@ -135,10 +152,11 @@ const void GazeTracker::show_debug_screen() const {
       std::endl;
     return;
   }
-  cv::Mat image = this->source_capture->get_empty_frame();
+  cv::Mat image;
   int key = -1;
   while (true) {
-    image = this->source_image_queue->back_or_default(image);
+    image = this->source_image_queue->
+      back_or_default(util::DATA_PLACEHOLDER).raw_capture_image;
     cv::imshow("GazeTracker Debug", image);
     key = cv::waitKey(1);
     if (key != -1) {

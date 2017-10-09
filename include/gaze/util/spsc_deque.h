@@ -67,6 +67,8 @@ template<typename T> class SPSCDeque {
     //@{
     /**
      * @returns the first element of the deque.
+     *
+     * @note Calling thus function on an empty container causes undefined behavior.
      */
     const T front() {
       std::shared_lock<std::shared_mutex> lock(this->_mutex);
@@ -75,6 +77,8 @@ template<typename T> class SPSCDeque {
 
     /**
      * @returns the last element of the deque.
+     *
+     * @note Calling thus function on an empty container causes undefined behavior.
      */
     const T back() {
       std::shared_lock<std::shared_mutex> lock(this->_mutex);

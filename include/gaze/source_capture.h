@@ -10,6 +10,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
 
+#include "gaze/util/data.h"
 #include "gaze/util/spsc_deque.h"
 
 
@@ -119,7 +120,7 @@ class SourceCapture {
      *
      * @param share_deque The deque to share the captured frames.
      */
-    const void operator()(util::SPSCDeque<cv::Mat>* const share_deque);
+    const void operator()(util::SPSCDeque<util::Data>* const share_deque);
 
     /**
      * Signals the thread that it should stop reading images. Allows the thread

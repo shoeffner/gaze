@@ -10,6 +10,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
 
+#include "gaze/util/data.h"
 #include "gaze/util/spsc_deque.h"
 
 
@@ -58,14 +59,14 @@ const int SourceCapture::get_width() const {
 }
 
 const void SourceCapture::operator()(
-    util::SPSCDeque<cv::Mat>* const share_deque) {
+    util::SPSCDeque<util::Data>* const share_deque) {
   this->running = true;
   cv::Mat image;
   while (this->running) {
     // NOLINTNEXTLINE
     // TODO(shoeffner): Stop if stream has no more frames, or return black images?
     *(this->video_capture) >> image;
-    share_deque->push_back(image);
+    share_deque->push_back(util::Data(image));
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
 
     // NOLINTNEXTLINE

@@ -12,6 +12,7 @@
 #include "opencv2/videoio.hpp"
 
 #include "gaze/source_capture.h"
+#include "gaze/util/data.h"
 #include "gaze/util/spsc_deque.h"
 
 
@@ -30,12 +31,17 @@ class GazeTracker {
   std::string current_trial_id;
   bool initialized;
   std::string result_dir;
-  util::SPSCDeque<cv::Mat>* source_image_queue;
+  util::SPSCDeque<util::Data>* source_image_queue;
   SourceCapture* source_capture;
   std::thread* source_capture_thread;
   SourceType source_type;
   std::string subject_id;
   std::string video_source;
+
+  /**
+   * Initializes the threads and queues for the processing pipeline.
+   */
+  const void init_pipeline();
 
  public:
     /**

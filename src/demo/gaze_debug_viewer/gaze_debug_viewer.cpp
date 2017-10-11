@@ -1,6 +1,7 @@
 // Copyright 2017 Sebastian Höffner
 
 #include <csignal>
+#include <cstdlib>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -66,6 +67,6 @@ int main(int argc, const char** argv) {
   std::unique_ptr<gaze::GazeTracker> gaze_tracker(
       new gaze::GazeTracker(input_source));
 
-  gaze_tracker->print_capture_info();
-  gaze_tracker->show_debug_screen();
+  // gaze_tracker->print_capture_info();
+  // gaze_tracker->show_debug_screen();
 }

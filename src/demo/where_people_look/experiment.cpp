@@ -19,7 +19,7 @@ const void Experiment::init_gaze_tracker() {
   this->gaze_tracker->init(0,
       this->config->get_subject_id(),
       this->config->get_result_dir_path().string());
-  this->gaze_tracker->print_info();
+  // this->gaze_tracker->print_info();
 }
 
 const void Experiment::read_stimuli_list() {

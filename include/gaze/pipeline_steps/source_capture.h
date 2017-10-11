@@ -1,7 +1,7 @@
 // Copyright 2017 Sebastian Höffner
 
-#ifndef INCLUDE_GAZE_SOURCE_CAPTURE_H_
-#define INCLUDE_GAZE_SOURCE_CAPTURE_H_
+#ifndef INCLUDE_GAZE_PIPELINE_STEPS_SOURCE_CAPTURE_H_
+#define INCLUDE_GAZE_PIPELINE_STEPS_SOURCE_CAPTURE_H_
 
 #include <atomic>
 #include <memory>
@@ -10,6 +10,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
 
+#include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
 #include "gaze/util/spsc_deque.h"
 
@@ -32,11 +33,10 @@ namespace gaze {
  * util::SPSCDeque::back should be used, for the oldest unconsumed
  * util::SPSCDeque::front.
  */
-class SourceCapture {
+class SourceCapture : public PipelineStep {
   cv::Mat empty_frame;
   int fps;
   int height;
-  std::atomic<bool> running;
   std::unique_ptr<cv::VideoCapture> video_capture;
   int width;
 
@@ -108,28 +108,25 @@ class SourceCapture {
     const int get_width() const;
     //@}
 
-    /** @name Threading */
-    //@{
+ protected:
     /**
-     * Appends each frame of the internal cv::VideoCapture to the provided
-     * deque. This is done in an endless loop. Use stop() before calling
-     * std::thread::join on the thread.
+     * Ignores the in_deque. Just creates a new empty Data object.
      *
-     * @note You should use this function with a std::thread. Don't forget to
-     *       stop() the source capture.
-     *
-     * @param share_deque The deque to share the captured frames.
+     * @param in_deque the input deque. Will be ignored.
+     * @returns A new empty util::Data object.
      */
-    const void operator()(util::SPSCDeque<util::Data>* const share_deque);
+    virtual util::Data get_data(
+        util::SPSCDeque<util::Data>* const in_deque) const;
 
+ public:
     /**
-     * Signals the thread that it should stop reading images. Allows the thread
-     * to be properly joined.
+     * Reads a frame from the video source and stores it as the data's
+     * util::Data::souce_image.
+     * @param data the data object
      */
-    const void stop();
-    //@}
+    virtual void process(util::Data* data);
 };
 
 }  // namespace gaze
 
-#endif  // INCLUDE_GAZE_SOURCE_CAPTURE_H_
+#endif  // INCLUDE_GAZE_PIPELINE_STEPS_SOURCE_CAPTURE_H_

@@ -3,17 +3,15 @@
 #ifndef INCLUDE_GAZE_GAZE_TRACKER_H_
 #define INCLUDE_GAZE_GAZE_TRACKER_H_
 
-#include <memory>
 #include <string>
-#include <thread>  // NOLINT
 #include <utility>
+#include <vector>
 
 #include "opencv2/core.hpp"
-#include "opencv2/videoio.hpp"
 
-#include "gaze/source_capture.h"
-#include "gaze/util/data.h"
-#include "gaze/util/spsc_deque.h"
+#include "gaze/pipeline.h"
+#include "gaze/pipeline_step.h"
+#include "gaze/pipeline_steps/source_capture.h"
 
 
 namespace gaze {
@@ -26,20 +24,17 @@ namespace gaze {
  * for easy initialization, tracking, and trial definitions.
  */
 class GazeTracker {
-  enum SourceType { WEBCAM, VIDEO };
-
   std::string current_trial_id;
   bool initialized;
+  Pipeline* pipeline;
+  std::vector<PipelineStep*> pipeline_steps;
   std::string result_dir;
-  util::SPSCDeque<util::Data>* source_image_queue;
-  SourceCapture* source_capture;
-  std::thread* source_capture_thread;
-  SourceType source_type;
   std::string subject_id;
   std::string video_source;
 
   /**
-   * Initializes the threads and queues for the processing pipeline.
+   * Initializes the threads and queues for the processing pipeline and the
+   * pipeline itself.
    */
   const void init_pipeline();
 
@@ -131,24 +126,6 @@ class GazeTracker {
                     const std::string subject_id,
                     const std::string result_dir = "./");
     //@}
-
-    /**
-     * Prints information about the GazeTracker's capture source to std::cout.
-     */
-    const void print_capture_info() const;
-
-    /**
-     * Calls GazeTracker::print_capture_info() and prints information
-     * about the subject and result directory.
-     */
-    const void print_info() const;
-
-    /**
-     * Opens a cv::namedWindow window named `GazeTracker Debug` which
-     * shows the current captured frame. If no frame is available,
-     * an empty (black) screen is shown.
-     */
-    const void show_debug_screen() const;
 
     /** @name Trial handling */
     //@{

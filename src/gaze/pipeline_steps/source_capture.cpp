@@ -14,6 +14,8 @@
 
 namespace gaze {
 
+namespace pipeline {
+
 const void SourceCapture::init() {
   this->fps = this->video_capture->get(cv::CAP_PROP_FPS);
   this->height = this->video_capture->get(cv::CAP_PROP_FRAME_HEIGHT);
@@ -65,5 +67,7 @@ util::Data SourceCapture::get_data(
 void SourceCapture::process(util::Data* data) {
   *(this->video_capture) >> data->source_image;
 }
+
+}  // namespace pipeline
 
 }  // namespace gaze

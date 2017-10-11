@@ -17,6 +17,8 @@
 
 namespace gaze {
 
+namespace pipeline {
+
 /**
  * @class SourceCapture source_capture.h "gaze/source_capture.h"
  * @brief Puts each frame from a source into a util::SPSCDeque for further
@@ -126,6 +128,8 @@ class SourceCapture : public PipelineStep {
      */
     virtual void process(util::Data* data);
 };
+
+}  // namespace pipeline
 
 }  // namespace gaze
 

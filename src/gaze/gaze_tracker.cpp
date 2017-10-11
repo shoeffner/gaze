@@ -82,9 +82,9 @@ const void GazeTracker::init(const std::string source,
   }
   try {
     int cam_source = std::stoi(source);
-    this->pipeline_steps.push_back(new SourceCapture(cam_source));
+    this->pipeline_steps.push_back(new pipeline::SourceCapture(cam_source));
   } catch (const std::invalid_argument&) {
-    this->pipeline_steps.push_back(new SourceCapture(source));
+    this->pipeline_steps.push_back(new pipeline::SourceCapture(source));
   }
   this->init_pipeline();
   this->result_dir = result_dir;

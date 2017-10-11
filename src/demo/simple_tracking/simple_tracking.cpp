@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <functional>
+// #include <list>
 #include <memory>
 #include <utility>
 
@@ -50,13 +51,12 @@ namespace {
                        const int height = 400) {
     std::unique_ptr<gaze::GazeTracker> tracker =
       std::unique_ptr<gaze::GazeTracker>(new gaze::GazeTracker(0,
-            "st_subject"));
+            "st_subject", "./", true));
 
     cv::Mat image = drawing(height, width);
     cv::Mat storage = image.clone();
 
     cv::namedWindow("Simple Tracker");
-    cv::namedWindow("Debug Screen");
     tracker->start_trial("simple tracker");
     while (true) {
       storage.copyTo(image);
@@ -66,9 +66,8 @@ namespace {
                      cv::Scalar(0, 255, 0));
 
       cv::imshow("Simple Tracker", image);
-      cv::imshow("Debug Screen", tracker->get_current_frame());
 
-      if (cv::waitKey(1) != -1) {
+      if (cv::waitKey(15) != -1) {
         break;
       }
     }

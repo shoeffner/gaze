@@ -15,22 +15,25 @@
 
 namespace gaze {
 
-GazeTracker::GazeTracker() {
+GazeTracker::GazeTracker(const bool debug) {
   this->initialized = false;
+  this->debug = debug;
 }
 
 GazeTracker::GazeTracker(const int source,
                          const std::string subject_id,
-                         const std::string result_dir) {
+                         const std::string result_dir,
+                         const bool debug) {
   this->initialized = false;
-  this->init(source, subject_id, result_dir);
+  this->init(source, subject_id, result_dir, debug);
 }
 
 GazeTracker::GazeTracker(const std::string source,
                          const std::string subject_id,
-                         const std::string result_dir) {
+                         const std::string result_dir,
+                         const bool debug) {
   this->initialized = false;
-  this->init(source, subject_id, result_dir);
+  this->init(source, subject_id, result_dir, debug);
 }
 
 GazeTracker::~GazeTracker() {
@@ -72,16 +75,19 @@ const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
 
 const void GazeTracker::init(const int source,
                              const std::string subject_id,
-                             const std::string result_dir) {
-  this->init(std::to_string(source), subject_id, result_dir);
+                             const std::string result_dir,
+                             const bool debug) {
+  this->init(std::to_string(source), subject_id, result_dir, debug);
 }
 
 const void GazeTracker::init(const std::string source,
                              const std::string subject_id,
-                             const std::string result_dir) {
+                             const std::string result_dir,
+                             const bool debug) {
   if (this->initialized) {
     return;
   }
+  this->debug = debug;
   try {
     int cam_source = std::stoi(source);
     this->pipeline_steps.push_back(new pipeline::SourceCapture(cam_source));
@@ -97,6 +103,10 @@ const void GazeTracker::init(const std::string source,
 const void GazeTracker::init_pipeline() {
   if (this->initialized) {
     return;
+  }
+  if (this->debug) {
+    // Show source image if debug mode is enabled.
+    this->pipeline_steps.push_back(new pipeline::DebugView());
   }
   this->pipeline = new Pipeline(this->pipeline_steps, true);
 }

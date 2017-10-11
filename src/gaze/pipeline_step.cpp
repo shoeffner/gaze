@@ -41,14 +41,14 @@ const void PipelineStep::operator()(
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }
   while (this->running) {
-    // TODO(shoeffner): add e.g. timing instructions etc.
-    util::Data data = this->get_data(in_deque);
+     // TODO(shoeffner): add e.g. timing instructions etc.
+     util::Data data = this->get_data(in_deque);
 
-    process(&data);
+     process(&data);
 
-    // TODO(shoeffner): add e.g. timing results to data object.
+     // TODO(shoeffner): add e.g. timing results to data object.
 
-    this->store_data(out_deque, data);
+     this->store_data(out_deque, data);
   }
 }
 

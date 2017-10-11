@@ -4,6 +4,7 @@
 
 #include <thread>  // NOLINT
 #include <vector>
+#include <iostream>
 
 #include "gaze/pipeline_step.h"
 #include "gaze/pipeline_steps/into_the_void_step.h"
@@ -47,9 +48,6 @@ Pipeline::~Pipeline() {
   for (std::thread* thread : this->threads) {
     thread->join();
     delete thread;
-  }
-  for (util::SPSCDeque<util::Data>* deque : this->deques) {
-    delete deque;
   }
 }
 

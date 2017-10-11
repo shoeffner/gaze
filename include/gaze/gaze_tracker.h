@@ -25,6 +25,7 @@ namespace gaze {
  */
 class GazeTracker {
   std::string current_trial_id;
+  bool debug;
   bool initialized;
   Pipeline* pipeline;
   std::vector<PipelineStep*> pipeline_steps;
@@ -42,8 +43,11 @@ class GazeTracker {
     /**
      * Constructs a GazeTracker instance. If you use this method, you must
      * call one of the initialization functions afterwards.
+     *
+     * @param debug Starts the gaze_tracker in debug mode, bringing up
+     *              additional debuggin screens.
      */
-    GazeTracker();
+    explicit GazeTracker(const bool debug = false);
 
     /**
      * Constructs and initializes a GazeTracker instance for a video source.
@@ -52,10 +56,13 @@ class GazeTracker {
      * @param source The video file path.
      * @param subject_id The subject identifier.
      * @param result_dir The directory to store the results.
+     * @param debug Starts the gaze_tracker in debug mode, bringing up
+     *              additional debuggin screens.
      */
     GazeTracker(const int source,
                 const std::string subject_id = "default_subject",
-                const std::string result_dir = "./");
+                const std::string result_dir = "./",
+                const bool debug = false);
 
     /**
      * Constructs and initializes a GazeTracker instance for a video source.
@@ -64,10 +71,13 @@ class GazeTracker {
      * @param source The video file path.
      * @param subject_id The subject identifier.
      * @param result_dir The directory to store the results.
+     * @param debug Starts the gaze_tracker in debug mode, bringing up
+     *              additional debuggin screens.
      */
     GazeTracker(const std::string source,
                 const std::string subject_id = "default_subject",
-                const std::string result_dir = "./");
+                const std::string result_dir = "./",
+                const bool debug = false);
 
     ~GazeTracker();
 
@@ -109,10 +119,13 @@ class GazeTracker {
      * @param subject_id The subject ID, used to store the data in the correct
      *                   file.
      * @param result_dir The directory where the results should be stored.
+     * @param debug Starts the gaze_tracker in debug mode, bringing up
+     *              additional debuggin screens.
      */
     const void init(const int source,
                     const std::string subject_id,
-                    const std::string result_dir = "./");
+                    const std::string result_dir = "./",
+                    const bool debug = false);
 
     /**
      * Initializes the GazeTracker to use a video.
@@ -123,10 +136,13 @@ class GazeTracker {
      * @param subject_id The subject ID, used to store the data in the correct
      *                   file.
      * @param result_dir The directory where the results should be stored.
+     * @param debug Starts the gaze_tracker in debug mode, bringing up
+     *              additional debuggin screens.
      */
     const void init(const std::string source,
                     const std::string subject_id,
-                    const std::string result_dir = "./");
+                    const std::string result_dir = "./",
+                    const bool debug = false);
     //@}
 
     /** @name Trial handling */

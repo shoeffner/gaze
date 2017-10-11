@@ -109,7 +109,9 @@ class SourceCapture : public PipelineStep {
     /**
      * Reads a frame from the video source and stores it as the data's
      * util::Data::souce_image.
-     * @param data the data object
+     *
+     * @param data The data object to be updated.
+     * @returns via `data` the modified data object.
      */
     virtual void process(util::Data* data);
 };

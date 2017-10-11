@@ -22,6 +22,22 @@ struct Data {
    * The unaltered image from the source stream.
    */
   cv::Mat source_image;
+
+  /** @name Head pose estimates
+   *
+   * These head pose parameters are estimated according to
+   * Vatahska et al. (2007) @cite vatahska2007.
+   */
+  //@{
+  // The head's yaw angle.
+  double head_yaw;
+  // The head's pitch angle.
+  double head_pitch;
+  // The head's roll angle.
+  double head_roll;
+  //@}
+
+
 };
 
 }  // namespace util

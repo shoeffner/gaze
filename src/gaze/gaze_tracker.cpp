@@ -108,6 +108,7 @@ const void GazeTracker::init_pipeline() {
     // Show source image if debug mode is enabled.
     this->pipeline_steps.push_back(new pipeline::DebugView());
   }
+  this->pipeline_steps.push_back(new pipeline::HeadPoseEstimation());
   this->pipeline = new Pipeline(this->pipeline_steps, true);
 }
 

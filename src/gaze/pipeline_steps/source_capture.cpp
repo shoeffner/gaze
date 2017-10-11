@@ -2,8 +2,10 @@
 
 #include "gaze/pipeline_steps/source_capture.h"
 
+#include <chrono>
 #include <memory>
 #include <string>
+#include <thread>  // NOLINT
 
 #include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
@@ -65,7 +67,9 @@ util::Data SourceCapture::get_data(
 
 
 void SourceCapture::process(util::Data* data) {
-  *(this->video_capture) >> data->source_image;
+  while (!this->video_capture->read(data->source_image)) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(15));
+  }
 }
 
 }  // namespace pipeline

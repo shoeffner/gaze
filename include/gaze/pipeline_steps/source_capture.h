@@ -3,7 +3,6 @@
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_SOURCE_CAPTURE_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_SOURCE_CAPTURE_H_
 
-#include <atomic>
 #include <memory>
 #include <string>
 
@@ -20,20 +19,11 @@ namespace gaze {
 namespace pipeline {
 
 /**
- * @class SourceCapture source_capture.h "gaze/source_capture.h"
+ * @class SourceCapture source_capture.h "gaze/pipeline_steps/source_capture.h"
  * @brief Puts each frame from a source into a util::SPSCDeque for further
  *        processing.
  *
- * An instance of this class should be used inside a std::thread, e.g. like
- * this:
- *
- * @code{.cpp}
- * std::thread(std::ref(*source_capture), std::ref(deque));
- * @endcode
- *
- * The deque can then be used for further processing. To get the latest frame,
- * util::SPSCDeque::back should be used, for the oldest unconsumed
- * util::SPSCDeque::front.
+ * Should be used at the beginning of a Pipeline.
  */
 class SourceCapture : public PipelineStep {
   cv::Mat empty_frame;
@@ -48,12 +38,7 @@ class SourceCapture : public PipelineStep {
   const void init();
 
  public:
-    /** @name Creating a source capture
-     *
-     * To read from a source capture, use the operator()().
-     * You can use the deque to either get the latest (util::SPSCDeque::back)
-     * or the oldest (util::SPSCDeque::front) frame until they are consumed.
-     */
+    /** @name Creating a source capture */
     //@{
     /**
      * Creates a cv::VideoCapture with a webcam source.

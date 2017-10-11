@@ -18,21 +18,21 @@ Pipeline::Pipeline(std::vector<PipelineStep*> steps, const bool start) {
   // Always make sure to include the cleanup step.
   this->steps.push_back(new pipeline::IntoTheVoidStep());
 
-  util::SPSCDeque<util::Data>* in_deque = new util::SPSCDeque<util::Data>();
-  deques.push_back(in_deque);
-
-  util::SPSCDeque<util::Data>* out_deque;
+  util::SPSCDeque<util::Data>* deque = new util::SPSCDeque<util::Data>();
+  deques.push_back(deque);
   for (PipelineStep* step : this->steps) {
-    out_deque = new util::SPSCDeque<util::Data>();
-    this->deques.push_back(out_deque);
+    deque = new util::SPSCDeque<util::Data>();
+    this->deques.push_back(deque);
+  }
 
+  int i = 0;
+  for (PipelineStep* step : this->steps) {
     std::thread* thread = new std::thread(
         std::ref(*step),
-        std::ref(in_deque),
-        std::ref(out_deque));
+        std::ref(this->deques[i]),
+        std::ref(this->deques[i+1]));
     this->threads.push_back(thread);
-
-    in_deque = out_deque;
+    ++i;
   }
 
   if (start) {

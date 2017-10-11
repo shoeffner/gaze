@@ -21,22 +21,22 @@ const void PipelineStep::stop() {
 
 util::Data PipelineStep::get_data(
     util::SPSCDeque<util::Data>* const in_deque) const {
-    while (in_deque->empty()) {
-      std::this_thread::sleep_for(std::chrono::milliseconds(15));
-    }
-    return in_deque->pop_front();
+  while (in_deque->empty()) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(15));
+  }
+  return in_deque->pop_front();
 }
 
 const void PipelineStep::store_data(
     util::SPSCDeque<util::Data>* const out_deque,
     const util::Data data) const {
-    out_deque->push_back(data);
+  out_deque->push_back(data);
 }
 
 const void PipelineStep::operator()(
     util::SPSCDeque<util::Data>* const in_deque,
     util::SPSCDeque<util::Data>* const out_deque) {
-  // Wait for all threads to start
+  // Wait for the starting signal
   while (!this->running) {
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
   }

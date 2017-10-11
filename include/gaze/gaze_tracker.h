@@ -79,14 +79,16 @@ class GazeTracker {
     const void calibrate();
 
     /**
-     * @returns the most recent frame from the capture source. If not initialized, returns a black frame of size @f$720\times1280@f$.
+     * @returns the most recent frame from the capture source. If not
+     *          initialized, returns a black frame of size @f$720\times1280@f$.
      */
     const cv::Mat get_current_frame() const;
 
     /** @name Trial handling */
     //@{
     /**
-     * @returns the most recent calculated gaze point. If not initialized, returns @f$(-1, -1)@f$.
+     * @returns the most recent calculated gaze point. If not initialized,
+     *          returns @f$(-1, -1)@f$.
      */
     const std::pair<int, int> get_current_gaze_point() const;
     //@}

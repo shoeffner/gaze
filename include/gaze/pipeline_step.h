@@ -30,7 +30,7 @@ namespace gaze {
  * or store it.
  */
 class PipelineStep {
-    std::atomic<bool> running;
+    std::atomic<bool> running = std::atomic<bool>(false);
 
  protected:
     /** @name Data flow

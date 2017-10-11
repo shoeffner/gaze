@@ -10,7 +10,7 @@
 
 #include "gaze/pipeline.h"
 #include "gaze/pipeline_step.h"
-#include "gaze/pipeline_steps/source_capture.h"
+#include "gaze/pipeline_steps.h"
 
 
 namespace gaze {
@@ -22,12 +22,14 @@ GazeTracker::GazeTracker() {
 GazeTracker::GazeTracker(const int source,
                          const std::string subject_id,
                          const std::string result_dir) {
+  this->initialized = false;
   this->init(source, subject_id, result_dir);
 }
 
 GazeTracker::GazeTracker(const std::string source,
                          const std::string subject_id,
                          const std::string result_dir) {
+  this->initialized = false;
   this->init(source, subject_id, result_dir);
 }
 
@@ -86,13 +88,16 @@ const void GazeTracker::init(const std::string source,
   } catch (const std::invalid_argument&) {
     this->pipeline_steps.push_back(new pipeline::SourceCapture(source));
   }
-  this->init_pipeline();
   this->result_dir = result_dir;
   this->subject_id = subject_id;
+  this->init_pipeline();
   this->initialized = true;
 }
 
 const void GazeTracker::init_pipeline() {
+  if (this->initialized) {
+    return;
+  }
   this->pipeline = new Pipeline(this->pipeline_steps, true);
 }
 

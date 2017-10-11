@@ -2,8 +2,6 @@
 
 #include <cmath>
 #include <functional>
-#include <iostream>
-#include <list>
 #include <memory>
 #include <utility>
 

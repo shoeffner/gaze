@@ -3,12 +3,12 @@
 #ifndef INCLUDE_GAZE_PIPELINE_H_
 #define INCLUDE_GAZE_PIPELINE_H_
 
+#include <atomic>
 #include <thread>  // NOLINT
 #include <vector>
 
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
-#include "gaze/util/spsc_deque.h"
 
 
 namespace gaze {
@@ -21,25 +21,22 @@ namespace gaze {
  * tracking results.
  */
 class Pipeline {
+  std::atomic<bool> running = std::atomic<bool>(false);
   std::vector<PipelineStep*> steps;
-  std::vector<std::thread*> threads;
-  std::vector<util::SPSCDeque<util::Data>*> deques;
+  std::thread* thread;
+
+  /**
+   * The thread function.
+   * As long as this->running is true, this pipeline will process data.
+   * It waits until start() is called before processing (either implicit
+   * through Pipeline::Pipeline or explicit by calling start()).
+   */
+  const void operator()();
 
  public:
     //{@
     /**
-     * Initializes the pipeline and starts the processing once all steps are
-     * thrown into threads properly.
-     * For each step (in order) input/output deques are created. Each step gets
-     * its preceding step's output deque as its input deque, thus all steps are
-     * chained.
-     *
-     * The first input queue will always be empty, as such PipelineSteps which
-     * are used first should implement their own PipelineStep::get_data
-     * function to ignore the input deque and instead create the data objects
-     * which are passed along the pipeline.
-     * The last step is always a pipeline::IntoTheVoidStep and assure that
-     * the data objects are cleaned up.
+     * Initializes the pipeline and starts the processing.
      *
      * The start can be deferred and manually invoked by a call to start().
      *
@@ -48,13 +45,23 @@ class Pipeline {
      */
     explicit Pipeline(std::vector<PipelineStep*> steps,
         const bool start = true);
+    /**
+     * Stops processing if not already done, joins the thread and deletes it.
+     */
     ~Pipeline();
     //@}
 
+    //{@
     /**
-     * Starts all underlying threads.
+     * Starts the processing of the underlying thread.
      */
-    const void start() const;
+    const void start();
+
+    /**
+     * Stops the processing of the underlying thread.
+     */
+    const void stop();
+    //@}
 };
 
 }  // namespace gaze

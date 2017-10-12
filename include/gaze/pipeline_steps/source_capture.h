@@ -11,7 +11,6 @@
 
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
-#include "gaze/util/spsc_deque.h"
 
 
 namespace gaze {
@@ -94,16 +93,6 @@ class SourceCapture : public PipelineStep {
      */
     const int get_width() const;
     //@}
-
- protected:
-    /**
-     * Ignores the in_deque. Just creates a new empty Data object.
-     *
-     * @param in_deque the input deque. Will be ignored.
-     * @returns A new empty util::Data object.
-     */
-    virtual util::Data get_data(
-        util::SPSCDeque<util::Data>* const in_deque) const;
 
  public:
     /**

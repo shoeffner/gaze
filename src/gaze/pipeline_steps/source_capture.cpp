@@ -11,7 +11,6 @@
 #include "opencv2/videoio.hpp"
 
 #include "gaze/util/data.h"
-#include "gaze/util/spsc_deque.h"
 
 
 namespace gaze {
@@ -58,13 +57,6 @@ const int SourceCapture::get_height() const {
 const int SourceCapture::get_width() const {
   return this->width;
 }
-
-util::Data SourceCapture::get_data(
-    util::SPSCDeque<util::Data>* const in_deque) const {
-  util::Data data;
-  return data;
-}
-
 
 void SourceCapture::process(util::Data* data) {
   while (!this->video_capture->read(data->source_image)) {

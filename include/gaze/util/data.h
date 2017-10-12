@@ -30,14 +30,21 @@ struct Data {
    */
   //@{
   // The head's yaw angle.
-  double head_yaw;
+  double head_yaw = 0;
   // The head's pitch angle.
-  double head_pitch;
+  double head_pitch = 0;
   // The head's roll angle.
-  double head_roll;
+  double head_roll = 0;
   //@}
 
-
+  /** @name Face detection
+   *
+   * These parameters denote where a head was detected.
+   */
+  //@{
+  bool face_found = false;
+  cv::Rect face;
+  //@}
 };
 
 }  // namespace util

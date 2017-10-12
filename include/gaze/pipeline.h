@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "gaze/pipeline_step.h"
+#include "gaze/pipeline_steps/debug_view.h"
 #include "gaze/util/data.h"
 
 
@@ -16,11 +17,10 @@ namespace gaze {
 /**
  * @class Pipeline pipeline.h "gaze/pipeline.h"
  * @brief The processing pipeline from input to output.
- *
- * Controlls all threads and deques involved in the processing of the eye
- * tracking results.
  */
 class Pipeline {
+  std::atomic<bool> debug = std::atomic<bool>(false);
+  pipeline::DebugView* debug_view;
   std::atomic<bool> running = std::atomic<bool>(false);
   std::vector<PipelineStep*> steps;
   std::thread* thread;
@@ -42,9 +42,13 @@ class Pipeline {
      *
      * @param steps The PipelineSteps to use.
      * @param start if `true`, the processing will start automatically.
+     * @param debug if `true`, the visualizations and debug outputs will be
+     *              performed. This will slow down processing.
      */
     explicit Pipeline(std::vector<PipelineStep*> steps,
-        const bool start = true);
+                      const bool start = true,
+                      const bool debug = false);
+
     /**
      * Stops processing if not already done, joins the thread and deletes it.
      */

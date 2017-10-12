@@ -12,6 +12,7 @@
 
 #include "gaze/pipeline_step.h"
 #include "gaze/pipeline_steps/debug_view.h"
+#include "gaze/pipeline_steps/face_detection.h"
 #include "gaze/pipeline_steps/head_pose_estimation.h"
 #include "gaze/pipeline_steps/source_capture.h"
 

@@ -104,11 +104,9 @@ const void GazeTracker::init_pipeline() {
   if (this->initialized) {
     return;
   }
-  if (this->debug) {
-    // Show source image if debug mode is enabled.
-    this->pipeline_steps.push_back(new pipeline::DebugView());
-  }
-  this->pipeline = new Pipeline(this->pipeline_steps, true);
+  this->pipeline_steps.push_back(new pipeline::FaceDetection());
+  // this->pipeline_steps.push_back(new pipeline::HeadPoseEstimation());
+  this->pipeline = new Pipeline(this->pipeline_steps, true, this->debug);
 }
 
 const void GazeTracker::start_trial(const std::string identifier) {

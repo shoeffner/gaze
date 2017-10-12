@@ -2,7 +2,7 @@
 
 #include "gaze/pipeline_steps/source_capture.h"
 
-#include <chrono>
+#include <chrono>  // NOLINT
 #include <memory>
 #include <string>
 #include <thread>  // NOLINT

@@ -18,7 +18,9 @@ link_directories(
 list(APPEND LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/gaze_tracker.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_step.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/debug_view.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/face_detection.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/head_pose_estimation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/source_capture.cpp
 )

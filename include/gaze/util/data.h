@@ -45,6 +45,17 @@ struct Data {
   bool face_found = false;
   cv::Rect face;
   //@}
+
+  /** @name Eye detection
+   *
+   * These parameters denote where each eye was detected.
+   */
+  //@{
+  bool left_eye_found = false;
+  cv::Rect left_eye;
+  bool right_eye_found = false;
+  cv::Rect right_eye;
+  //@}
 };
 
 }  // namespace util

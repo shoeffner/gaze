@@ -7,6 +7,7 @@
 #include <string>
 #include <thread>  // NOLINT
 
+#include "dlib/opencv.h"
 #include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
 
@@ -59,8 +60,11 @@ const int SourceCapture::get_width() const {
 }
 
 void SourceCapture::process(util::Data* data) {
-  while (!this->video_capture->read(data->source_image)) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(15));
+  bool end = false;
+  while (!end) {
+    end = this->video_capture->read(data->source_image);
+    data->image = dlib::cv_image<dlib::bgr_pixel>(data->source_image);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 }
 

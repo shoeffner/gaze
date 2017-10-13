@@ -4,6 +4,8 @@
 #define INCLUDE_GAZE_UTIL_DATA_H_
 
 #include "opencv2/core.hpp"
+#include "dlib/opencv.h"
+#include "dlib/image_processing.h"
 
 
 namespace gaze {
@@ -18,44 +20,24 @@ namespace util {
  * // TODO(shoeffner): Write at least one writer.
  */
 struct Data {
+  //@{
   /**
    * The unaltered image from the source stream.
    */
   cv::Mat source_image;
-
-  /** @name Head pose estimates
-   *
-   * These head pose parameters are estimated according to
-   * Vatahska et al. (2007) @cite vatahska2007.
-   */
-  //@{
-  // The head's yaw angle.
-  double head_yaw = 0;
-  // The head's pitch angle.
-  double head_pitch = 0;
-  // The head's roll angle.
-  double head_roll = 0;
+  dlib::cv_image<dlib::bgr_pixel> image;
   //@}
 
-  /** @name Face detection
-   *
-   * These parameters denote where a head was detected.
-   */
-  //@{
-  bool face_found = false;
-  bool frontal_face_found = false;
-  cv::Rect face;
-  //@}
 
-  /** @name Eye detection
+  /** @name Landmarks
    *
-   * These parameters denote where each eye was detected.
+   * These landmarks are detected by the model.
+   * They contain information about the face
+   * (dlib::full_object_detection::get_rect()) and about the
+   * eyes.
    */
   //@{
-  bool left_eye_found = false;
-  cv::Rect left_eye;
-  bool right_eye_found = false;
-  cv::Rect right_eye;
+  dlib::full_object_detection landmarks;
   //@}
 };
 

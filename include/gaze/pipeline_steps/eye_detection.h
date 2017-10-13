@@ -20,9 +20,33 @@ namespace pipeline {
  *        detect eyes.
  *
  * // TODO(shoeffner): Write documentation for EyeDetection.
+ * // TODO(shoeffner): Track last X frames for when no eye can be found?
+ *                     Especially interesting are running filters or such -
+ *                     same for face! Alternatively check
+ *                     https://github.com/trishume/eyeLike/blob/master/src/main.cpp#L98
  */
 class EyeDetection : public PipelineStep {
   cv::CascadeClassifier eye_classifier;
+  cv::Rect last_left_eye;
+  cv::Rect last_right_eye;
+
+  /**
+   * Assigns the left eye to the data object and the last left eye.
+   *
+   * @param data The data object.
+   * @param left_eye The eye to assign.
+   */
+  const void assign_left_eye(util::Data* const data,
+                             const cv::Rect left_eye);
+
+  /**
+   * Assigns the right eye to the data object and the last right eye.
+   *
+   * @param data The data object.
+   * @param right_eye The eye to assign.
+   */
+  const void assign_right_eye(util::Data* const data,
+                              const cv::Rect right_eye);
 
  public:
     /**
@@ -40,7 +64,7 @@ class EyeDetection : public PipelineStep {
     virtual void process(util::Data* data);
 
     /**
-     * Draws a green rectangle around the detected eyes.
+     * Draws green rectangles around the detected eyes.
      *
      * @param data The data object to be updated.
      */

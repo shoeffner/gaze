@@ -43,6 +43,7 @@ struct Data {
    */
   //@{
   bool face_found = false;
+  bool frontal_face_found = false;
   cv::Rect face;
   //@}
 

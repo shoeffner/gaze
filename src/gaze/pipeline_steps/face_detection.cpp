@@ -31,19 +31,22 @@ void FaceDetection::process(util::Data* data) {
   if (detections.empty()) {
     this->profile_face_classifier.detectMultiScale(data->source_image,
                                                    detections);
+  } else {
+    data->frontal_face_found = true;
   }
   if (!detections.empty()) {
     data->face_found = true;
     data->face = detections[0];
-  } else {
-    data->face_found = false;
   }
 }
 
 void FaceDetection::visualize(util::Data* data) {
   if (data->face_found) {
     cv::rectangle(data->source_image, data->face, cv::Scalar(255, 0, 0));
-    this->write_text(&data->source_image, "Face detection: Face detected.");
+    this->write_text(&data->source_image,
+        "Face detection: "
+        + std::string(data->frontal_face_found ? "Frontal" : "Profile")
+        + " face detected.");
   } else {
     this->write_text(&data->source_image, "Face detection: No face detected.");
   }

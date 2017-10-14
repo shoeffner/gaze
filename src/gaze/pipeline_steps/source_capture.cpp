@@ -18,15 +18,13 @@ namespace gaze {
 
 namespace pipeline {
 
-SourceCapture::SourceCapture(int source) {
-  this->video_capture = cv::VideoCapture(source);
+SourceCapture::SourceCapture(int source) : video_capture(source) {
   // Set goal FPS to 60, still often webcams cap much lower.
   // (Not that the tracker would achieve this speed...)
   this->video_capture.set(cv::CAP_PROP_FPS, 60.0);
 }
 
-SourceCapture::SourceCapture(std::string source) {
-  this->video_capture = cv::VideoCapture(source);
+SourceCapture::SourceCapture(std::string source) : video_capture(source) {
 }
 
 SourceCapture::~SourceCapture() {

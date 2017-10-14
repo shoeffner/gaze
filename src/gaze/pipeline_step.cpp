@@ -8,10 +8,9 @@
 
 namespace gaze {
 
-int PipelineStep::counter = 0;
+int PipelineStep::counter = -1;
 
-PipelineStep::PipelineStep() {
-  this->number = PipelineStep::counter++;
+PipelineStep::PipelineStep() : number(++PipelineStep::counter) {
 }
 
 void PipelineStep::visualize(util::Data&) {

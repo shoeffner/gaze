@@ -25,8 +25,7 @@ void Pipeline::operator()() {
 }
 
 Pipeline::Pipeline(std::vector<PipelineStep*> steps,
-                   const bool start) {
-  this->steps = steps;
+                   const bool start) : steps(steps) {
   this->thread = new std::thread(&Pipeline::operator(), std::ref(*this));
   if (start) {
     this->start();

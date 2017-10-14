@@ -16,8 +16,8 @@ namespace gaze {
 
 namespace pipeline {
 
-FaceLandmarks::FaceLandmarks() {
-  this->face_detector = dlib::get_frontal_face_detector();
+FaceLandmarks::FaceLandmarks()
+    : face_detector(dlib::get_frontal_face_detector()) {
   // TODO(shoeffner): Install 5 face landmarks model using CMake.
   dlib::deserialize("shape_predictor_5_face_landmarks.dat")
     >> this->shape_predictor;

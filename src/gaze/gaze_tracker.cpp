@@ -15,15 +15,17 @@
 
 namespace gaze {
 
-GazeTracker::GazeTracker(const bool debug) {
+GazeTracker::GazeTracker(const bool debug) : debug(debug) {
   this->initialized = false;
-  this->debug = debug;
 }
 
 GazeTracker::GazeTracker(const int source,
                          const std::string subject_id,
                          const std::string result_dir,
-                         const bool debug) {
+                         const bool debug)
+    : debug(debug),
+      result_dir(result_dir),
+      subject_id(subject_id) {
   this->initialized = false;
   this->init(source, subject_id, result_dir, debug);
 }
@@ -31,7 +33,10 @@ GazeTracker::GazeTracker(const int source,
 GazeTracker::GazeTracker(const std::string source,
                          const std::string subject_id,
                          const std::string result_dir,
-                         const bool debug) {
+                         const bool debug)
+    : debug(debug),
+      result_dir(result_dir),
+      subject_id(subject_id) {
   this->initialized = false;
   this->init(source, subject_id, result_dir, debug);
 }

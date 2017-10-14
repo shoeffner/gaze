@@ -26,15 +26,7 @@ namespace pipeline {
  */
 class SourceCapture : public PipelineStep {
   cv::Mat empty_frame;
-  int fps;
-  int height;
-  std::unique_ptr<cv::VideoCapture> video_capture;
-  int width;
-
-  /**
-   * Initializes the member variables, e.g. the empty frame and widths and heights.
-   */
-  void init();
+  cv::VideoCapture video_capture;
 
  public:
     /** @name Creating a source capture */
@@ -60,40 +52,6 @@ class SourceCapture : public PipelineStep {
 
     ~SourceCapture();
 
-    /** @name Helper functions
-     *
-     * In some contexts you might want some additional information about the
-     * source. The get_ methods will read the properties from the
-     * cv::VideoCapture, while get_empty_frame() returns a cv::Mat of the
-     * source size which is filled with black pixels. It can be used
-     * as a default value for e.g. util::SPSCDeque::front_or_default().
-     */
-    //@{
-    /**
-     * @returns an empty frame, that is a cv::Mat filled with `0`s of size
-     *          @f$\mathit{height}\times\mathit{width}@f$.
-     */
-    const cv::Mat get_empty_frame() const;
-
-    /**
-     * @returns The number of frames per second for the internal
-     *          cv::VideoCapture source. For videos this will be the value
-     *          the video file had, for webcams it will be as high as the
-     *          camera allowed, but at most around 60 FPS.
-     */
-    int get_frames_per_second() const;
-
-    /**
-     * @returns the height of the video source's frames.
-     */
-    int get_height() const;
-
-    /**
-     * @returns the width of the video source's frames.
-     */
-    int get_width() const;
-    //@}
-
  public:
     /**
      * Reads a frame from the video source and stores it as the data's
@@ -102,7 +60,7 @@ class SourceCapture : public PipelineStep {
      * @param data The data object to be updated.
      * @returns via `data` the modified data object.
      */
-    virtual void process(util::Data* data);
+    virtual void process(util::Data& data);
 };
 
 }  // namespace pipeline

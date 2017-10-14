@@ -45,22 +45,12 @@ GazeTracker::~GazeTracker() {
   }
 }
 
-const void GazeTracker::calibrate() {
+void GazeTracker::calibrate() {
   if (!this->initialized) {
     std::cerr << "[GazeTracker] Not initialized (calibrate())." << std::endl;
     return;
   }
   std::cout << "[GT Stub] Calibrating." << std::endl;
-}
-
-const cv::Mat GazeTracker::get_current_frame() const {
-  if (!this->initialized) {
-    std::cerr << "[GazeTracker] Not initialized (get_current_frame())." <<
-      std::endl;
-    return cv::Mat::zeros(720, 1280, CV_8UC3);
-  }
-  // TODO(shoeffner): Remove dummy values.
-  return cv::Mat::zeros(720, 1280, CV_8UC3);
 }
 
 const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
@@ -73,17 +63,17 @@ const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
   return std::pair<int, int>(120, 130);
 }
 
-const void GazeTracker::init(const int source,
-                             const std::string subject_id,
-                             const std::string result_dir,
-                             const bool debug) {
+void GazeTracker::init(const int source,
+                       const std::string subject_id,
+                       const std::string result_dir,
+                       const bool debug) {
   this->init(std::to_string(source), subject_id, result_dir, debug);
 }
 
-const void GazeTracker::init(const std::string source,
-                             const std::string subject_id,
-                             const std::string result_dir,
-                             const bool debug) {
+void GazeTracker::init(const std::string source,
+                       const std::string subject_id,
+                       const std::string result_dir,
+                       const bool debug) {
   if (this->initialized) {
     return;
   }
@@ -97,20 +87,26 @@ const void GazeTracker::init(const std::string source,
   this->result_dir = result_dir;
   this->subject_id = subject_id;
   this->init_pipeline();
+  if (this->debug) {
+    this->init_debug_view();
+  }
   this->initialized = true;
 }
 
-const void GazeTracker::init_pipeline() {
+void GazeTracker::init_debug_view() {
+  // TODO(shoeffner): Initialize a debug window.
+}
+
+void GazeTracker::init_pipeline() {
   if (this->initialized) {
     return;
   }
   this->pipeline_steps.push_back(new pipeline::FaceLandmarks());
   this->pipeline_steps.push_back(new pipeline::PupilLocalization());
-  // this->pipeline_steps.push_back(new pipeline::HeadPoseEstimation());
-  this->pipeline = new Pipeline(this->pipeline_steps, true, this->debug);
+  this->pipeline = new Pipeline(this->pipeline_steps, true);
 }
 
-const void GazeTracker::start_trial(const std::string identifier) {
+void GazeTracker::start_trial(const std::string identifier) {
   if (!this->initialized) {
     std::cerr << "[GazeTracker] Not initialized (start_trial())." <<
       std::endl;
@@ -121,7 +117,7 @@ const void GazeTracker::start_trial(const std::string identifier) {
     << std::endl;
 }
 
-const void GazeTracker::stop_trial() {
+void GazeTracker::stop_trial() {
   if (!this->initialized) {
     std::cerr << "[GazeTracker] Not initialized (stop_trial())." <<
       std::endl;

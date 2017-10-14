@@ -4,6 +4,7 @@
 #define INCLUDE_GAZE_PIPELINE_H_
 
 #include <atomic>
+#include <shared_mutex>  // NOLINT
 #include <thread>  // NOLINT
 #include <vector>
 
@@ -20,6 +21,8 @@ namespace gaze {
 class Pipeline {
   std::atomic<bool> debug = std::atomic<bool>(false);
   std::atomic<bool> running = std::atomic<bool>(false);
+  std::shared_mutex data_access_mutex;
+  util::Data current_data;
   std::vector<PipelineStep*> steps;
   std::thread* thread;
 
@@ -40,12 +43,9 @@ class Pipeline {
      *
      * @param steps The PipelineSteps to use.
      * @param start if `true`, the processing will start automatically.
-     * @param debug if `true`, the visualizations and debug outputs will be
-     *              performed. This will slow down processing.
      */
     explicit Pipeline(std::vector<PipelineStep*> steps,
-                      const bool start = true,
-                      const bool debug = false);
+                      const bool start = true);
 
     /**
      * Stops processing if not already done, joins the thread and deletes it.
@@ -64,6 +64,8 @@ class Pipeline {
      */
     void stop();
     //@}
+
+    const util::Data get_data();
 };
 
 }  // namespace gaze

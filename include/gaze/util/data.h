@@ -29,7 +29,6 @@ struct Data {
   /**
    * This image references the source_image.
    */
-  // dlib::cv_image<dlib::bgr_pixel> image;
   dlib::array2d<dlib::bgr_pixel> image;
   //@}
 

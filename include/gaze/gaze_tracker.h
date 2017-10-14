@@ -34,10 +34,14 @@ class GazeTracker {
   std::string video_source;
 
   /**
-   * Initializes the threads and queues for the processing pipeline and the
-   * pipeline itself.
+   * Initializes the thread for the debug GUI.
    */
-  const void init_pipeline();
+  void init_debug_view();
+
+  /**
+   * Initializes the thread for the processing pipeline.
+   */
+  void init_pipeline();
 
  public:
     /**
@@ -84,17 +88,11 @@ class GazeTracker {
     /**
      * Calibrates the GazeTracker.
      *
-     * Note that currently there is no calibration taking place.
+     * @note Currently there is no calibration phase.
      */
-    const void calibrate();
+    void calibrate();
 
-    /**
-     * @returns the most recent frame from the capture source. If not
-     *          initialized, returns a black frame of size @f$720\times1280@f$.
-     */
-    const cv::Mat get_current_frame() const;
-
-    /** @name Trial handling */
+    /** @name Data access */
     //@{
     /**
      * @returns the most recent calculated gaze point. If not initialized,
@@ -122,10 +120,10 @@ class GazeTracker {
      * @param debug Starts the gaze_tracker in debug mode, bringing up
      *              additional debuggin screens.
      */
-    const void init(const int source,
-                    const std::string subject_id,
-                    const std::string result_dir = "./",
-                    const bool debug = false);
+    void init(const int source,
+              const std::string subject_id,
+              const std::string result_dir = "./",
+              const bool debug = false);
 
     /**
      * Initializes the GazeTracker to use a video.
@@ -139,13 +137,22 @@ class GazeTracker {
      * @param debug Starts the gaze_tracker in debug mode, bringing up
      *              additional debuggin screens.
      */
-    const void init(const std::string source,
-                    const std::string subject_id,
-                    const std::string result_dir = "./",
-                    const bool debug = false);
+    void init(const std::string source,
+              const std::string subject_id,
+              const std::string result_dir = "./",
+              const bool debug = false);
     //@}
 
-    /** @name Trial handling */
+    /** @name Trial handling
+     *
+     * These functions are used to partition an experiment into trials.
+     * When you start a trial, call the GazeTracker::start_trial(const std::string)
+     * method. After the trial you should issue GazeTracker::stop_trial().
+     *
+     * Note that the GazeTracker keeps tracking until you destroy the instance,
+     * the only difference in calling the start and stop trial functions is
+     * that the identifier will be available next to the data for the specific trial.
+     */
     //@{
     /**
      * Makes the GazeTracker associate its output data with the `identifier`
@@ -158,26 +165,13 @@ class GazeTracker {
      *
      * @param identifier The trial identifier.
      */
-    const void start_trial(const std::string identifier);
+    void start_trial(const std::string identifier);
 
     /**
      * Stops associating data with any specific trial.
      */
-    const void stop_trial();
+    void stop_trial();
     //@}
-
-    /** @name Trial handling
-     *
-     * These functions are used to partition an experiment into trials.
-     * When you start a trial, call the GazeTracker::start_trial(const std::string)
-     * method. After the trial you should issue GazeTracker::stop_trial().
-     *
-     * Note that the GazeTracker keeps tracking until you destroy the instance,
-     * the only difference in calling the start and stop trial functions is
-     * that the identifier will be available next to the data for the specific trial.
-     *
-     * GazeTracker::get_current_gaze_point() can be used for feedback loops.
-     */
 };
 
 }  // namespace gaze

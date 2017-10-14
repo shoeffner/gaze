@@ -21,24 +21,8 @@ namespace gaze {
  * method. They should only add data to fields which were not written before.
  */
 class PipelineStep {
-  static const int FONT;
-  static const double FONT_SCALE;
-  static const int FONT_THICKNESS;
-  static const int FONT_BASELINE;
-
   static int counter;
-  static int font_height;
   int number;
-
- protected:
-    /**
-     * Puts text into a designated spot inside the image.
-     * Each pipeline step is assigned its own place for text.
-     *
-     * @param image The image to write to
-     * @param text The text to write
-     */
-    const void write_text(cv::Mat* image, const std::string text) const;
 
  public:
     /**
@@ -67,20 +51,15 @@ class PipelineStep {
      * @param data The data object to be updated.
      * @returns via `data` the modified data object.
      */
-    virtual void process(util::Data* data) = 0;
+    virtual void process(util::Data& data) = 0;
 
     /**
      * Modifies the source image to visualize the results of this step.
      * This method may be implemented by subclasses.
      *
-     * To write text, use
-     * @code[c++]
-     * this->write_text(data->source_image, text);
-     * @endcode
-     *
      * @param data The data object to be updated.
      */
-    virtual void visualize(util::Data* data);
+    virtual void visualize(util::Data& data);
     //@}
 };
 

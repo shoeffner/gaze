@@ -38,12 +38,12 @@ class FaceLandmarks : public PipelineStep {
      * @param data The data object to be updated.
      * @returns via `data` the modified data object.
      */
-    virtual void process(util::Data* data);
+    virtual void process(util::Data& data);
 
     /**
      * @param data The data object to be updated.
      */
-    virtual void visualize(util::Data* data);
+    virtual void visualize(util::Data& data);
 };
 
 }  // namespace pipeline

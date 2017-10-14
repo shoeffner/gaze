@@ -12,20 +12,20 @@ namespace wpl {
 
 namespace gui {
 
-const bool cb_finish_assistant(const GtkWidget* assistant,
-                               const GtkWidget* window);
+bool cb_finish_assistant(const GtkWidget* assistant,
+                         const GtkWidget* window);
 
-const bool cb_key_press(const GtkWidget* widget,
-                        const GdkEventKey* event_key);
+bool cb_key_press(const GtkWidget* widget,
+                  const GdkEventKey* event_key);
 
-const bool cb_update_config(GtkWidget* const widget,
-                            Experiment* const experiment);
+bool cb_update_config(GtkWidget* const widget,
+                      Experiment* const experiment);
 
-const void register_and_connect_callbacks(GtkBuilder* const builder,
-                                          Experiment* const experiment);
+void register_and_connect_callbacks(GtkBuilder* const builder,
+                                    Experiment* const experiment);
 
-const void set_css_style(GtkWidget* const window,
-                         const char* const css_resource);
+void set_css_style(GtkWidget* const window,
+                   const char* const css_resource);
 
 }  // namespace gui
 

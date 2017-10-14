@@ -15,14 +15,13 @@
 
 namespace wpl {
 
-const void Experiment::init_gaze_tracker() {
+void Experiment::init_gaze_tracker() {
   this->gaze_tracker->init(0,
       this->config->get_subject_id(),
       this->config->get_result_dir_path().string());
-  // this->gaze_tracker->print_info();
 }
 
-const void Experiment::read_stimuli_list() {
+void Experiment::read_stimuli_list() {
   boost::filesystem::directory_iterator
     iter(this->config->get_stimuli_dir_path());
   for (boost::filesystem::directory_entry entry : iter) {
@@ -50,21 +49,20 @@ gboolean Experiment::experiment_start_trial(gpointer experiment) {
   return false;
 }
 
-Experiment::Experiment(GtkImage* const image, Config* const config) {
-  this->image = image;
-  this->config = config;
-  this->gaze_tracker = std::unique_ptr<gaze::GazeTracker>(
-      new gaze::GazeTracker());
+Experiment::Experiment(GtkImage* const image, Config* const config)
+    : config(config),
+      gaze_tracker(new gaze::GazeTracker()),
+      image(image) {
 }
 
 Experiment::~Experiment() {
 }
 
-Config* const Experiment::get_config() const {
+Config* Experiment::get_config() {
   return this->config;
 }
 
-const void Experiment::prepare() {
+void Experiment::prepare() {
   std::lock_guard<std::mutex> lock(this->mutex);
   if (this->is_prepared) {
     return;
@@ -74,7 +72,7 @@ const void Experiment::prepare() {
   this->is_prepared = true;
 }
 
-const void Experiment::start() {
+void Experiment::start() {
   std::lock_guard<std::mutex> lock(this->mutex);
   if (this->is_started) {
     return;
@@ -83,7 +81,7 @@ const void Experiment::start() {
   this->is_started = true;
 }
 
-const bool Experiment::trial() {
+bool Experiment::trial() {
   std::lock_guard<std::mutex> lock(this->mutex);
   if (this->is_calibrating) {
     return true;
@@ -126,15 +124,15 @@ gboolean Experiment::experiment_trial(gpointer experiment) {
   return static_cast<Experiment*>(experiment)->trial();
 }
 
-const bool Experiment::experiment_prepare(const GtkWidget* const assistant,
-                                          Experiment* const experiment) {
+bool Experiment::experiment_prepare(const GtkWidget* const,
+                                    Experiment* const experiment) {
   experiment->prepare();
   return false;
 }
 
-const bool Experiment::experiment_start(const GtkWidget* const window,
-                                        const GdkEventKey* const event_key,
-                                        Experiment* const experiment) {
+bool Experiment::experiment_start(const GtkWidget* const,
+                                  const GdkEventKey* const event_key,
+                                  Experiment* const experiment) {
   if (event_key->keyval == GDK_KEY_space) {
     if (!experiment->is_started) {
       experiment->start();

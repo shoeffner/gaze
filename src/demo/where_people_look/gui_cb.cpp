@@ -13,15 +13,15 @@ namespace wpl {
 
 namespace gui {
 
-const bool cb_finish_assistant(const GtkWidget* assistant,
-                               const GtkWidget* window) {
+bool cb_finish_assistant(const GtkWidget*,
+                         const GtkWidget* window) {
   gtk_window_present(GTK_WINDOW(window));
   gtk_window_fullscreen(GTK_WINDOW(window));
   return false;
 }
 
-const bool cb_key_press(const GtkWidget* widget,
-                        const GdkEventKey* event_key) {
+bool cb_key_press(const GtkWidget*,
+                  const GdkEventKey* event_key) {
   switch (event_key->keyval) {
     case GDK_KEY_F4:
       if (event_key->state & GDK_MOD1_MASK) {
@@ -37,8 +37,8 @@ const bool cb_key_press(const GtkWidget* widget,
   return false;
 }
 
-const bool cb_update_config(GtkWidget* const widget,
-                            Experiment* const experiment) {
+bool cb_update_config(GtkWidget* const widget,
+                      Experiment* const experiment) {
   std::string widget_name = std::string(gtk_widget_get_name(widget));
   if (!widget_name.compare("subject_id")) {
     experiment->get_config()->set_subject_id(
@@ -60,8 +60,8 @@ const bool cb_update_config(GtkWidget* const widget,
   return false;
 }
 
-const void register_and_connect_callbacks(GtkBuilder* const builder,
-                                          Experiment* const experiment) {
+void register_and_connect_callbacks(GtkBuilder* const builder,
+                                    Experiment* const experiment) {
   gtk_builder_add_callback_symbols(builder,
       "cb_finish_assistant", G_CALLBACK(cb_finish_assistant),
       "cb_key_press", G_CALLBACK(cb_key_press),
@@ -73,8 +73,8 @@ const void register_and_connect_callbacks(GtkBuilder* const builder,
   gtk_builder_connect_signals(builder, experiment);
 }
 
-const void set_css_style(GtkWidget* const window,
-                         const char* const css_resource) {
+void set_css_style(GtkWidget* const window,
+                   const char* const css_resource) {
   GtkStyleContext* style_context = gtk_widget_get_style_context(window);
   GtkCssProvider* style_provider = gtk_css_provider_new();
   gtk_css_provider_load_from_resource(style_provider, css_resource);

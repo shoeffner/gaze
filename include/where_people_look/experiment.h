@@ -65,9 +65,9 @@ class Experiment {
   int trial_duration = 3000;
   int warmup = 2000;
 
-  const void init_gaze_tracker();
+  void init_gaze_tracker();
 
-  const void read_stimuli_list();
+  void read_stimuli_list();
 
   static gboolean experiment_stop_trial(gpointer experiment);
 
@@ -87,7 +87,7 @@ class Experiment {
     /**
      * @returns a pointer to this experiment's config.
      */
-    Config* const get_config() const;
+    Config* get_config();
 
     /** @name Experiment usage */
     //@{
@@ -99,7 +99,7 @@ class Experiment {
      * - GazeTracker initialization
      * - Stimuli list generation
      */
-    const void prepare();
+    void prepare();
 
     /**
      * Starts the experiment.
@@ -107,7 +107,7 @@ class Experiment {
      *
      * If this function is called on a started experiment, it simply returns.
      */
-    const void start();
+    void start();
     //@}
 
     // TODO(shoeffner): Maybe this should become private?
@@ -135,7 +135,7 @@ class Experiment {
      *
      * @returns true for retries during calibration, false otherwise.
      */
-    const bool trial();
+    bool trial();
     //@}
 
     /**
@@ -171,8 +171,8 @@ class Experiment {
      * @param experiment Must be a gpointer to an Experiment.
      * @returns false
      */
-    static const bool experiment_prepare(const GtkWidget* const assistant,
-                                         Experiment* const experiment);
+    static bool experiment_prepare(const GtkWidget* const assistant,
+                                   Experiment* const experiment);
 
     /**
      * Calls start() on the given experiment if the space key is event_key's
@@ -184,9 +184,9 @@ class Experiment {
      * @param experiment Must be a gpointer to an Experiment.
      * @returns false
      */
-    static const bool experiment_start(const GtkWidget* const window,
-                                       const GdkEventKey* const event_key,
-                                       Experiment* const experiment);
+    static bool experiment_start(const GtkWidget* const window,
+                                 const GdkEventKey* const event_key,
+                                 Experiment* const experiment);
 };
 
 }  // namespace wpl

@@ -34,7 +34,7 @@ class SourceCapture : public PipelineStep {
   /**
    * Initializes the member variables, e.g. the empty frame and widths and heights.
    */
-  const void init();
+  void init();
 
  public:
     /** @name Creating a source capture */
@@ -81,17 +81,17 @@ class SourceCapture : public PipelineStep {
      *          the video file had, for webcams it will be as high as the
      *          camera allowed, but at most around 60 FPS.
      */
-    const int get_frames_per_second() const;
+    int get_frames_per_second() const;
 
     /**
      * @returns the height of the video source's frames.
      */
-    const int get_height() const;
+    int get_height() const;
 
     /**
      * @returns the width of the video source's frames.
      */
-    const int get_width() const;
+    int get_width() const;
     //@}
 
  public:

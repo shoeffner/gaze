@@ -18,7 +18,7 @@ namespace gaze {
 
 namespace pipeline {
 
-const void SourceCapture::init() {
+void SourceCapture::init() {
   this->fps = this->video_capture->get(cv::CAP_PROP_FPS);
   this->height = this->video_capture->get(cv::CAP_PROP_FRAME_HEIGHT);
   this->width = this->video_capture->get(cv::CAP_PROP_FRAME_WIDTH);
@@ -47,15 +47,15 @@ const cv::Mat SourceCapture::get_empty_frame() const {
   return this->empty_frame;
 }
 
-const int SourceCapture::get_frames_per_second() const {
+int SourceCapture::get_frames_per_second() const {
   return this->fps;
 }
 
-const int SourceCapture::get_height() const {
+int SourceCapture::get_height() const {
   return this->height;
 }
 
-const int SourceCapture::get_width() const {
+int SourceCapture::get_width() const {
   return this->width;
 }
 
@@ -63,8 +63,12 @@ void SourceCapture::process(util::Data* data) {
   bool end = false;
   while (!end) {
     end = this->video_capture->read(data->source_image);
-    data->image = dlib::cv_image<dlib::bgr_pixel>(data->source_image);
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    dlib::assign_image(
+        data->image,
+        dlib::cv_image<dlib::bgr_pixel>(data->source_image));
+    if (!end) {
+      std::this_thread::sleep_for(std::chrono::milliseconds(15));
+    }
   }
 }
 

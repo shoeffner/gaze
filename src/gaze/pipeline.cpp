@@ -6,12 +6,11 @@
 #include <vector>
 
 #include "gaze/pipeline_step.h"
-#include "gaze/pipeline_steps/debug_view.h"
 #include "gaze/util/data.h"
 
 namespace gaze {
 
-const void Pipeline::operator()() {
+void Pipeline::operator()() {
   while (!this->running) {
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
@@ -19,12 +18,6 @@ const void Pipeline::operator()() {
     util::Data data;
     for (PipelineStep* step : this->steps) {
       step->process(&data);
-    }
-    if (this->debug) {
-      for (PipelineStep* step : this->steps) {
-        step->visualize(&data);
-      }
-      this->debug_view->process(&data);
     }
   }
 }
@@ -34,7 +27,6 @@ Pipeline::Pipeline(std::vector<PipelineStep*> steps,
                    const bool debug) {
   this->steps = steps;
   this->debug = debug;
-  this->debug_view = new pipeline::DebugView();
   this->thread = new std::thread(&Pipeline::operator(), std::ref(*this));
   if (start) {
     this->start();
@@ -47,11 +39,11 @@ Pipeline::~Pipeline() {
   delete this->thread;
 }
 
-const void Pipeline::start() {
+void Pipeline::start() {
   this->running = true;
 }
 
-const void Pipeline::stop() {
+void Pipeline::stop() {
   this->running = false;
 }
 

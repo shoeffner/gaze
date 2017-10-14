@@ -31,9 +31,26 @@ void FaceLandmarks::process(util::Data* data) {
 }
 
 void FaceLandmarks::visualize(util::Data* data) {
+  // Bounding box face
+  if (data->landmarks.get_rect().is_empty()) {
+    return;
+  }
   cv::rectangle(data->source_image,
-                util::convert(data->landmarks.get_rect()),
+                util::crop_to_image_boundary(
+                  data->source_image,
+                  util::convert(data->landmarks.get_rect())),
                 cv::Scalar(255, 0, 0));
+
+  // landmark lines (similar to dlib::render_face_detections
+  if (data->landmarks.num_parts() != 5) {
+    return;
+  }
+  std::vector<cv::Point> points;
+  for (int i : {0, 1, 4, 3, 2}) {
+    points.push_back(util::convert(data->landmarks.part(i)));
+  }
+  cv::polylines(data->source_image, points,
+                false, cv::Scalar(0, 255, 125), 2);
 }
 
 }  // namespace pipeline

@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "gaze/pipeline_step.h"
-#include "gaze/pipeline_steps/debug_view.h"
 #include "gaze/util/data.h"
 
 
@@ -20,7 +19,6 @@ namespace gaze {
  */
 class Pipeline {
   std::atomic<bool> debug = std::atomic<bool>(false);
-  pipeline::DebugView* debug_view;
   std::atomic<bool> running = std::atomic<bool>(false);
   std::vector<PipelineStep*> steps;
   std::thread* thread;
@@ -31,7 +29,7 @@ class Pipeline {
    * It waits until start() is called before processing (either implicit
    * through Pipeline::Pipeline or explicit by calling start()).
    */
-  const void operator()();
+  void operator()();
 
  public:
     //{@
@@ -59,12 +57,12 @@ class Pipeline {
     /**
      * Starts the processing of the underlying thread.
      */
-    const void start();
+    void start();
 
     /**
      * Stops the processing of the underlying thread.
      */
-    const void stop();
+    void stop();
     //@}
 };
 

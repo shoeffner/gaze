@@ -11,7 +11,6 @@
 #define INCLUDE_GAZE_PIPELINE_STEPS_H_
 
 #include "gaze/pipeline_step.h"
-#include "gaze/pipeline_steps/debug_view.h"
 #include "gaze/pipeline_steps/face_landmarks.h"
 #include "gaze/pipeline_steps/pupil_localization.h"
 #include "gaze/pipeline_steps/source_capture.h"

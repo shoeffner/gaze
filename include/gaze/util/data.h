@@ -25,19 +25,29 @@ struct Data {
    * The unaltered image from the source stream.
    */
   cv::Mat source_image;
-  dlib::cv_image<dlib::bgr_pixel> image;
+
+  /**
+   * This image references the source_image.
+   */
+  // dlib::cv_image<dlib::bgr_pixel> image;
+  dlib::array2d<dlib::bgr_pixel> image;
   //@}
 
 
-  /** @name Landmarks
-   *
+  /** @name Landmarks */
+  //@{
+  /**
    * These landmarks are detected by the model.
    * They contain information about the face
    * (dlib::full_object_detection::get_rect()) and about the
-   * eyes.
+   * eyes (use util::get_eyes_chip_details).
    */
-  //@{
   dlib::full_object_detection landmarks;
+
+  /**
+   * The 0th element is the left eye, the 1st the right eye.
+   */
+  dlib::array<dlib::array2d<dlib::bgr_pixel>> eyes;
   //@}
 };
 

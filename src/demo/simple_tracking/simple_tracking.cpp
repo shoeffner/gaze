@@ -48,6 +48,8 @@ namespace {
   const void main_loop(const std::function<cv::Mat(int, int)> drawing,
                        const int width = 400,
                        const int height = 400) {
+    cv::namedWindow("Simple Tracker");
+
     std::unique_ptr<gaze::GazeTracker> tracker =
       std::unique_ptr<gaze::GazeTracker>(new gaze::GazeTracker(0,
             "st_subject", "./", true));
@@ -55,7 +57,6 @@ namespace {
     cv::Mat image = drawing(height, width);
     cv::Mat storage = image.clone();
 
-    cv::namedWindow("Simple Tracker");
     tracker->start_trial("simple tracker");
     while (true) {
       storage.copyTo(image);
@@ -76,8 +77,8 @@ namespace {
 }  // namespace
 
 int main(const int argc, const char** const argv) {
-  int width = 1920;
-  int height = 1080;
+  int width = 960;
+  int height = 540;
   main_loop(&::Spiral, width, height);
   return 0;
 }

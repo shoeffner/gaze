@@ -19,7 +19,7 @@ namespace pipeline {
  *
  * // TODO(shoeffner): Write documentation for PupilLocalization.
  */
-class PupilLocalization : public PipelineStep {
+class PupilLocalization final : public PipelineStep {
  public:
     /**
      */
@@ -31,12 +31,12 @@ class PupilLocalization : public PipelineStep {
      * @param data The data object to be updated.
      * @returns via `data` the modified data object.
      */
-    virtual void process(util::Data& data);
+    void process(util::Data& data) override;
 
     /**
      * @param data The data object to be updated.
      */
-    virtual void visualize(util::Data& data);
+    void visualize(util::Data& data) override;
 };
 
 }  // namespace pipeline

@@ -24,8 +24,7 @@ namespace pipeline {
  *
  * Should be used at the beginning of a Pipeline.
  */
-class SourceCapture : public PipelineStep {
-  cv::Mat empty_frame;
+class SourceCapture final : public PipelineStep {
   cv::VideoCapture video_capture;
 
  public:
@@ -60,7 +59,7 @@ class SourceCapture : public PipelineStep {
      * @param data The data object to be updated.
      * @returns via `data` the modified data object.
      */
-    virtual void process(util::Data& data);
+    void process(util::Data& data) override;
 };
 
 }  // namespace pipeline

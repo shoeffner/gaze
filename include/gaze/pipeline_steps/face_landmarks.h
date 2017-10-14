@@ -21,7 +21,7 @@ namespace pipeline {
  *
  * // TODO(shoeffner): Write documentation for FaceLandmarks.
  */
-class FaceLandmarks : public PipelineStep {
+class FaceLandmarks final : public PipelineStep {
   dlib::frontal_face_detector face_detector;
   dlib::shape_predictor shape_predictor;
 
@@ -38,12 +38,12 @@ class FaceLandmarks : public PipelineStep {
      * @param data The data object to be updated.
      * @returns via `data` the modified data object.
      */
-    virtual void process(util::Data& data);
+    void process(util::Data& data) override;
 
     /**
      * @param data The data object to be updated.
      */
-    virtual void visualize(util::Data& data);
+    void visualize(util::Data& data) override;
 };
 
 }  // namespace pipeline

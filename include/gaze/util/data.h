@@ -30,7 +30,8 @@ struct Data {
 
   /**
    * Uses copy and Data::swap().
-   * @param the data object to assign
+   *
+   * @param data the data object to assign
    * @returns a reference to `this`.
    */
   Data& operator=(Data data);
@@ -69,10 +70,20 @@ struct Data {
  private:
   /**
    * Swaps `this`'s members with `data`'s.
+   *
+   * @param data the data object to swap with.
    */
   void swap(Data& data);
 };
 
+/**
+ * Prints a human readable short information about the data object to the
+ * stream.
+ *
+ * @param ostr the stream.
+ * @param data the data object.
+ * @returns the stream.
+ */
 inline std::ostream& operator<<(std::ostream& ostr,
                                 const Data& data) {
   ostr << "Source image size: " << data.source_image.size() << std::endl

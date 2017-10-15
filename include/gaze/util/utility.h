@@ -80,14 +80,15 @@ std::vector<dlib::chip_details> get_eyes_chip_details(
  */
 const cv::Rect crop_to_image_boundary(const cv::Mat& image,
                                       const cv::Rect& roi);
+
 /**
  * Checks if a point lies inside the image.
  *
  * @param image The image.
  * @param poi The point of interest.
+ * @returns true if the point is inside the image
  */
 bool in_image(const cv::Mat& image, const cv::Point& poi);
-
 //@}
 
 }  // namespace util

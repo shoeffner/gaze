@@ -42,6 +42,15 @@ endif(NOT "master" STREQUAL "${GIT_CURRENT_BRANCH}")
 message(STATUS "Documentation will be written to ${DOXYGEN_OUTPUT_DIRECTORY}")
 
 
+# Skip tagfiles if needed.
+if(DOXYGEN_NO_TAGFILES)
+    message(STATUS "Skipping external documentation links.")
+    set(DOXYFILE_NO_TAGFILES ${CMAKE_BINARY_DIR}/Doxyfile.clear_tagfiles)
+    file(WRITE ${DOXYFILE_NO_TAGFILES} "TAGFILES = \n")
+    list(APPEND DOXYFILES ${DOXYFILE_NO_TAGFILES})
+endif(DOXYGEN_NO_TAGFILES)
+
+
 # Generate clang parameters
 if(NOT WIN32)
     find_program(PYTHON NAMES python3)

@@ -3,6 +3,9 @@
 #ifndef INCLUDE_GAZE_UTIL_DATA_H_
 #define INCLUDE_GAZE_UTIL_DATA_H_
 
+#include <iostream>
+#include <utility>  // Not used, but cpplint detects swap() as part of this
+
 #include "opencv2/core.hpp"
 #include "dlib/opencv.h"
 #include "dlib/image_processing.h"
@@ -20,6 +23,20 @@ namespace util {
  * // TODO(shoeffner): Write at least one writer.
  */
 struct Data {
+  /** @name Constructors */
+  //@{
+  Data();
+  Data(Data& data);
+
+  /**
+   * Uses copy and Data::swap().
+   * @param the data object to assign
+   * @returns a reference to `this`.
+   */
+  Data& operator=(Data data);
+  //@}
+
+  /** @name Input image */
   //@{
   /**
    * The unaltered image from the source stream.
@@ -48,7 +65,22 @@ struct Data {
    */
   dlib::array<dlib::array2d<dlib::bgr_pixel>> eyes;
   //@}
+
+ private:
+  /**
+   * Swaps `this`'s members with `data`'s.
+   */
+  void swap(Data& data);
 };
+
+inline std::ostream& operator<<(std::ostream& ostr,
+                                const Data& data) {
+  ostr << "Source image size: " << data.source_image.size() << std::endl
+       << "dlib image size: " << data.image.size() << std::endl
+       << "Face: " << data.landmarks.get_rect() << std::endl
+       << "Eyes detected: " << data.eyes.size() << std::endl;
+  return ostr;
+}
 
 }  // namespace util
 

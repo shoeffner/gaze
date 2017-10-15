@@ -40,7 +40,7 @@ const cv::Rect convert(const dlib::rectangle in);
 /**
  * Converts between Point and point.
  *
- * @param the Point to convert.
+ * @param in the Point to convert.
  * @returns converted point.
  */
 const dlib::point convert(const cv::Point in);
@@ -48,7 +48,7 @@ const dlib::point convert(const cv::Point in);
 /**
  * Converts between Point and point.
  *
- * @param the point to convert.
+ * @param in the point to convert.
  * @returns converted Point.
  */
 const cv::Point convert(const dlib::point in);
@@ -82,8 +82,11 @@ const cv::Rect crop_to_image_boundary(const cv::Mat& image,
                                       const cv::Rect& roi);
 /**
  * Checks if a point lies inside the image.
+ *
+ * @param image The image.
+ * @param poi The point of interest.
  */
-bool in_image(const cv::Mat& image, const cv::Point&poi);
+bool in_image(const cv::Mat& image, const cv::Point& poi);
 
 //@}
 

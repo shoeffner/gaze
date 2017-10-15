@@ -27,11 +27,13 @@ link_directories(
 # Library
 list(APPEND LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/gaze_tracker.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/gui/debug_window.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_step.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/face_landmarks.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/pupil_localization.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/source_capture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/util/data.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/util/utility.cpp
 )
 

@@ -8,6 +8,7 @@
 
 #include "opencv2/core.hpp"
 
+#include "gaze/gui/debug_window.h"
 #include "gaze/pipeline.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/pipeline_steps.h"
@@ -93,13 +94,9 @@ void GazeTracker::init(const std::string source,
   this->subject_id = subject_id;
   this->init_pipeline();
   if (this->debug) {
-    this->init_debug_view();
+    gui::open_debug_window(this->pipeline);
   }
   this->initialized = true;
-}
-
-void GazeTracker::init_debug_view() {
-  // TODO(shoeffner): Initialize a debug window.
 }
 
 void GazeTracker::init_pipeline() {

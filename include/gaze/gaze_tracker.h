@@ -34,11 +34,6 @@ class GazeTracker {
   std::string video_source;
 
   /**
-   * Initializes the thread for the debug GUI.
-   */
-  void init_debug_view();
-
-  /**
    * Initializes the thread for the processing pipeline.
    */
   void init_pipeline();

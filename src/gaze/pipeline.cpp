@@ -17,9 +17,23 @@ void Pipeline::operator()() {
     std::this_thread::sleep_for(std::chrono::milliseconds(15));
   }
   while (this->running) {
+    // Process
     util::Data data;
     for (PipelineStep* step : this->steps) {
       step->process(data);
+    }
+    {  // Update data (locked)
+      std::unique_lock<std::shared_mutex> lock(this->data_access_mutex);
+      this->current_data = data;
+    }
+    // If debugging is enabled, notify debug_window of update.
+    if (this->debug_window) {
+      // TODO(shoeffner): Here we hope that "doing nothing" is fast enough.
+      if (this->debug_window->is_closed()) {
+        this->debug_window = nullptr;
+      } else {
+        this->debug_window->trigger_user_event(nullptr, 0);
+      }
     }
   }
 }
@@ -46,9 +60,17 @@ void Pipeline::stop() {
   this->running = false;
 }
 
-const util::Data Pipeline::get_data() {
+util::Data Pipeline::get_data() {
   std::shared_lock<std::shared_mutex> lock(this->data_access_mutex);
-  return util::Data();  // this->current_data;
+  return this->current_data;
+}
+
+std::vector<PipelineStep*> Pipeline::get_steps() {
+  return this->steps;
+}
+
+void Pipeline::set_debug_window(dlib::base_window* debug_window) {
+  this->debug_window = debug_window;
 }
 
 }  // namespace gaze

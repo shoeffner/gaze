@@ -11,6 +11,7 @@
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
 
+#include "dlib/gui_core.h"
 
 namespace gaze {
 
@@ -25,6 +26,7 @@ class Pipeline {
   util::Data current_data;
   std::vector<PipelineStep*> steps;
   std::thread* thread;
+  dlib::base_window* debug_window;
 
   /**
    * The thread function.
@@ -65,7 +67,24 @@ class Pipeline {
     void stop();
     //@}
 
-    const util::Data get_data();
+    //@{
+    /**
+     * @returns the last updated data element.
+     */
+    util::Data get_data();
+
+    /**
+     * @returns The PipelineSteps.
+     */
+    std::vector<PipelineStep*> get_steps();
+
+    /**
+     * Sets the debug window.
+     *
+     * @param debug_window the DebugWindow to set.
+     */
+    void set_debug_window(dlib::base_window* debug_window);
+    //@}
 };
 
 }  // namespace gaze

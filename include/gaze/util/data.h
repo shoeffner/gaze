@@ -45,7 +45,7 @@ struct Data {
   cv::Mat source_image;
 
   /**
-   * This image references the source_image.
+   * The (possibly modified) source image.
    */
   dlib::array2d<dlib::bgr_pixel> image;
   //@}

@@ -44,9 +44,6 @@ void PupilLocalization::visualize(util::Data& data) {
                     util::convert(eye_bb.rect)),
                   cv::Scalar(0, 255, 255));
   }
-
-  cv::imshow("left eye", dlib::toMat(data.eyes[0]));
-  cv::imshow("right eye", dlib::toMat(data.eyes[1]));
 }
 
 }  // namespace pipeline

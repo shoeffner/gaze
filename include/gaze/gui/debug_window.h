@@ -36,6 +36,16 @@ class DebugWindow final : public dlib::drawable_window {
   //@}
 
   /**
+   * Processes the data to be visualized.
+   * @deprecated Should be replaced "soon" by a renderer not modifying
+   *             OpenCV matrices.
+   *
+   * Calls the visualize functions of all pipeline steps, and copies
+   * the modified cv::Mat source_image to the dlib::array2d image.
+   */
+  void process_data();
+
+  /**
    * Checks the event type (@see Events) and handles events.
    * @param event_data data passed along with the event.
    * @param event_type the event type (@see Events).

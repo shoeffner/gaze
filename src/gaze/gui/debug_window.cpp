@@ -5,6 +5,7 @@
 #include <memory>
 #include <thread>  // NOLINT
 
+#include "dlib/geometry.h"
 #include "dlib/gui_core.h"
 #include "dlib/gui_widgets.h"
 
@@ -17,8 +18,9 @@ namespace gaze {
 namespace gui {
 
 DebugWindow::DebugWindow(Pipeline* pipeline)
-    : pipeline(pipeline) {
-  this->set_size(640, 400);
+    : dlib::drawable_window(false, false),
+      pipeline(pipeline) {
+  this->set_size(640, 360);
   this->set_title("GazeTracker DebugWindow");
   this->show();
   EventManager::instance().subscribe(this);
@@ -29,14 +31,28 @@ DebugWindow::~DebugWindow() {
   this->close_window();
 }
 
+void DebugWindow::process_data() {
+  for (PipelineStep* step : this->pipeline->get_steps()) {
+    step->visualize(this->data);
+  }
+  dlib::assign_image(
+      this->data.image,
+      dlib::cv_image<dlib::bgr_pixel>(this->data.source_image));
+}
+
 void DebugWindow::on_user_event(void*, int event_type) {
   switch (event_type) {
     case Events::PIPELINE_DATA_UPDATED:
       this->data = this->pipeline->get_data();
-      this->invalidate_rectangle(dlib::rectangle(0, 0, 640, 480));
+      this->process_data();
+      this->invalidate_rectangle(
+          dlib::rectangle(0, 0,
+                          this->data.image.nc(),
+                          this->data.image.nr()));
       break;
   }
 }
+
 void DebugWindow::paint(const dlib::canvas& canvas) {
   dlib::draw_image(canvas, canvas, this->data.image);
 }

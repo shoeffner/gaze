@@ -17,8 +17,9 @@ Data::Data(Data& data)
       landmarks(data.landmarks),
       eyes(2) {
   dlib::assign_image(this->image, data.image);
-  for (dlib::array2d<dlib::bgr_pixel>& eye : eyes) {
-    this->eyes.push_back(eye);
+
+  for (unsigned long i = 0; i < data.eyes.size(); ++i) {
+    dlib::assign_image(this->eyes[i], data.eyes[i]);
   }
 }
 

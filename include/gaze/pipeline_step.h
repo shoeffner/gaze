@@ -27,6 +27,7 @@ class PipelineStep {
   int number;
 
  protected:
+  std::string name;
   std::shared_ptr<gui::PipelineStepWidget> widget;
 
  public:
@@ -64,14 +65,14 @@ class PipelineStep {
      * @param data The data object to be updated.
      */
     virtual void visualize(util::Data& data);
+    //@}
 
     /**
      * Returns the name of this step. If this is not overridden,
      * names it `Step #` where `#` is a number starting at 0 and increasing
      * with each step.
      */
-    virtual std::string name();
-    //@}
+    std::string get_name();
 
     /**
      * Sets the PipelineStepWidget for this PipelineStep. Is usually called by the

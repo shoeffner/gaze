@@ -14,15 +14,17 @@ namespace gaze {
 
 int PipelineStep::counter = -1;
 
-PipelineStep::PipelineStep() : number(++PipelineStep::counter) {
+PipelineStep::PipelineStep()
+    : number(++PipelineStep::counter),
+      name("Step " + std::to_string(number)) {
 }
 
 void PipelineStep::visualize(util::Data&) {
   // Do nothing by default.
 }
 
-std::string PipelineStep::name() {
-  return "Step " + std::to_string(this->number);
+std::string PipelineStep::get_name() {
+  return this->name;
 }
 
 void PipelineStep::set_widget(std::shared_ptr<gui::PipelineStepWidget> widget) {

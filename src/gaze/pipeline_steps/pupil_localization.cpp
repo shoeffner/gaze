@@ -18,6 +18,7 @@ namespace gaze {
 namespace pipeline {
 
 PupilLocalization::PupilLocalization() {
+  this->name = "Eye center";
 }
 
 void PupilLocalization::process(util::Data& data) {
@@ -32,18 +33,10 @@ void PupilLocalization::process(util::Data& data) {
 
 void PupilLocalization::visualize(util::Data& data) {
   if (data.landmarks.num_parts() != 5) {
+    this->widget->set_image(data.image);
     return;
   }
-
-  std::vector<dlib::chip_details> chips =
-    util::get_eyes_chip_details(data.landmarks);
-  for (dlib::chip_details eye_bb : chips) {
-    cv::rectangle(data.source_image,
-                  util::crop_to_image_boundary(
-                    data.source_image,
-                    util::convert(eye_bb.rect)),
-                  cv::Scalar(0, 255, 255));
-  }
+  this->widget->set_image(data.image);
 }
 
 }  // namespace pipeline

@@ -53,7 +53,7 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
     widget_group_ptr->add(*widget.get(), this->w_margin, this->w_margin);
 
     // Assign name and add widget group to tab
-    this->pipeline_tabs.set_tab_name(i, pipeline->get_steps()[i]->name());
+    this->pipeline_tabs.set_tab_name(i, pipeline->get_steps()[i]->get_name());
     this->pipeline_tabs.set_tab_group(i, *widget_group_ptr.get());
   }
 

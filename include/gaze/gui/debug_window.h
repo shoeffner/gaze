@@ -4,6 +4,7 @@
 #define INCLUDE_GAZE_GUI_DEBUG_WINDOW_H_
 
 #include <memory>
+#include <vector>
 
 #include "dlib/gui_core.h"
 #include "dlib/gui_widgets.h"
@@ -22,7 +23,14 @@ namespace gui {
  */
 class DebugWindow final : public dlib::drawable_window {
   util::Data data;
+  dlib::button pause_button;
   Pipeline* pipeline;
+  dlib::tabbed_display pipeline_tabs;
+  std::vector<std::shared_ptr<dlib::widget_group>> widgets;
+
+  const int w_height = 720;
+  const int w_margin = 5;
+  const int w_width = 1280;
 
  public:
   /**
@@ -52,13 +60,6 @@ class DebugWindow final : public dlib::drawable_window {
    */
   //@{
   void on_user_event(void *event_data, int event_type) override;
-
-  /**
-   * Repaints the window.
-   *
-   * @param canvas the canvas.
-   */
-  void paint(const dlib::canvas& canvas) override;
   //@}
 };
 

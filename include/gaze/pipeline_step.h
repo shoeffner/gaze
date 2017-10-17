@@ -4,10 +4,12 @@
 #define INCLUDE_GAZE_PIPELINE_STEP_H_
 
 #include <atomic>
+#include <memory>
 #include <string>
 
 #include "opencv2/core.hpp"
 
+#include "gaze/gui/pipeline_step_widget.h"
 #include "gaze/util/data.h"
 
 
@@ -24,10 +26,12 @@ class PipelineStep {
   static int counter;
   int number;
 
+ protected:
+  std::shared_ptr<gui::PipelineStepWidget> widget;
+
  public:
     /**
-     * Increments the PipelineStep counter and assigns a position for potential
-     * debug texts.
+     * Increments the PipelineStep counter.
      */
     PipelineStep();
 
@@ -38,14 +42,14 @@ class PipelineStep {
      */
     //@{
     /**
-     * Overwrite this method if you need more destruction control.
+     * Override this method if you need more destruction control.
      */
     virtual ~PipelineStep() = default;
 
     /**
      * This function must be overwritten by each PipelineStep.
      * It should process the data object and write back its own results.
-     * While it is not forbidden to overwrite values, this should be done with
+     * While it is not forbidden to override values, this should be done with
      * caution.
      *
      * @param data The data object to be updated.
@@ -60,7 +64,22 @@ class PipelineStep {
      * @param data The data object to be updated.
      */
     virtual void visualize(util::Data& data);
+
+    /**
+     * Returns the name of this step. If this is not overridden,
+     * names it `Step #` where `#` is a number starting at 0 and increasing
+     * with each step.
+     */
+    virtual std::string name();
     //@}
+
+    /**
+     * Sets the PipelineStepWidget for this PipelineStep. Is usually called by the
+     * DebugWindow.
+     *
+     * @param widget the PipelineStepWidget.
+     */
+    void set_widget(std::shared_ptr<gui::PipelineStepWidget> widget);
 };
 
 }  // namespace gaze

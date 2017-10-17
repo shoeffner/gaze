@@ -22,6 +22,8 @@ SourceCapture::SourceCapture(int source) : video_capture(source) {
   // Set goal FPS to 60, still often webcams cap much lower.
   // (Not that the tracker would achieve this speed...)
   this->video_capture.set(cv::CAP_PROP_FPS, 60.0);
+  this->video_capture.set(cv::CAP_PROP_FRAME_WIDTH, 640.0);
+  this->video_capture.set(cv::CAP_PROP_FRAME_HEIGHT, 360.0);
 }
 
 SourceCapture::SourceCapture(std::string source) : video_capture(source) {
@@ -42,6 +44,10 @@ void SourceCapture::process(util::Data& data) {
       std::this_thread::sleep_for(std::chrono::milliseconds(15));
     }
   }
+}
+
+void SourceCapture::visualize(util::Data& data) {
+  this->widget->set_image(data.image);
 }
 
 }  // namespace pipeline

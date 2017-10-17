@@ -60,6 +60,14 @@ class SourceCapture final : public PipelineStep {
      * @returns via `data` the modified data object.
      */
     void process(util::Data& data) override;
+
+    /**
+     * Just assigns the data's raw camera image
+     * to the widget.
+     *
+     * @param data the data object.
+     */
+    void visualize(util::Data& data) override;
 };
 
 }  // namespace pipeline

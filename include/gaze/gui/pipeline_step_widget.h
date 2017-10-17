@@ -15,18 +15,56 @@ namespace gaze {
 
 namespace gui {
 
+/**
+ * @class PipelineStepWidget pipeline_step_widget.h
+ *        "gaze/gui/pipeline_step_widget.h"
+ * @brief Shows an image to visualize a PipelineStep.
+ *
+ * This widget is indeed very similar to a
+ * dlib::image_widget, but does not adjust itself to the
+ * images but the image to itself, while keeping the aspect
+ * ratio constant.
+ */
 class PipelineStepWidget : public dlib::drawable {
   dlib::array2d<dlib::rgb_alpha_pixel> image;
   dlib::rectangle max_size;
 
  public:
+    /**
+     * Creates a PipelineStepWidget with a parent window.
+     *
+     * @param window: Window.
+     */
     explicit PipelineStepWidget(dlib::drawable_window& window);
+
     ~PipelineStepWidget() override;
 
+    /**
+     * Draws the image at the right position onto the canvas.
+     *
+     * @param canvas the canvas to draw on.
+     */
     void draw(const dlib::canvas& canvas) const override;
 
+    /**
+     * Sets the maximum available size for this image.
+     * This size is fix and will not change unless by calling this
+     * funtion again.
+     *
+     * @param width the maximum allowed image display width
+     * @param height the maximum allowed image display height
+     */
     void set_size(unsigned long width, unsigned long height);
 
+    /**
+     * Sets the image and invalidates its rectangle so that the parent window
+     * needs to redraw.
+     *
+     * The image is resized to the available image display size (@see
+     * set_size()) while keeping its aspect ratio.
+     *
+     * @param new_image The new image.
+     */
     template<typename image_type>
     void set_image(const image_type& new_image) {
       dlib::auto_mutex M(this->m);

@@ -27,7 +27,15 @@ class PipelineStep {
   int number;
 
  protected:
+  /**
+   * The name of this PipelineStep.
+   * Should be unique if possible. By default "Step #" is assigned.
+   */
   std::string name;
+
+  /**
+   * The widget this PipelineStep can use.
+   */
   std::shared_ptr<gui::PipelineStepWidget> widget;
 
  public:
@@ -71,6 +79,8 @@ class PipelineStep {
      * Returns the name of this step. If this is not overridden,
      * names it `Step #` where `#` is a number starting at 0 and increasing
      * with each step.
+     *
+     * @returns This step's name.
      */
     std::string get_name();
 

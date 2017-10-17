@@ -64,8 +64,13 @@ struct Data {
   /**
    * The 0th element is the left eye, the 1st the right eye.
    */
-  dlib::array<dlib::array2d<unsigned char>> eyes;
+  dlib::array<dlib::array2d<double>> eyes;
   //@}
+
+  /**
+   * Eye center locations.
+   */
+  dlib::array<dlib::point> centers;
 
  private:
   /**

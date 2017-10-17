@@ -17,10 +17,14 @@ find_package(blas REQUIRED)
 
 # Includes and libraries
 include_directories(
+    ${dlib_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
+    ${X11_INCLUDE_DIR}
 )
 link_directories(
+    ${dlib_LIBRARY_DIRS}
     ${OpenCV_LIBRARY_DIRS}
+    ${X11_LIBRARY_DIR}
 )
 
 
@@ -57,9 +61,9 @@ if(${OpenCV_TARGET})
 endif(${OpenCV_TARGET})
 
 target_link_libraries(${PROJECT_NAME}
-    ${OpenCV_LIBRARIES}
-    ${dlib_LIBS}
-    ${LAPACK_LIBRARIES}
     ${BLAS_LIBRARIES}
+    ${dlib_LIBRARIES}
+    ${LAPACK_LIBRARIES}
+    ${OpenCV_LIBRARIES}
     ${X11_LIBRARIES}
 )

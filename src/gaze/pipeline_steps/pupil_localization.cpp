@@ -33,10 +33,30 @@ void PupilLocalization::process(util::Data& data) {
 
 void PupilLocalization::visualize(util::Data& data) {
   if (data.landmarks.num_parts() != 5) {
-    this->widget->set_image(data.image);
     return;
   }
-  this->widget->set_image(data.image);
+
+  // define offsets
+  dlib::point offset_x(5, 0);
+  dlib::point offset_y(0, 5);
+
+  // assign eyes to new images
+  dlib::array<dlib::array2d<dlib::bgr_pixel>> eyes(2);
+  for (unsigned long i = 0; i < data.eyes.size(); ++i) {
+    dlib::assign_image(eyes[i], data.eyes[i]);
+
+    dlib::draw_line(eyes[i],
+                    data.centers[i] + offset_x,
+                    data.centers[i] - offset_x,
+                    dlib::rgb_pixel(255, 0, 0));
+    dlib::draw_line(eyes[i],
+                    data.centers[i] + offset_y,
+                    data.centers[i] - offset_y,
+                    dlib::rgb_pixel(255, 0, 0));
+  }
+
+
+  this->widget->set_image(dlib::tile_images(eyes));
 }
 
 }  // namespace pipeline

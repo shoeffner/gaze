@@ -22,9 +22,12 @@ namespace gui {
  * @brief A window to inspect computation results.
  */
 class DebugWindow final : public dlib::drawable_window {
+  int current_tab = 0;
   util::Data data;
   dlib::button pause_button;
+  bool paused;
   Pipeline* pipeline;
+  std::vector<PipelineStep*> pipeline_steps;
   dlib::tabbed_display pipeline_tabs;
   std::vector<std::shared_ptr<dlib::widget_group>> widgets;
 
@@ -45,13 +48,13 @@ class DebugWindow final : public dlib::drawable_window {
 
   /**
    * Processes the data to be visualized.
-   * @deprecated Should be replaced "soon" by a renderer not modifying
-   *             OpenCV matrices.
    *
-   * Calls the visualize functions of all pipeline steps, and copies
-   * the modified cv::Mat source_image to the dlib::array2d image.
+   * Calls the visualize function of the PipelineStep of the active tab.
+   *
+   * @param idx (Optional): If this is a value other than -1,
+   *            the tab with this index is updated instead of the current tab.
    */
-  void process_data();
+  void process_data(int idx = -1);
 
   /**
    * Checks the event type (@see Events) and handles events.

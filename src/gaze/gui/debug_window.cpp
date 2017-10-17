@@ -20,7 +20,9 @@ namespace gui {
 DebugWindow::DebugWindow(Pipeline* pipeline)
     : dlib::drawable_window(false, false),
       pause_button(*this),
+      paused(false),
       pipeline(pipeline),
+      pipeline_steps(pipeline->get_steps()),
       pipeline_tabs(*this) {
   this->set_size(this->w_width, this->w_height);
   this->set_title("GazeTracker DebugWindow");
@@ -28,6 +30,9 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
 
   this->pause_button.set_pos(this->w_margin, this->w_margin);
   this->pause_button.set_name("Pause");
+  this->pause_button.set_click_handler([this]() {
+        this->paused ^= true;
+  });
 
 
   this->pipeline_tabs.set_pos(this->pause_button.left(),
@@ -35,16 +40,22 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
   this->pipeline_tabs.set_size(this->w_width - 2 * this->w_margin,
                                this->w_height - 3 * this->w_margin
                                    - this->pause_button.height());
-  this->pipeline_tabs.set_number_of_tabs(pipeline->get_steps().size());
+  this->pipeline_tabs.set_number_of_tabs(this->pipeline_steps.size());
+  this->pipeline_tabs.set_click_handler([this](unsigned long new_idx,
+                                               unsigned long)
+      -> void {
+        this->current_tab = new_idx;
+        this->process_data(new_idx);
+      });
 
-  for (unsigned long i = 0; i < pipeline->get_steps().size(); ++i) {
+  for (unsigned long i = 0; i < this->pipeline_steps.size(); ++i) {
     // Create widget and assign it to the pipeline step
     std::shared_ptr<PipelineStepWidget> widget(new PipelineStepWidget(*this));
     // Roughly fit the borders and button sizes, it's not perfect, but well
     widget->set_size(this->pipeline_tabs.width() - 3 * this->w_margin,
                      this->pipeline_tabs.height() - 3 * this->w_margin
                        - this->pause_button.height());
-    pipeline->get_steps()[i]->set_widget(widget);
+    this->pipeline_steps[i]->set_widget(widget);
 
     // Create widget group, add widget to it
     std::shared_ptr<dlib::widget_group> widget_group_ptr(
@@ -53,7 +64,7 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
     widget_group_ptr->add(*widget.get(), this->w_margin, this->w_margin);
 
     // Assign name and add widget group to tab
-    this->pipeline_tabs.set_tab_name(i, pipeline->get_steps()[i]->get_name());
+    this->pipeline_tabs.set_tab_name(i, this->pipeline_steps[i]->get_name());
     this->pipeline_tabs.set_tab_group(i, *widget_group_ptr.get());
   }
 
@@ -63,29 +74,28 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
 
 DebugWindow::~DebugWindow() {
   EventManager::instance().unsubscribe(this);
-  for (PipelineStep* step : this->pipeline->get_steps()) {
+  for (PipelineStep* step : this->pipeline_steps) {
     step->set_widget(nullptr);
   }
   this->close_window();
 }
 
-void DebugWindow::process_data() {
-  for (PipelineStep* step : this->pipeline->get_steps()) {
-    step->visualize(this->data);
-  }
-  dlib::assign_image(
-      this->data.image,
-      dlib::cv_image<dlib::bgr_pixel>(this->data.source_image));
+void DebugWindow::process_data(int idx) {
+  // TODO(shoeffner): this->pipeline_tabs.selected_tab() does not compile:
+  // `error: no member named 'selected_tab' in 'dlib::tabbed_display'`
+  idx = idx < 0 ? this->current_tab : idx;
+  this->pipeline_steps[idx]->visualize(this->data);
+  this->invalidate_rectangle(this->widgets[idx]->get_rect());
 }
 
 void DebugWindow::on_user_event(void*, int event_type) {
   switch (event_type) {
     case Events::PIPELINE_DATA_UPDATED:
-      // TODO(shoeffner): implement pause button behaviour
+      if (this->paused) {
+        break;
+      }
       this->data = this->pipeline->get_data();
-      // TODO(shoeffner): Only process visible tab?
       this->process_data();
-      this->invalidate_rectangle(this->pipeline_tabs.get_rect());
       break;
   }
 }

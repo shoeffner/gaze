@@ -4,11 +4,6 @@ include(ExternalProject)
 message(STATUS "Configuring demo where_people_look.")
 
 
-if(NOT Boost_VERSION)
-    cmake_minimum_required(VERSION 3.9.1)
-    set(Boost_VERSION 1.65.0)
-endif(NOT Boost_VERSION)
-
 find_package(Boost ${Boost_VERSION} COMPONENTS filesystem system)
 if(NOT Boost_FOUND)
   message(WARNING "Can not build where_people_look example, did not find Boost.")

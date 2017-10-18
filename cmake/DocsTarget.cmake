@@ -95,5 +95,5 @@ add_custom_target(${DOCS_TARGET}
                   DEPENDS ${DOXYFILE_CLANG}
                           ${LIBSTDCPP_TAG})
 add_custom_command(TARGET ${DOCS_TARGET}
-                  COMMAND ${DOXYGEN_COMMAND}
-                  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+                   COMMAND ${DOXYGEN_COMMAND}
+                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

@@ -1,30 +1,31 @@
-if(NOT OpenCV_VERSION)
-    set(OpenCV_VERSION 3.3.0)
-endif(NOT OpenCV_VERSION)
-set(OpenCV_COMPONENTS core highgui imgcodecs imgproc videoio objdetect)
+include(ExternalProject)
 
-if(NOT dlib_VERSION)
-    set(dlib_VERSION 19.7)
-endif(NOT dlib_VERSION)
+message(STATUS "Configuring gaze")
 
 
 # Find packages
+set(OpenCV_COMPONENTS core videoio)
 find_package(OpenCV ${OpenCV_VERSION} REQUIRED COMPONENTS ${OpenCV_COMPONENTS})
-find_package(X11)
+if (NOT OpenCV_FOUND)
+    message(WARNING "Can not build gaze library, OpenCV was not found.")
+    return()
+endif(NOT OpenCV_FOUND)
+
 find_package(dlib ${dlib_VERSION} REQUIRED)
-find_package(lapack REQUIRED)
-find_package(blas REQUIRED)
+if (NOT dlib_FOUND)
+    message(WARNING "Can not build gaze library, dlib was not found.")
+    return()
+endif(NOT dlib_FOUND)
+
 
 # Includes and libraries
 include_directories(
     ${dlib_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
-    ${X11_INCLUDE_DIR}
 )
 link_directories(
     ${dlib_LIBRARY_DIRS}
     ${OpenCV_LIBRARY_DIRS}
-    ${X11_LIBRARY_DIR}
 )
 
 
@@ -44,26 +45,32 @@ list(APPEND LIBRARY_SOURCE_FILES
 )
 
 
+# Landmarks file for face detection
+set(LANDMARKS_FILE shape_predictor_5_face_landmarks.dat)
+ExternalProject_Add(${LANDMARKS_FILE}
+    URL "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2"
+    URL_HASH "SHA256=6e787bbebf5c9efdb793f6cd1f023230c4413306605f24f299f12869f95aa472"
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND bunzip2 -ck <SOURCE_DIR>/../shape_predictor_5_face_landmarks.dat.bz2 > ${CMAKE_BINARY_DIR}/${LANDMARKS_FILE}
+    INSTALL_COMMAND ""
+    DOWNLOAD_NO_PROGRESS 1
+    DOWNLOAD_NO_EXTRACT 1
+)
+
+
 # Compiler optimizations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -msse2")
 
-
 # Library target
-
 add_library(${PROJECT_NAME} ${LIBRARY_SOURCE_FILES})
+add_dependencies(${PROJECT_NAME} ${LANDMARKS_FILE})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 set_target_properties(${PROJECT_NAME}
     PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
-if(${OpenCV_TARGET})
-    add_dependencies(${PROJECT_NAME} ${OpenCV_TARGET})
-endif(${OpenCV_TARGET})
 
 target_link_libraries(${PROJECT_NAME}
-    ${BLAS_LIBRARIES}
     ${dlib_LIBRARIES}
-    ${LAPACK_LIBRARIES}
     ${OpenCV_LIBRARIES}
-    ${X11_LIBRARIES}
 )

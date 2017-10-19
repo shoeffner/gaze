@@ -105,6 +105,8 @@ namespace {
 /**
  * Actual debug window routine to be called by open_debug_window().
  * It creates an instance of a DebugWindow and starts its main loop.
+ *
+ * @param pipeline the Pipeline for the DebugWindow.
  */
 void _open_debug_window(Pipeline* pipeline) {
   DebugWindow(pipeline).wait_until_closed();

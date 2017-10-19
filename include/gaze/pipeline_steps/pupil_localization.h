@@ -24,6 +24,7 @@ class PupilLocalization final : public PipelineStep {
 
   // TODO(shoeffner): Add unit tests.
 
+ protected:  // TODO(shoeffner): Protected so that Doxygen picks it up: Move!
   /**
    * Filles the displacement table to precalculate values for vector @f$d_i@f$
    * @cite timm2011.

@@ -15,8 +15,7 @@ namespace gaze {
 namespace pipeline {
 
 /**
- * @class FaceLandmarks face_landmarks.h
- *        "gaze/pipeline_steps/face_landmarks.h"
+ * @class FaceLandmarks face_landmarks.h "gaze/pipeline_steps/face_landmarks.h"
  * @brief Uses dlibs pretrained models to detect face landmarks.
  *
  * // TODO(shoeffner): Write documentation for FaceLandmarks.

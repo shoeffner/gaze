@@ -16,8 +16,7 @@ namespace gaze {
 namespace gui {
 
 /**
- * @class PipelineStepWidget pipeline_step_widget.h
- *        "gaze/gui/pipeline_step_widget.h"
+ * @class PipelineStepWidget pipeline_step_widget.h "gaze/gui/pipeline_step_widget.h"
  * @brief Shows an image to visualize a PipelineStep.
  *
  * This widget is indeed very similar to a

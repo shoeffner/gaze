@@ -3,11 +3,108 @@
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_PUPIL_LOCALIZATION_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_PUPIL_LOCALIZATION_H_
 
+#include <algorithm>  // Not used, but cpplint detects max() as part of this
+
+#include "dlib/matrix.h"
+
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
 
 
 namespace gaze {
+
+namespace util {
+
+/**
+ * Filles the displacement table to precalculate values for vector @f$d_i@f$
+ * @cite timm2011.
+ *
+ * The function returns without modifying table_x or table_y if size is
+ * smaller than the current table size.
+ *
+ * The size will always be set to size or size + 1, whichever is odd. This
+ * ensures that the center value is 0 as a reference point.
+ *
+ * After a call to this function with a sufficiently big size argument,
+ * table_x and table_y contain values such that reading from both tables
+ * at the same indices yields the respective components for a unit vector
+ * geometrically pointing from the center of the matrix to the read position.
+ *
+ * A @f$3 \times 3@f$ table_x would thus look like this:
+ *
+ * @f[
+ * \left(
+ * \begin{array}{ccc}
+ * -0.707 & 0 & 0.707 \\
+ * -1 & 0 & 1 \\
+ * -0.707 & 0 & 0.707
+ * \end{array}
+ * \right)
+ * @f]
+ *
+ * And the corresponding @f$3 \times 3@f$ table_y would be table_x's transposed
+ * version:
+ *
+ * @f[
+ * \left(
+ * \begin{array}{ccc}
+ * -0.707 & -1 & -0.707 \\
+ * 0 & 0 & 0 \\
+ * 0.707 & 1 & 0.707
+ * \end{array}
+ * \right)
+ * @f]
+ *
+ * Accessing table_x and table_y at (0, 0) yields @f$(-0.707, -0.707)@f$ which
+ * is a unit length vector pointing from the center (1, 1) to (0, 0).
+ *
+ * @param table_x The x components of @f$d_i@f$.
+ * @param table_y The y components of @f$d_i@f$.
+ * @param size The size to grow this table to.
+ */
+void fill_displacement_tables(dlib::matrix<double>& table_x,
+                              dlib::matrix<double>& table_y,
+                              int size);
+
+/**
+ * Normalizes a horizontal and a vertical gradient matrix to unit length vectors.
+ *
+ * If a relative threshold is provided, all values where the gradient magnitude
+ * @f$ M @f$ is lower than @f$ \theta \max M @f$ are set to 0.
+ *
+ * @param horizontal A gradient, e.g. from dlib::sobel_edge_detector
+ * @param vertical A gradient, e.g. from dlib::sobel_edge_detector
+ * @param relative_threshold optional threshold to set small values to 0.
+ */
+template <typename T>
+void normalize_and_threshold_gradients(
+    dlib::matrix<T>& horizontal,
+    dlib::matrix<T>& vertical,
+    double relative_threshold = -1) {
+  // normalization
+  dlib::matrix<T> magnitude;
+  magnitude = dlib::sqrt(dlib::squared(horizontal) +
+                         dlib::squared(vertical));
+  horizontal = dlib::pointwise_multiply(
+      horizontal, dlib::reciprocal(magnitude));
+  vertical = dlib::pointwise_multiply(
+      vertical, dlib::reciprocal(magnitude));
+
+  // Thresholding
+  if (relative_threshold >= 0) {
+    T threshold = dlib::max(magnitude) * relative_threshold;
+    for (int row = 0; row < horizontal.nr(); ++row) {
+      for (int col = 0; col < horizontal.nc(); ++col) {
+        if (magnitude(row, col) < threshold) {
+          horizontal(row, col) = 0;
+          vertical(row, col) = 0;
+        }
+      }
+    }
+  }
+}
+
+}  // namespace util
 
 namespace pipeline {
 
@@ -21,60 +118,11 @@ namespace pipeline {
 class PupilLocalization final : public PipelineStep {
   dlib::matrix<double> displacement_table_x;
   dlib::matrix<double> displacement_table_y;
+  const double SIGMA;
+  const double RELATIVE_THRESHOLD;
 
   // TODO(shoeffner): Add unit tests.
 
- protected:  // TODO(shoeffner): Protected so that Doxygen picks it up: Move!
-  /**
-   * Filles the displacement table to precalculate values for vector @f$d_i@f$
-   * @cite timm2011.
-   *
-   * The function returns without modifying table_x or table_y if size is
-   * smaller than the current table size.
-   *
-   * The size will always be set to size or size + 1, whichever is odd. This
-   * ensures that the center value is 0 as a reference point.
-   *
-   * After a call to this function with a sufficiently big size argument,
-   * table_x and table_y contain values such that reading from both tables
-   * at the same indices yields the respective components for a unit vector
-   * geometrically pointing from the center of the matrix to the read position.
-   *
-   * A @f$3 \times 3@f$ table_x would thus look like this:
-   *
-   * @f[
-   * \left(
-   * \begin{array}{ccc}
-   * -0.707 & 0 & 0.707 \\
-   * -1 & 0 & 1 \\
-   * -0.707 & 0 & 0.707
-   * \end{array}
-   * \right)
-   * @f]
-   *
-   * And the corresponding @f$3 \times 3@f$ table_y would be table_x's transposed
-   * version:
-   *
-   * @f[
-   * \left(
-   * \begin{array}{ccc}
-   * -0.707 & -1 & -0.707 \\
-   * 0 & 0 & 0 \\
-   * 0.707 & 1 & 0.707
-   * \end{array}
-   * \right)
-   * @f]
-   *
-   * Accessing table_x and table_y at (0, 0) yields @f$(-0.707, -0.707)@f$ which
-   * is a unit length vector pointing from the center (1, 1) to (0, 0).
-   *
-   * @param table_x The x components of @f$d_i@f$.
-   * @param table_y The y components of @f$d_i@f$.
-   * @param size The size to grow this table to.
-   */
-  void fill_displacement_tables(dlib::matrix<double>& table_x,
-                                dlib::matrix<double>& table_y,
-                                int size);
 
  public:
     /**

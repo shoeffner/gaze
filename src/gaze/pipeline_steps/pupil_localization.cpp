@@ -7,9 +7,11 @@
 #include <vector>
 
 #include "dlib/image_processing.h"
+#include "dlib/image_transforms.h"
+#include "dlib/matrix.h"
 #include "dlib/opencv.h"
-#include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
+#include "opencv2/imgproc.hpp"
 
 #include "gaze/util/data.h"
 #include "gaze/util/utility.h"
@@ -17,9 +19,9 @@
 
 namespace gaze {
 
-namespace pipeline {
+namespace util {
 
-void PupilLocalization::fill_displacement_tables(
+void fill_displacement_tables(
     dlib::matrix<double>& table_x,
     dlib::matrix<double>& table_y,
     int size) {
@@ -57,11 +59,17 @@ void PupilLocalization::fill_displacement_tables(
   table_y = dlib::trans(table_x);
 }
 
-PupilLocalization::PupilLocalization() {
+}  // namespace util
+
+namespace pipeline {
+
+PupilLocalization::PupilLocalization()
+    // TODO(shoeffner): Evaluate which parameters and sizes are useful
+    : SIGMA(1),
+      RELATIVE_THRESHOLD(0.6) {
   this->name = "Eye center";
   // Pre-calculate displacement table
-  // TODO(shoeffner): Evaluate which size is useful
-  this->fill_displacement_tables(
+  util::fill_displacement_tables(
       this->displacement_table_x,
       this->displacement_table_y,
       131);
@@ -79,10 +87,59 @@ void PupilLocalization::process(util::Data& data) {
                            data.eyes[1].nr(), data.eyes[1].nc()});
   if (2 * max_size > this->displacement_table_x.nr()) {
     // TODO(shoeffner): Instead of +1 use +N to prepare for some more variation
-    this->fill_displacement_tables(
+    util::fill_displacement_tables(
         this->displacement_table_x,
         this->displacement_table_y,
         2 * max_size + 1);
+  }
+
+  for (int i = 0; i < 2; ++i) {
+    // Assign image and scale to 0..1
+    dlib::matrix<double> eye_in;
+    dlib::assign_image(eye_in, data.eyes[i]);
+    eye_in /= 255;
+
+    // Blur image
+    dlib::matrix<double> eye_gaussian;
+    dlib::gaussian_blur(eye_in, eye_gaussian, this->SIGMA);
+
+    // Calculate gradients
+    dlib::matrix<double> eye_horizontal;
+    dlib::matrix<double> eye_vertical;
+    dlib::sobel_edge_detector(eye_gaussian, eye_horizontal, eye_vertical);
+    util::normalize_and_threshold_gradients(eye_horizontal, eye_vertical,
+        this->RELATIVE_THRESHOLD);
+
+    // Compute objective function t - only implicit
+    double max_t = std::numeric_limits<double>::min();
+    int argmax_r;
+    int argmax_c;
+
+    int size = this->displacement_table_x.nr();
+    int center = (size - 1) / 2;
+    int nr = eye_in.nr();
+    int nc = eye_in.nc();
+    // TODO(shoeffner): Consider smaller range
+    for (int row = 0; row < nr; ++row) {
+      for (int col = 0; col < nc; ++col) {
+        dlib::matrix<double> d_x = dlib::subm(this->displacement_table_x,
+            center - row, center - col, nr, nc);
+        dlib::matrix<double> d_y = dlib::subm(this->displacement_table_y,
+            center - row, center - col, nr, nc);
+
+        double t =
+          dlib::mean(
+            dlib::squared(
+              dlib::pointwise_multiply(d_x, eye_horizontal) +
+              dlib::pointwise_multiply(d_y, eye_vertical)));
+        if (t > max_t) {
+          max_t = t;
+          argmax_r = row;
+          argmax_c = col;
+        }
+      }
+    }
+    data.centers[i] = dlib::point(argmax_r, argmax_c);
   }
 }
 

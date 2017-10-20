@@ -6,17 +6,16 @@ message(STATUS "Configuring gaze")
 # Find packages
 set(OpenCV_COMPONENTS core videoio)
 find_package(OpenCV ${OpenCV_VERSION} REQUIRED COMPONENTS ${OpenCV_COMPONENTS})
-if (NOT OpenCV_FOUND)
+if(NOT OpenCV_FOUND)
     message(WARNING "Can not build gaze library, OpenCV was not found.")
     return()
 endif(NOT OpenCV_FOUND)
 
 find_package(dlib ${dlib_VERSION} REQUIRED)
-if (NOT dlib_FOUND)
+if(NOT dlib_FOUND)
     message(WARNING "Can not build gaze library, dlib was not found.")
     return()
 endif(NOT dlib_FOUND)
-
 
 # Includes and libraries
 include_directories(

@@ -113,7 +113,13 @@ namespace pipeline {
  * @brief Implements Timm and Barth (2011) @cite timm2011 to detect eye
  *        centers.
  *
- * // TODO(shoeffner): Write documentation for PupilLocalization.
+ * This implementation uses a lookup table to pre-calculate the distance function.
+ * Additionally, some tweaks are introduced, as explained in the similar
+ * implementation <a href="https://github.com/trishume/eyeLike">eyeLike</a> by
+ * Tristan Hume.
+ *
+ * For details you can also refer to Tristan's blog post
+ * <a href="http://thume.ca/projects/2012/11/04/simple-accurate-eye-center-tracking-in-opencv/">Simple, accurate eye center tracking in OpenCV</a>.
  */
 class PupilLocalization final : public PipelineStep {
   dlib::matrix<double> displacement_table_x;

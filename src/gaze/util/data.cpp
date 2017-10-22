@@ -18,7 +18,8 @@ Data::Data(Data& data)
     : source_image(data.source_image),
       landmarks(data.landmarks),
       eyes(2),
-      centers(2) {
+      centers(2),
+      execution_times() {
   dlib::assign_image(this->image, data.image);
 
   for (unsigned long i = 0; i < data.eyes.size(); ++i) {

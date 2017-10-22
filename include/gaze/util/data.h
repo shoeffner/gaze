@@ -3,7 +3,10 @@
 #ifndef INCLUDE_GAZE_UTIL_DATA_H_
 #define INCLUDE_GAZE_UTIL_DATA_H_
 
+#include <chrono>  // NOLINT
 #include <iostream>
+#include <map>
+#include <string>
 #include <utility>  // Not used, but cpplint detects swap() as part of this
 
 #include "opencv2/core.hpp"
@@ -71,6 +74,11 @@ struct Data {
    * Eye center locations.
    */
   dlib::array<dlib::point> centers;
+
+  /**
+   * Maps the step identifiers to their processing times.
+   */
+  std::map<std::string, std::chrono::microseconds> execution_times;
 
  private:
   /**

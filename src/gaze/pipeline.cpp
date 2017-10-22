@@ -3,7 +3,9 @@
 #include "gaze/pipeline.h"
 
 #include <shared_mutex>  // NOLINT
+#include <string>
 #include <thread>  // NOLINT
+#include <utility>
 #include <vector>
 
 #include "gaze/gui/event_manager.h"
@@ -21,7 +23,18 @@ void Pipeline::operator()() {
     // Process
     util::Data data;
     for (PipelineStep* step : this->steps) {
+      std::chrono::high_resolution_clock::time_point start =
+        std::chrono::high_resolution_clock::now();
+
       step->process(data);
+
+      std::chrono::high_resolution_clock::time_point end =
+        std::chrono::high_resolution_clock::now();
+      data.execution_times.insert(
+          std::pair<std::string, std::chrono::microseconds>(
+            step->get_name(),
+            std::chrono::duration_cast<std::chrono::microseconds>(
+              end - start).count()));
     }
     {  // Update data (locked)
       std::unique_lock<std::shared_mutex> lock(this->data_access_mutex);

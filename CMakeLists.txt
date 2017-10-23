@@ -13,10 +13,17 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/gaze)
 
 # Demo projects and options
+option(BUILD_EXAMPLES "Build examples." OFF)
 if(BUILD_EXAMPLES)
     add_subdirectory(${CMAKE_SOURCE_DIR}/src/demo)
 endif(BUILD_EXAMPLES)
 
+option(BUILD_DOCS "Build docs." ON)
+if(BUILD_DOCS)
+    include(DocsTarget)
+endif(BUILD_DOCS)
 
-include(DocsTarget)
-include(CTagsTarget)
+option(BUILD_CTAGS "Build ctags." OFF)
+if(BUILD_CTAGS)
+    include(CTagsTarget)
+endif(BUILD_CTAGS)

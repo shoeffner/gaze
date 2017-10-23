@@ -9,7 +9,6 @@
 #include "opencv2/imgproc.hpp"
 
 #include "gaze/util/data.h"
-#include "gaze/util/utility.h"
 
 
 namespace gaze {

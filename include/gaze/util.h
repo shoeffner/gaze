@@ -10,6 +10,5 @@
 #define INCLUDE_GAZE_UTIL_H_
 
 #include "gaze/util/data.h"
-#include "gaze/util/utility.h"
 
 #endif  // INCLUDE_GAZE_UTIL_H_

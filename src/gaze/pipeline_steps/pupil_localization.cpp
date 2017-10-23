@@ -1,7 +1,6 @@
 // Copyright 2017 Sebastian Höffner
 
 #include "gaze/pipeline_steps/pupil_localization.h"
-
 #include <algorithm>
 #include <limits>
 #include <vector>
@@ -14,12 +13,34 @@
 #include "opencv2/imgproc.hpp"
 
 #include "gaze/util/data.h"
-#include "gaze/util/utility.h"
 
 
 namespace gaze {
 
 namespace util {
+
+std::vector<dlib::chip_details> get_eyes_chip_details(
+    const dlib::full_object_detection object_detection) {
+  std::vector<dlib::chip_details> details;
+  if (object_detection.num_parts() == 5) {
+    auto get_rectangle = [](dlib::point one, dlib::point two)
+      -> dlib::rectangle {
+        dlib::rectangle result(one, two);
+        double scale = (one - two).length() * 1.5;
+        return dlib::centered_rect(result, scale, scale);
+      };
+    // left eye: 0 and 1
+    details.push_back(dlib::chip_details(
+          get_rectangle(object_detection.part(0),
+                        object_detection.part(1))));
+
+    // right eye: 3 and 2
+    details.push_back(dlib::chip_details(
+          get_rectangle(object_detection.part(2),
+                        object_detection.part(3))));
+  }
+  return details;
+}
 
 void fill_displacement_tables(
     dlib::matrix<double>& table_x,

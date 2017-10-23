@@ -19,8 +19,7 @@ namespace pipeline {
 
 /**
  * @class SourceCapture source_capture.h "gaze/pipeline_steps/source_capture.h"
- * @brief Puts each frame from a source into a util::SPSCDeque for further
- *        processing.
+ * @brief Retrieves frames from a webcam or video source.
  *
  * Should be used at the beginning of a Pipeline.
  */

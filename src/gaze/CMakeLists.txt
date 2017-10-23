@@ -58,7 +58,7 @@ ExternalProject_Add(${LANDMARKS_FILE}
 
 
 # Compiler optimizations
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -msse2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mavx2")
 
 # Library target
 add_library(${PROJECT_NAME} ${LIBRARY_SOURCE_FILES})

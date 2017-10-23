@@ -47,6 +47,15 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
   this->statistics_widget.set_text(0, 0, "Pipeline step");
   this->statistics_widget.set_text(0, 1,
       dlib::convert_utf8_to_utf32("Execution time (\u00B5s)"));
+  for (unsigned long row = 0;
+       row < this->statistics_widget.number_of_rows();
+       ++row) {
+    for (unsigned long col = 0;
+         col < this->statistics_widget.number_of_columns();
+         ++col) {
+      this->statistics_widget.set_editable(row, col, false);
+    }
+  }
 
   this->pipeline_tabs.set_pos(this->statistics_widget.right() + this->w_margin,
                               this->pause_button.bottom() + this->w_margin);

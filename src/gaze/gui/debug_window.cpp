@@ -3,11 +3,13 @@
 #include "gaze/gui/debug_window.h"
 
 #include <memory>
+#include <sstream>
 #include <thread>  // NOLINT
 
 #include "dlib/geometry.h"
 #include "dlib/gui_core.h"
 #include "dlib/gui_widgets.h"
+#include "dlib/unicode.h"
 
 #include "gaze/gui/event_manager.h"
 #include "gaze/pipeline.h"
@@ -23,7 +25,8 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
       paused(false),
       pipeline(pipeline),
       pipeline_steps(pipeline->get_steps()),
-      pipeline_tabs(*this) {
+      pipeline_tabs(*this),
+      statistics_widget(*this) {
   this->set_size(this->w_width, this->w_height);
   this->set_title("GazeTracker DebugWindow");
 
@@ -34,10 +37,21 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
         this->paused ^= true;
   });
 
+  this->statistics_widget.set_pos(
+      this->w_margin,
+      this->pause_button.bottom() + this->w_margin);
+  this->statistics_widget.set_size(
+      this->stat_width,
+      this->w_height - 3 * this->w_margin - this->pause_button.height());
+  this->statistics_widget.set_grid_size(this->pipeline_steps.size() + 1, 2);
+  this->statistics_widget.set_text(0, 0, "Pipeline step");
+  this->statistics_widget.set_text(0, 1,
+      dlib::convert_utf8_to_utf32("Execution time (\u00B5s)"));
 
-  this->pipeline_tabs.set_pos(this->pause_button.left(),
+  this->pipeline_tabs.set_pos(this->statistics_widget.right() + this->w_margin,
                               this->pause_button.bottom() + this->w_margin);
-  this->pipeline_tabs.set_size(this->w_width - 2 * this->w_margin,
+  this->pipeline_tabs.set_size(this->w_width - 3 * this->w_margin
+                                   - this->stat_width,
                                this->w_height - 3 * this->w_margin
                                    - this->pause_button.height());
   this->pipeline_tabs.set_number_of_tabs(this->pipeline_steps.size());
@@ -66,6 +80,10 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
     // Assign name and add widget group to tab
     this->pipeline_tabs.set_tab_name(i, this->pipeline_steps[i]->get_name());
     this->pipeline_tabs.set_tab_group(i, *widget_group_ptr.get());
+
+    // Assign name to statistics widget
+    this->statistics_widget.set_text(i + 1, 0,
+        this->pipeline_steps[i]->get_name());
   }
 
   this->show();
@@ -85,7 +103,11 @@ void DebugWindow::process_data(int idx) {
   // `error: no member named 'selected_tab' in 'dlib::tabbed_display'`
   idx = idx < 0 ? this->current_tab : idx;
   this->pipeline_steps[idx]->visualize(this->data);
-  this->invalidate_rectangle(this->widgets[idx]->get_rect());
+  for (unsigned long i = 1; i <= this->pipeline_steps.size(); ++i) {
+    std::ostringstream os;
+    os << this->data.execution_times[this->pipeline_steps[i - 1]->get_name()];
+    this->statistics_widget.set_text(i, 1, os.str());
+  }
 }
 
 void DebugWindow::on_user_event(void*, int event_type) {

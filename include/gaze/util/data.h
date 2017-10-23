@@ -78,7 +78,7 @@ struct Data {
   /**
    * Maps the step identifiers to their processing times.
    */
-  std::map<std::string, std::chrono::microseconds> execution_times;
+  std::map<std::string, double> execution_times;
 
  private:
   /**

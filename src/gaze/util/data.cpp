@@ -11,7 +11,8 @@ namespace util {
 
 Data::Data()
     : eyes(2),
-      centers(2) {
+      centers(2),
+      execution_times() {
 }
 
 Data::Data(Data& data)
@@ -19,7 +20,7 @@ Data::Data(Data& data)
       landmarks(data.landmarks),
       eyes(2),
       centers(2),
-      execution_times() {
+      execution_times(data.execution_times) {
   dlib::assign_image(this->image, data.image);
 
   for (unsigned long i = 0; i < data.eyes.size(); ++i) {
@@ -41,6 +42,7 @@ void Data::swap(Data& data) {
   std::swap(this->landmarks, data.landmarks);
   std::swap(this->eyes, data.eyes);
   std::swap(this->centers, data.centers);
+  std::swap(this->execution_times, data.execution_times);
 }
 
 }  // namespace util

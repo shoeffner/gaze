@@ -31,7 +31,7 @@ void Pipeline::operator()() {
       std::chrono::high_resolution_clock::time_point end =
         std::chrono::high_resolution_clock::now();
       data.execution_times.insert(
-          std::pair<std::string, std::chrono::microseconds>(
+          std::pair<std::string, double>(
             step->get_name(),
             std::chrono::duration_cast<std::chrono::microseconds>(
               end - start).count()));

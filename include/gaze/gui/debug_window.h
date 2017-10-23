@@ -29,11 +29,13 @@ class DebugWindow final : public dlib::drawable_window {
   Pipeline* pipeline;
   std::vector<PipelineStep*> pipeline_steps;
   dlib::tabbed_display pipeline_tabs;
+  dlib::text_grid statistics_widget;
   std::vector<std::shared_ptr<dlib::widget_group>> widgets;
 
   const int w_height = 720;
   const int w_margin = 5;
   const int w_width = 1280;
+  const int stat_width = 250;
 
  public:
   /**

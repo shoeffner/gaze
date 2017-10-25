@@ -95,10 +95,11 @@ void normalize_and_threshold_gradients(
     dlib::matrix<T>& horizontal,
     dlib::matrix<T>& vertical,
     double relative_threshold = -1) {
-  // normalization
   dlib::matrix<T> magnitude;
   magnitude = dlib::sqrt(dlib::squared(horizontal) +
                          dlib::squared(vertical));
+
+  // normalization
   horizontal = dlib::pointwise_multiply(
       horizontal, dlib::reciprocal(magnitude));
   vertical = dlib::pointwise_multiply(
@@ -106,7 +107,7 @@ void normalize_and_threshold_gradients(
 
   // Thresholding
   if (relative_threshold >= 0) {
-    T threshold = dlib::max(magnitude) * relative_threshold;
+    T threshold = dlib::mean(magnitude) + dlib::stddev(magnitude) * relative_threshold;
     for (int row = 0; row < horizontal.nr(); ++row) {
       for (int col = 0; col < horizontal.nc(); ++col) {
         if (magnitude(row, col) < threshold) {
@@ -138,8 +139,8 @@ namespace pipeline {
 class PupilLocalization final : public PipelineStep {
   dlib::matrix<double> displacement_table_x;
   dlib::matrix<double> displacement_table_y;
-  const double SIGMA;
-  const double RELATIVE_THRESHOLD;
+  const double SIGMA_FACTOR;
+  const double RELATIVE_THRESHOLD_FACTOR;
 
   // TODO(shoeffner): Add unit tests.
 

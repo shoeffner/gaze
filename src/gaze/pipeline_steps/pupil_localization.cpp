@@ -14,8 +14,6 @@
 
 #include "gaze/util/data.h"
 
-#include <iostream>
-
 
 namespace gaze {
 

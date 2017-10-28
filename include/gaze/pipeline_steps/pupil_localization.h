@@ -107,7 +107,8 @@ void normalize_and_threshold_gradients(
 
   // Thresholding
   if (relative_threshold >= 0) {
-    T threshold = dlib::mean(magnitude) + dlib::stddev(magnitude) * relative_threshold;
+    T threshold = dlib::mean(magnitude)
+                + dlib::stddev(magnitude) * relative_threshold;
     for (int row = 0; row < horizontal.nr(); ++row) {
       for (int col = 0; col < horizontal.nc(); ++col) {
         if (magnitude(row, col) < threshold) {

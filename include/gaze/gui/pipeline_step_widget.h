@@ -8,8 +8,6 @@
 #include "dlib/gui_core.h"
 #include "dlib/gui_widgets.h"
 
-#include "gaze/util/utility.h"
-
 
 namespace gaze {
 

@@ -1,7 +1,6 @@
 // Copyright 2017 Sebastian Höffner
 
 #include "gaze/pipeline_steps/pupil_localization.h"
-
 #include <algorithm>
 #include <limits>
 #include <vector>
@@ -14,12 +13,34 @@
 #include "opencv2/imgproc.hpp"
 
 #include "gaze/util/data.h"
-#include "gaze/util/utility.h"
 
 
 namespace gaze {
 
 namespace util {
+
+std::vector<dlib::chip_details> get_eyes_chip_details(
+    const dlib::full_object_detection object_detection) {
+  std::vector<dlib::chip_details> details;
+  if (object_detection.num_parts() == 5) {
+    auto get_rectangle = [](dlib::point one, dlib::point two)
+      -> dlib::rectangle {
+        dlib::rectangle result(one, two);
+        double scale = (one - two).length() * 1.5;
+        return dlib::centered_rect(result, scale, scale);
+      };
+    // left eye: 0 and 1
+    details.push_back(dlib::chip_details(
+          get_rectangle(object_detection.part(0),
+                        object_detection.part(1))));
+
+    // right eye: 3 and 2
+    details.push_back(dlib::chip_details(
+          get_rectangle(object_detection.part(2),
+                        object_detection.part(3))));
+  }
+  return details;
+}
 
 void fill_displacement_tables(
     dlib::matrix<double>& table_x,
@@ -64,9 +85,11 @@ void fill_displacement_tables(
 namespace pipeline {
 
 PupilLocalization::PupilLocalization()
-    // TODO(shoeffner): Evaluate which parameters and sizes are useful
-    : SIGMA(1),
-      RELATIVE_THRESHOLD(0.6) {
+    // See
+    // http://thume.ca/projects/2012/11/04/simple-accurate-eye-center-tracking-in-opencv/
+    // for parameters
+    : SIGMA_FACTOR(0.005),
+      RELATIVE_THRESHOLD_FACTOR(0.8) {
   this->name = "Eye center";
   // Pre-calculate displacement table
   util::fill_displacement_tables(
@@ -101,14 +124,17 @@ void PupilLocalization::process(util::Data& data) {
 
     // Blur image
     dlib::matrix<double> eye_gaussian;
-    dlib::gaussian_blur(eye_in, eye_gaussian, this->SIGMA);
+    dlib::gaussian_blur(eye_in, eye_gaussian,
+        this->SIGMA_FACTOR * data.landmarks.get_rect().height());
 
     // Calculate gradients
     dlib::matrix<double> eye_horizontal;
     dlib::matrix<double> eye_vertical;
     dlib::sobel_edge_detector(eye_gaussian, eye_horizontal, eye_vertical);
+    eye_horizontal *= -1;
+    // eye_vertical *= -1;
     util::normalize_and_threshold_gradients(eye_horizontal, eye_vertical,
-        this->RELATIVE_THRESHOLD);
+        this->RELATIVE_THRESHOLD_FACTOR);
 
     // Compute objective function t - only implicit
     double max_t = std::numeric_limits<double>::min();
@@ -130,8 +156,10 @@ void PupilLocalization::process(util::Data& data) {
         double t =
           dlib::mean(
             dlib::squared(
-              dlib::pointwise_multiply(d_x, eye_horizontal) +
-              dlib::pointwise_multiply(d_y, eye_vertical)));
+              dlib::max_pointwise(
+                dlib::pointwise_multiply(d_x, eye_horizontal) +
+                dlib::pointwise_multiply(d_y, eye_vertical),
+                dlib::zeros_matrix<double>(nr, nc))));
         if (t > max_t) {
           max_t = t;
           argmax_r = row;

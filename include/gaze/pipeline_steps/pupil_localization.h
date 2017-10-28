@@ -4,6 +4,7 @@
 #define INCLUDE_GAZE_PIPELINE_STEPS_PUPIL_LOCALIZATION_H_
 
 #include <algorithm>  // Not used, but cpplint detects max() as part of this
+#include <vector>
 
 #include "dlib/matrix.h"
 
@@ -14,6 +15,19 @@
 namespace gaze {
 
 namespace util {
+
+/**
+ * Determines a bounding box around the eyes from a given object detection.
+ * This function is designed to work with 5 feature landmarks.
+ * // TODO(shoeffner): Add support for the 68 features.
+ *
+ * @param object_detection A full object detecetion as acquired from a
+ *                         dlib::shape_predictor.
+ * @returns a vector of dlib::chip_details to use with
+ *          dlib::extract_image_chips.
+ */
+std::vector<dlib::chip_details> get_eyes_chip_details(
+    const dlib::full_object_detection object_detection);
 
 /**
  * Filles the displacement table to precalculate values for vector @f$d_i@f$
@@ -81,10 +95,11 @@ void normalize_and_threshold_gradients(
     dlib::matrix<T>& horizontal,
     dlib::matrix<T>& vertical,
     double relative_threshold = -1) {
-  // normalization
   dlib::matrix<T> magnitude;
   magnitude = dlib::sqrt(dlib::squared(horizontal) +
                          dlib::squared(vertical));
+
+  // normalization
   horizontal = dlib::pointwise_multiply(
       horizontal, dlib::reciprocal(magnitude));
   vertical = dlib::pointwise_multiply(
@@ -92,7 +107,8 @@ void normalize_and_threshold_gradients(
 
   // Thresholding
   if (relative_threshold >= 0) {
-    T threshold = dlib::max(magnitude) * relative_threshold;
+    T threshold = dlib::mean(magnitude)
+                + dlib::stddev(magnitude) * relative_threshold;
     for (int row = 0; row < horizontal.nr(); ++row) {
       for (int col = 0; col < horizontal.nc(); ++col) {
         if (magnitude(row, col) < threshold) {
@@ -124,8 +140,8 @@ namespace pipeline {
 class PupilLocalization final : public PipelineStep {
   dlib::matrix<double> displacement_table_x;
   dlib::matrix<double> displacement_table_y;
-  const double SIGMA;
-  const double RELATIVE_THRESHOLD;
+  const double SIGMA_FACTOR;
+  const double RELATIVE_THRESHOLD_FACTOR;
 
   // TODO(shoeffner): Add unit tests.
 

@@ -2,8 +2,6 @@
 
 #include "gaze/gui/pipeline_step_widget.h"
 
-#include "gaze/util/utility.h"
-
 
 namespace gaze {
 

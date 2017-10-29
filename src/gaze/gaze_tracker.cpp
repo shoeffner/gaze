@@ -104,6 +104,7 @@ void GazeTracker::init_pipeline() {
     return;
   }
   this->pipeline_steps.push_back(new pipeline::FaceLandmarks());
+  this->pipeline_steps.push_back(new pipeline::HeadPoseEstimation());
   this->pipeline_steps.push_back(new pipeline::PupilLocalization());
   this->pipeline = new Pipeline(this->pipeline_steps, true);
 }

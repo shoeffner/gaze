@@ -1,5 +1,7 @@
 # gaze
 
+[![Build Status](https://semaphoreci.com/api/v1/projects/1c4f3523-8438-462d-a344-993e66c7f978/1595933/shields_badge.svg)](https://semaphoreci.com/hoeffner/gaze)
+
 ## Dependencies
 
 You need the following dependencies to build gaze (tested versions in

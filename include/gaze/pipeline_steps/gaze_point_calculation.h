@@ -3,6 +3,7 @@
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_GAZE_POINT_CALCULATION_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_GAZE_POINT_CALCULATION_H_
 
+#include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
 
@@ -17,7 +18,9 @@ namespace pipeline {
  *
  * // TODO(shoeffner): Write documentation for GazePointCalculation.
  */
-class GazePointCalculation final : public PipelineStep {
+class GazePointCalculation final
+    : public PipelineStep,
+      public gui::ImageVisualizeable {
  public:
     GazePointCalculation();
 

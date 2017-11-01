@@ -9,6 +9,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
 
+#include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
 
@@ -23,7 +24,9 @@ namespace pipeline {
  *
  * Should be used at the beginning of a Pipeline.
  */
-class SourceCapture final : public PipelineStep {
+class SourceCapture final
+    : public PipelineStep,
+      public gui::ImageVisualizeable {
   cv::VideoCapture video_capture;
 
  public:

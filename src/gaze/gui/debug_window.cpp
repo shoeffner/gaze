@@ -5,6 +5,7 @@
 #include <memory>
 #include <sstream>
 #include <thread>  // NOLINT
+#include <utility>
 
 #include "dlib/geometry.h"
 #include "dlib/gui_core.h"
@@ -12,6 +13,7 @@
 #include "dlib/unicode.h"
 
 #include "gaze/gui/event_manager.h"
+#include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline.h"
 
 
@@ -29,7 +31,6 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
       statistics_widget(*this) {
   this->set_size(this->w_width, this->w_height);
   this->set_title("GazeTracker DebugWindow");
-
 
   this->pause_button.set_pos(this->w_margin, this->w_margin);
   this->pause_button.set_name("Pause");
@@ -71,14 +72,19 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
         this->process_data(new_idx);
       });
 
+  int width = this->pipeline_tabs.width() - 3 * this->w_margin;
+  int height = this->pipeline_tabs.height() - 3 * this->w_margin
+                  - this->pause_button.height();
   for (unsigned long i = 0; i < this->pipeline_steps.size(); ++i) {
-    // Create widget and assign it to the pipeline step
-    std::shared_ptr<PipelineStepWidget> widget(new PipelineStepWidget(*this));
-    // Roughly fit the borders and button sizes, it's not perfect, but well
-    widget->set_size(this->pipeline_tabs.width() - 3 * this->w_margin,
-                     this->pipeline_tabs.height() - 3 * this->w_margin
-                       - this->pause_button.height());
-    this->pipeline_steps[i]->set_widget(widget);
+    std::shared_ptr<dlib::drawable> widget;
+    if (VisualizeableBase* step =
+        dynamic_cast<VisualizeableBase*>(this->pipeline_steps[i])) {
+      widget = step->init(*this, width, height);
+    } else {
+      std::shared_ptr<dlib::label> tmp(new dlib::label(*this));
+      tmp->set_text("No visualization.");
+      widget = tmp;
+    }
 
     // Create widget group, add widget to it
     std::shared_ptr<dlib::widget_group> widget_group_ptr(
@@ -102,7 +108,9 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
 DebugWindow::~DebugWindow() {
   EventManager::instance().unsubscribe(this);
   for (PipelineStep* step : this->pipeline_steps) {
-    step->set_widget(nullptr);
+    if (VisualizeableBase* vb = dynamic_cast<VisualizeableBase*>(step)) {
+      vb->remove_widget();
+    }
   }
   this->close_window();
 }
@@ -111,7 +119,12 @@ void DebugWindow::process_data(int idx) {
   // TODO(shoeffner): this->pipeline_tabs.selected_tab() does not compile:
   // `error: no member named 'selected_tab' in 'dlib::tabbed_display'`
   idx = idx < 0 ? this->current_tab : idx;
-  this->pipeline_steps[idx]->visualize(this->data);
+
+  if (VisualizeableBase* step =
+      dynamic_cast<VisualizeableBase*>(this->pipeline_steps[idx])) {
+    step->visualize(this->data);
+  }
+
   for (unsigned long i = 1; i <= this->pipeline_steps.size(); ++i) {
     std::ostringstream os;
     os << this->data.execution_times[this->pipeline_steps[i - 1]->get_name()];

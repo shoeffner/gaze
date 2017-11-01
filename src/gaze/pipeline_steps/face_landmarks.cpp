@@ -17,7 +17,6 @@ namespace pipeline {
 
 FaceLandmarks::FaceLandmarks()
     : face_detector(dlib::get_frontal_face_detector()) {
-  // TODO(shoeffner): Install 5 face landmarks model using CMake.
   this->name = "FaceLandmarks";
   dlib::deserialize("shape_predictor_5_face_landmarks.dat")
     >> this->shape_predictor;

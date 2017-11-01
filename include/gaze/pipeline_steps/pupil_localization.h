@@ -8,6 +8,7 @@
 
 #include "dlib/matrix.h"
 
+#include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
 
@@ -137,15 +138,15 @@ namespace pipeline {
  * For details you can also refer to Tristan's blog post
  * <a href="http://thume.ca/projects/2012/11/04/simple-accurate-eye-center-tracking-in-opencv/">Simple, accurate eye center tracking in OpenCV</a>.
  */
-class PupilLocalization final : public PipelineStep {
+class PupilLocalization final
+    : public PipelineStep,
+      public gui::ImageVisualizeable {
   dlib::matrix<double> displacement_table_x;
   dlib::matrix<double> displacement_table_y;
   const double SIGMA_FACTOR;
   const double RELATIVE_THRESHOLD_FACTOR;
 
   // TODO(shoeffner): Add unit tests.
-
-
  public:
     /**
      */

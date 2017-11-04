@@ -4,7 +4,7 @@ message(STATUS "Configuring gaze")
 
 
 # Find packages
-set(OpenCV_COMPONENTS core videoio)
+set(OpenCV_COMPONENTS core videoio calib3d)
 find_package(OpenCV ${OpenCV_VERSION} REQUIRED COMPONENTS ${OpenCV_COMPONENTS})
 if(NOT OpenCV_FOUND)
     message(WARNING "Can not build gaze library, OpenCV was not found.")

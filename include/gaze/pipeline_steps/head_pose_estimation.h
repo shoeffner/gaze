@@ -3,6 +3,8 @@
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_HEAD_POSE_ESTIMATION_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_HEAD_POSE_ESTIMATION_H_
 
+#include "dlib/gui_widgets.h"
+
 #include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
@@ -20,24 +22,29 @@ namespace pipeline {
  */
 class HeadPoseEstimation final
     : public PipelineStep,
-      public gui::PerspectiveVisualizeable {
+      public gui::ImageVisualizeable {
+  std::vector<dlib::image_display::overlay_line> overlay;
+  std::vector<cv::Point3f> model_points;
+
+  void update_overlay(const util::Data& data);
+
  public:
-    HeadPoseEstimation();
+  HeadPoseEstimation();
 
-    /**
-     * Estimates the head pose from face landmarks and the input image.
-     *
-     * @param data The data object to be updated.
-     * @returns via `data` the modified data object.
-     */
-    void process(util::Data& data) override;
+  /**
+   * Estimates the head pose from face landmarks and the input image.
+   *
+   * @param data The data object to be updated.
+   * @returns via `data` the modified data object.
+   */
+  void process(util::Data& data) override;
 
-    /**
-     * Visualizes the estimated head pose.
-     *
-     * @param data The data object to be visualized.
-     */
-    void visualize(util::Data& data) override;
+  /**
+   * Visualizes the estimated head pose.
+   *
+   * @param data The data object to be visualized.
+   */
+  void visualize(util::Data& data) override;
 };
 
 }  // namespace pipeline

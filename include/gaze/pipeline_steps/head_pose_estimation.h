@@ -3,6 +3,8 @@
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_HEAD_POSE_ESTIMATION_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_HEAD_POSE_ESTIMATION_H_
 
+#include <vector>
+
 #include "dlib/gui_widgets.h"
 
 #include "gaze/gui/visualizeable.h"

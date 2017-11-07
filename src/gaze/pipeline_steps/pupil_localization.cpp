@@ -156,6 +156,8 @@ void PupilLocalization::process(util::Data& data) {
         double t =
           dlib::mean(
             dlib::squared(
+              // TODO(shoeffner): Evaluate abs and non-flipped horizontal
+              // gradient
               dlib::max_pointwise(
                 dlib::pointwise_multiply(d_x, eye_horizontal) +
                 dlib::pointwise_multiply(d_y, eye_vertical),

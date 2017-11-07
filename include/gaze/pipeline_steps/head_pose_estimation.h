@@ -27,6 +27,7 @@ class HeadPoseEstimation final
       public gui::ImageVisualizeable {
   std::vector<dlib::image_display::overlay_line> overlay;
   std::vector<cv::Point3f> model_points;
+  int nose_tip_y_offset;
 
   void update_overlay(const util::Data& data);
 

@@ -25,9 +25,8 @@ namespace pipeline {
 class HeadPoseEstimation final
     : public PipelineStep,
       public gui::ImageVisualizeable {
-  std::vector<dlib::image_display::overlay_line> overlay;
   std::vector<cv::Point3f> model_points;
-  int nose_tip_y_offset;
+  std::vector<dlib::image_display::overlay_line> overlay;
 
   void update_overlay(const util::Data& data);
 

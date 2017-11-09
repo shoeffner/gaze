@@ -3,6 +3,7 @@
 #include "gaze/pipeline_steps/head_pose_estimation.h"
 
 #include <vector>
+#include <cstdlib>
 
 #include "dlib/gui_widgets.h"
 #include "dlib/image_processing.h"
@@ -29,26 +30,37 @@ cv::Mat distortions(const util::Data&) {
   return cv::Mat::zeros(4, 1, CV_32F);
 }
 
+dlib::point estimate_nosetip(const util::Data& data) {
+  auto x_offset = ((data.landmarks.part(2) - data.landmarks.part(3)).length() -
+    (data.landmarks.part(0) - data.landmarks.part(1)).length()) / 4;
+  auto y_offset = -
+    std::abs(
+        (data.landmarks.part(1).y() + data.landmarks.part(3).y()) / 2
+         - data.landmarks.part(4).y()) * 2 / 5;
+
+  return dlib::point(data.landmarks.part(4).x() + x_offset,
+      data.landmarks.part(4).y() + y_offset);
+}
+
 }  // namespace
 
 
-HeadPoseEstimation::HeadPoseEstimation()
-    : nose_tip_y_offset(-10) {
+HeadPoseEstimation::HeadPoseEstimation() {
   this->name = "Head pose";
 
   this->overlay.push_back({{-1, -1}, {-1, -1}, dlib::rgb_pixel(255, 0, 0)});
   this->overlay.push_back({{-1, -1}, {-1, -1}, dlib::rgb_pixel(0, 255, 0)});
   this->overlay.push_back({{-1, -1}, {-1, -1}, dlib::rgb_pixel(0, 0, 255)});
 
-  // TODO(shoeffner): Find way to remove fake nosetip
-  this->model_points.push_back({0, 3.8, -10.7});  // nose tip (faked in landmarks)
+  // TODO(shoeffner): Find way to remove fake nosetip?
+  this->model_points.push_back({0, 0.038, -0.107});  // nose tip
 
   // TODO(shoeffner): Find suitable model values
-  this->model_points.push_back({5.95, -3.57, -5.55});  // left outer corner
-  this->model_points.push_back({1.3, -3.57, -6.05});  // left inner corner
-  this->model_points.push_back({-5.95, -3.57, -5.55});  // right outer corner
-  this->model_points.push_back({-1.3, -3.57, -6.05});  // right inner corner
-  this->model_points.push_back({0, 4.35, -8.7});  // septum base
+  this->model_points.push_back({0.0595, -0.0357, -0.0555});  // ex l
+  this->model_points.push_back({0.013, -0.0357, -0.0605});  // en l
+  this->model_points.push_back({-0.0595, -0.0357, -0.0555});  // ex r
+  this->model_points.push_back({-0.013, -0.0357, -0.0605});  // en r
+  this->model_points.push_back({0, 0.0435, -0.087});  // septum base
 }
 
 void HeadPoseEstimation::update_overlay(const util::Data& data) {
@@ -58,15 +70,16 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
   }
 
   // TODO(shoeffner): store orientation/translation with the data object
-  std::vector<cv::Point2d> im_points;
-  im_points.push_back(
-      cv::Point2d(data.landmarks.part(4).x(),
-                  data.landmarks.part(4).y() + this->nose_tip_y_offset));
+  // Convert dlib::points to cv::Point for solvePNP
+  dlib::point nosetip = estimate_nosetip(data);
+  std::vector<cv::Point2f> im_points;
+  im_points.push_back(cv::Point2f(nosetip.x(), nosetip.y()));
   for (auto i = decltype(data.landmarks.num_parts()){0};
        i < data.landmarks.num_parts(); ++i) {
-    im_points.push_back(cv::Point2d(data.landmarks.part(i).x(),
+    im_points.push_back(cv::Point2f(data.landmarks.part(i).x(),
                                     data.landmarks.part(i).y()));
   }
+
   cv::Mat rotation;
   cv::Mat translation;
   cv::solvePnP(this->model_points, im_points,
@@ -75,12 +88,12 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
 
   // Project reference points to image.
   std::vector<cv::Point3f> ref_points =
-    {{0, 0, 0}, {10, 0, 0}, {0, 10, 0}, {0, 0, 10}};
+    {{0, 0, 0}, {0.1, 0, 0}, {0, 0.1, 0}, {0, 0, 0.1}};
   std::vector<cv::Point2f> image_points;
   cv::projectPoints(ref_points, rotation, translation,
       camera_matrix(data), distortions(data), image_points);
 
-  // Convert result to dlib overlay
+  // coordinate system
   for (auto i = decltype(this->overlay.size()){0};
        i < this->overlay.size(); ++i) {
     this->overlay[i] = dlib::image_display::overlay_line(
@@ -90,30 +103,26 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
   }
   this->widget->add_overlay(this->overlay);
 
-  std::vector<dlib::image_display::overlay_circle> detections;
-  detections.push_back(
-      dlib::image_display::overlay_circle(
-        {data.landmarks.part(4).x(),
-         data.landmarks.part(4).y() + this->nose_tip_y_offset},
-         2, dlib::rgb_alpha_pixel(255, 0, 0, 127)));
-  for (auto i = decltype(data.landmarks.num_parts()){0};
-       i < data.landmarks.num_parts(); ++i) {
-    detections.push_back(
-        dlib::image_display::overlay_circle(data.landmarks.part(i), 2,
-          dlib::rgb_alpha_pixel(255, 0, 0, 127)));
-  }
-  this->widget->add_overlay(detections);
-
-  std::vector<dlib::image_display::overlay_circle> projections;
+  // detected vs. projected points in overlay
   std::vector<cv::Point2f> projected_points;
   cv::projectPoints(this->model_points, rotation, translation,
       camera_matrix(data), distortions(data), projected_points);
+
+  auto color_detection = dlib::rgb_pixel(255, 0, 0);
+  auto color_projection = dlib::rgb_pixel(0, 0, 255);
+  std::vector<dlib::image_display::overlay_circle> detections;
+  std::vector<dlib::image_display::overlay_circle> projections;
   for (auto i = decltype(projected_points.size()){0};
        i < projected_points.size(); ++i) {
+    detections.push_back(dlib::image_display::overlay_circle(
+            i == 0 ? nosetip : data.landmarks.part(i - 1),
+            2, color_detection, "d" + std::to_string(i)));
     projections.push_back(dlib::image_display::overlay_circle(
-          {(long) projected_points[i].x, (long) projected_points[i].y}, 2,
-          dlib::rgb_alpha_pixel(0, 255, 0, 127)));
+          {static_cast<long>(projected_points[i].x),
+           static_cast<long>(projected_points[i].y)},
+          2, color_projection, "p" + std::to_string(i)));
   }
+  this->widget->add_overlay(detections);
   this->widget->add_overlay(projections);
 }
 

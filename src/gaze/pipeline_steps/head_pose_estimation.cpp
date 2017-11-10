@@ -52,15 +52,12 @@ HeadPoseEstimation::HeadPoseEstimation() {
   this->overlay.push_back({{-1, -1}, {-1, -1}, dlib::rgb_pixel(0, 255, 0)});
   this->overlay.push_back({{-1, -1}, {-1, -1}, dlib::rgb_pixel(0, 0, 255)});
 
-  // TODO(shoeffner): Find way to remove fake nosetip?
-  this->model_points.push_back({0, 0.038, -0.107});  // nose tip
-
   // TODO(shoeffner): Find suitable model values
-  this->model_points.push_back({0.0595, -0.0357, -0.0555});  // ex l
-  this->model_points.push_back({0.013, -0.0357, -0.0605});  // en l
-  this->model_points.push_back({-0.0595, -0.0357, -0.0555});  // ex r
-  this->model_points.push_back({-0.013, -0.0357, -0.0605});  // en r
-  this->model_points.push_back({0, 0.0435, -0.087});  // septum base
+  this->model_points.push_back({17.17, -16.18, 54.36});  // ex l
+  this->model_points.push_back({7.37, -14.77, 52.9});  // en l
+  this->model_points.push_back({-16.01, -9.14, 48.87});  // ex r
+  this->model_points.push_back({-6.5, -12.32, 50.45});  // en r
+  this->model_points.push_back({3.02, -19.85, 33.42});  // septum base
 }
 
 void HeadPoseEstimation::update_overlay(const util::Data& data) {
@@ -73,7 +70,7 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
   // Convert dlib::points to cv::Point for solvePNP
   dlib::point nosetip = estimate_nosetip(data);
   std::vector<cv::Point2f> im_points;
-  im_points.push_back(cv::Point2f(nosetip.x(), nosetip.y()));
+  // im_points.push_back(cv::Point2f(nosetip.x(), nosetip.y()));
   for (auto i = decltype(data.landmarks.num_parts()){0};
        i < data.landmarks.num_parts(); ++i) {
     im_points.push_back(cv::Point2f(data.landmarks.part(i).x(),
@@ -84,11 +81,11 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
   cv::Mat translation;
   cv::solvePnP(this->model_points, im_points,
       camera_matrix(data), distortions(data),
-      rotation, translation);
+      rotation, translation, false, cv::SOLVEPNP_ITERATIVE);
 
   // Project reference points to image.
   std::vector<cv::Point3f> ref_points =
-    {{0, 0, 0}, {0.1, 0, 0}, {0, 0.1, 0}, {0, 0, 0.1}};
+    {{0, 0, 0}, {10, 0, 0}, {0, 10, 0}, {0, 0, 10}};
   std::vector<cv::Point2f> image_points;
   cv::projectPoints(ref_points, rotation, translation,
       camera_matrix(data), distortions(data), image_points);
@@ -115,8 +112,8 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
   for (auto i = decltype(projected_points.size()){0};
        i < projected_points.size(); ++i) {
     detections.push_back(dlib::image_display::overlay_circle(
-            i == 0 ? nosetip : data.landmarks.part(i - 1),
-            2, color_detection, "d" + std::to_string(i)));
+            data.landmarks.part(i), 2, color_detection, "d" +
+            std::to_string(i)));
     projections.push_back(dlib::image_display::overlay_circle(
           {static_cast<long>(projected_points[i].x),
            static_cast<long>(projected_points[i].y)},

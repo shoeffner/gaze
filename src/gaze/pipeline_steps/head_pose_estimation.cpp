@@ -53,11 +53,11 @@ HeadPoseEstimation::HeadPoseEstimation() {
   this->overlay.push_back({{-1, -1}, {-1, -1}, dlib::rgb_pixel(0, 0, 255)});
 
   // TODO(shoeffner): Find suitable model values
-  this->model_points.push_back({17.17, -16.18, 54.36});  // ex l
-  this->model_points.push_back({7.37, -14.77, 52.9});  // en l
-  this->model_points.push_back({-16.01, -9.14, 48.87});  // ex r
-  this->model_points.push_back({-6.5, -12.32, 50.45});  // en r
-  this->model_points.push_back({3.02, -19.85, 33.42});  // septum base
+  this->model_points.push_back({0.0000, 0.0000, 0.0000});  // exl
+  this->model_points.push_back({-0.0465, 0.0000, -0.0050});  // enl
+  this->model_points.push_back({-0.1190, 0.0000, 0.0000});  // exr
+  this->model_points.push_back({-0.0725, 0.0000, -0.0050});  // enr
+  this->model_points.push_back({-0.0595, 0.0792, -0.0315});  // sn
 }
 
 void HeadPoseEstimation::update_overlay(const util::Data& data) {
@@ -68,9 +68,7 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
 
   // TODO(shoeffner): store orientation/translation with the data object
   // Convert dlib::points to cv::Point for solvePNP
-  dlib::point nosetip = estimate_nosetip(data);
   std::vector<cv::Point2f> im_points;
-  // im_points.push_back(cv::Point2f(nosetip.x(), nosetip.y()));
   for (auto i = decltype(data.landmarks.num_parts()){0};
        i < data.landmarks.num_parts(); ++i) {
     im_points.push_back(cv::Point2f(data.landmarks.part(i).x(),

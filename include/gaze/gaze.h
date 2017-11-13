@@ -11,6 +11,6 @@
 
 #include "gaze/gaze_tracker.h"
 #include "gaze/pipeline_steps.h"
-#include "gaze/util.h"
+#include "gaze/util/data.h"
 
 #endif  // INCLUDE_GAZE_GAZE_H_

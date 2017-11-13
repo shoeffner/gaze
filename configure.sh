@@ -77,6 +77,3 @@ mkdir -p ${BUILD_DIR}
 if [[ ${DEPENDENCY_GRAPH} -ne 0 && -f ${BUILD_DIR}/dependencies/dependencies.dot ]]; then
     dot -Tpdf ${BUILD_DIR}/dependencies/dependencies.dot -o ${BUILD_DIR}/dependencies.pdf
 fi
-
-
-

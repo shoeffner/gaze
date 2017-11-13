@@ -83,10 +83,10 @@ if(NOT ${YAML_CPP}_FOUND)
         GIT_SHALLOW 1
         CMAKE_ARGS -DYAML_CPP_BUILD_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=${YAML_CPP_INSTALL_DIR}
     )
-    message(STATUS "INSTALL DIR" ${YAML_CPP_INSTALL_DIR})
     include_directories(${YAML_CPP_INSTALL_DIR}/include)
     set(YAML_CPP_LIBRARIES ${YAML_CPP_INSTALL_DIR}/lib/lib${YAML_CPP}.a)
 else(NOT ${YAML_CPP}_FOUND)
+    include_directories(${YAML_CPP_INCLUDE_DIR})
     message(STATUS "${YAML_CPP} found.")
 endif(NOT ${YAML_CPP}_FOUND)
 

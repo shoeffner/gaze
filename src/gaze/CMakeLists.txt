@@ -47,10 +47,23 @@ list(APPEND LIBRARY_SOURCE_FILES
 # Landmarks file for face detection
 set(LANDMARKS_FILE shape_predictor_5_face_landmarks.dat)
 ExternalProject_Add(${LANDMARKS_FILE}
-    URL "https://github.com/davisking/dlib-models/raw/master/shape_predictor_5_face_landmarks.dat.bz2"
+    URL "https://github.com/davisking/dlib-models/raw/master/${LANDMARKS_FILE}.bz2"
     URL_HASH "SHA256=6e787bbebf5c9efdb793f6cd1f023230c4413306605f24f299f12869f95aa472"
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND bunzip2 -ck <SOURCE_DIR>/../shape_predictor_5_face_landmarks.dat.bz2 > ${CMAKE_BINARY_DIR}/${LANDMARKS_FILE}
+    BUILD_COMMAND bunzip2 -ck <SOURCE_DIR>/../${LANDMARKS_FILE}.bz2 > ${CMAKE_BINARY_DIR}/${LANDMARKS_FILE}
+    INSTALL_COMMAND ""
+    DOWNLOAD_NO_PROGRESS 1
+    DOWNLOAD_NO_EXTRACT 1
+)
+
+
+# Using 68 landmarks for the head orientation for now
+set(LANDMARKS_FILE_68 shape_predictor_68_face_landmarks.dat)
+ExternalProject_Add(${LANDMARKS_FILE_68}
+    URL "https://github.com/davisking/dlib-models/raw/master/${LANDMARKS_FILE_68}.bz2"
+    URL_HASH "SHA256=7d6637b8f34ddb0c1363e09a4628acb34314019ec3566fd66b80c04dda6980f5"
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND bunzip2 -ck <SOURCE_DIR>/../${LANDMARKS_FILE_68}.bz2 > ${CMAKE_BINARY_DIR}/${LANDMARKS_FILE_68}
     INSTALL_COMMAND ""
     DOWNLOAD_NO_PROGRESS 1
     DOWNLOAD_NO_EXTRACT 1
@@ -83,7 +96,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mavx2")
 
 # Library target
 add_library(${PROJECT_NAME} ${LIBRARY_SOURCE_FILES})
-add_dependencies(${PROJECT_NAME} ${LANDMARKS_FILE} ${YAML_CPP})
+add_dependencies(${PROJECT_NAME} ${LANDMARKS_FILE} ${LANDMARKS_FILE_68} ${YAML_CPP})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 set_target_properties(${PROJECT_NAME}
     PROPERTIES

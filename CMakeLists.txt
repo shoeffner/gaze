@@ -7,7 +7,6 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 include(MessageVariables)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INSTALL_MESSAGE LAZY)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Library
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/gaze)

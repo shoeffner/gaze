@@ -19,9 +19,13 @@ namespace gaze {
  */
 class PipelineStep {
   static int counter;
-  int number;
 
  protected:
+  /**
+   * The number of the pipeline step.
+   */
+  int number;
+
   /**
    * The name of this PipelineStep.
    * Should be unique if possible. By default "Step #" is assigned.

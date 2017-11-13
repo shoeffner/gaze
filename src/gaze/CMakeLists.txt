@@ -17,14 +17,35 @@ if(NOT dlib_FOUND)
     return()
 endif(NOT dlib_FOUND)
 
+
+# Custom "find_package" for yaml-cpp
+set(YAML_CPP yaml-cpp)
+ExternalProject_Add(${YAML_CPP}
+    GIT_REPOSITORY "https://github.com/jbeder/${YAML_CPP}.git"
+    GIT_TAG "5a519a4c6cb03a2aa440b8d53a829ef2db30bb9e"
+    GIT_SHALLOW 1
+    CMAKE_ARGS
+        -DYAML_CPP_BUILD_TOOLS=OFF
+        -DCMAKE_INSTALL_MESSAGE=LAZY
+        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+    UPDATE_COMMAND ""
+)
+ExternalProject_Get_Property(${YAML_CPP} install_dir)
+set(YAML_CPP_INCLUDE_DIRS ${install_dir}/include)
+set(YAML_CPP_LIBRARIES ${install_dir}/lib/lib${YAML_CPP}.a)
+set(YAML_CPP_LIBRARY_DIRS ${install_dir}/lib)
+
+
 # Includes and libraries
 include_directories(
     ${dlib_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
+    ${YAML_CPP_INCLUDE_DIRS}
 )
 link_directories(
     ${dlib_LIBRARY_DIRS}
     ${OpenCV_LIBRARY_DIRS}
+    ${YAML_CPP_LIBRARY_DIRS}
 )
 
 
@@ -68,27 +89,6 @@ ExternalProject_Add(${LANDMARKS_FILE_68}
     DOWNLOAD_NO_PROGRESS 1
     DOWNLOAD_NO_EXTRACT 1
 )
-
-
-# YAML Library
-set(YAML_CPP yaml-cpp)
-find_package(${YAML_CPP} QUIET)
-if(NOT ${YAML_CPP}_FOUND)
-    message(STATUS "Did not find ${YAML_CPP}. Cloning from GitHub.")
-
-    set(YAML_CPP_INSTALL_DIR ${CMAKE_BINARY_DIR}/${YAML_CPP})
-    ExternalProject_Add(${YAML_CPP}
-        GIT_REPOSITORY "https://github.com/jbeder/${YAML_CPP}.git"
-        GIT_TAG "5a519a4c6cb03a2aa440b8d53a829ef2db30bb9e"
-        GIT_SHALLOW 1
-        CMAKE_ARGS -DYAML_CPP_BUILD_TOOLS=OFF -DCMAKE_INSTALL_PREFIX=${YAML_CPP_INSTALL_DIR}
-    )
-    include_directories(${YAML_CPP_INSTALL_DIR}/include)
-    set(YAML_CPP_LIBRARIES ${YAML_CPP_INSTALL_DIR}/lib/lib${YAML_CPP}.a)
-else(NOT ${YAML_CPP}_FOUND)
-    include_directories(${YAML_CPP_INCLUDE_DIR})
-    message(STATUS "${YAML_CPP} found.")
-endif(NOT ${YAML_CPP}_FOUND)
 
 
 # Compiler optimizations

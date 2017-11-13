@@ -72,7 +72,7 @@ mkdir -p ${BUILD_DIR}
           `[[ ${DEPENDENCY_GRAPH} -eq 0 ]] || echo --graphviz=dependencies/dependencies.dot` \
           ${PROJECT_DIR}
     echo -e "\n\tYou can cd into ${BUILD_DIR} and call \"make -j8\" there:\n"
-    echo -e "\t\tcd ${BUILD_DIR}\n\t\tmake -j8\n"
+    echo -e "\tcd ${BUILD_DIR}\n\tmake -j8\n"
 )
 if [[ ${DEPENDENCY_GRAPH} -ne 0 && -f ${BUILD_DIR}/dependencies/dependencies.dot ]]; then
     dot -Tpdf ${BUILD_DIR}/dependencies/dependencies.dot -o ${BUILD_DIR}/dependencies.pdf

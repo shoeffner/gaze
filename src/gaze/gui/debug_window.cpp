@@ -112,7 +112,9 @@ DebugWindow::~DebugWindow() {
   EventManager::instance().unsubscribe(this);
   for (PipelineStep* step : this->pipeline_steps) {
     if (VisualizeableBase* vb = dynamic_cast<VisualizeableBase*>(step)) {
-      vb->remove_widget();
+      if (vb) {
+        vb->remove_widget();
+      }
     }
   }
   this->close_window();

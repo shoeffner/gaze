@@ -92,8 +92,9 @@ class VisualizeableBase {
    * Removes the widget by setting its pointer to the nullptr.
    */
   void remove_widget() {
-    this->widget->disable();
-    this->widget = std::shared_ptr<dlib::drawable>(nullptr);
+    if (this->widget && this->widget.get()) {
+      this->widget->disable();
+    }
   }
 
   /**

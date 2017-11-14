@@ -67,6 +67,9 @@ class VisualizeableBase {
   std::shared_ptr<dlib::drawable> widget;
 
  public:
+  /**
+   * Override this method if you need more destruction control.
+   */
   virtual ~VisualizeableBase() = default;
 
   /**
@@ -85,7 +88,11 @@ class VisualizeableBase {
       int width, int height,
       std::string text = "No visualization.") = 0;
 
+  /**
+   * Removes the widget by setting its pointer to the nullptr.
+   */
   void remove_widget() {
+    this->widget->disable();
     this->widget = std::shared_ptr<dlib::drawable>(nullptr);
   }
 

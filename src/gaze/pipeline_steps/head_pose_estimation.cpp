@@ -106,8 +106,7 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
             data.landmarks.part(i), 2, color_detection, "d" +
             std::to_string(i)));
     projections.push_back(dlib::image_display::overlay_circle(
-          {static_cast<long>(projected_points[i].x),
-           static_cast<long>(projected_points[i].y)},
+          dlib::point(projected_points[i].x, projected_points[i].y),
           2, color_projection, "p" + std::to_string(i)));
   }
   this->widget->add_overlay(detections);

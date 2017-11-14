@@ -48,10 +48,10 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
   this->statistics_widget.set_text(0, 0, "Pipeline step");
   this->statistics_widget.set_text(0, 1,
       dlib::convert_utf8_to_utf32("Execution time (\u00B5s)"));
-  for (unsigned long row = 0;
+  for (auto row = decltype(this->statistics_widget.number_of_rows()){0};
        row < this->statistics_widget.number_of_rows();
        ++row) {
-    for (unsigned long col = 0;
+    for (auto col = decltype(this->statistics_widget.number_of_columns()){0};
          col < this->statistics_widget.number_of_columns();
          ++col) {
       this->statistics_widget.set_editable(row, col, false);
@@ -64,9 +64,9 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
                                    - this->stat_width,
                                this->w_height - 3 * this->w_margin
                                    - this->pause_button.height());
-  this->pipeline_tabs.set_number_of_tabs(this->pipeline_steps.size());
-  this->pipeline_tabs.set_click_handler([this](unsigned long new_idx,
-                                               unsigned long)
+  this->pipeline_tabs.set_number_of_tabs(
+      this->pipeline_steps.size() > 0 ? this->pipeline_steps.size() : 1);
+  this->pipeline_tabs.set_click_handler([this](auto new_idx, auto)
       -> void {
         this->current_tab = new_idx;
         this->process_data(new_idx);
@@ -75,7 +75,8 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
   int width = this->pipeline_tabs.width() - 3 * this->w_margin;
   int height = this->pipeline_tabs.height() - 3 * this->w_margin
                   - this->pause_button.height();
-  for (unsigned long i = 0; i < this->pipeline_steps.size(); ++i) {
+  for (auto i = decltype(this->pipeline_steps.size()){0};
+       i < this->pipeline_steps.size(); ++i) {
     std::shared_ptr<dlib::drawable> widget;
     if (VisualizeableBase* step =
         dynamic_cast<VisualizeableBase*>(this->pipeline_steps[i])) {
@@ -118,14 +119,20 @@ DebugWindow::~DebugWindow() {
 void DebugWindow::process_data(int idx) {
   // TODO(shoeffner): this->pipeline_tabs.selected_tab() does not compile:
   // `error: no member named 'selected_tab' in 'dlib::tabbed_display'`
+  // See https://github.com/davisking/dlib/pulls/957
   idx = idx < 0 ? this->current_tab : idx;
+
+  if (this->pipeline_steps.size() == 0) {
+    return;
+  }
 
   if (VisualizeableBase* step =
       dynamic_cast<VisualizeableBase*>(this->pipeline_steps[idx])) {
     step->visualize(this->data);
   }
 
-  for (unsigned long i = 1; i <= this->pipeline_steps.size(); ++i) {
+  for (auto i = decltype(this->pipeline_steps.size()){1};
+       i <= this->pipeline_steps.size(); ++i) {
     std::ostringstream os;
     os << this->data.execution_times[this->pipeline_steps[i - 1]->get_name()];
     this->statistics_widget.set_text(i, 1, os.str());

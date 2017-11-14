@@ -29,7 +29,7 @@ struct Data {
   /** @name Constructors */
   //@{
   Data();
-  Data(Data& data);
+  Data(const Data& data);
 
   /**
    * Uses copy and Data::swap().

@@ -47,8 +47,8 @@ std::vector<dlib::chip_details> get_eyes_chip_details(
 }
 
 void fill_displacement_tables(
-    dlib::matrix<double>& table_x,
-    dlib::matrix<double>& table_y,
+    dlib::matrix<double>& table_x,  // NOLINT
+    dlib::matrix<double>& table_y,  // NOLINT
     int size) {
   // Ensure size is bigger than the current size (i.e. if an update is needed
   // at all)
@@ -191,7 +191,8 @@ void PupilLocalization::visualize(util::Data& data) {
 
   // assign eyes to new images
   dlib::array<dlib::array2d<dlib::bgr_pixel>> eyes(2);
-  for (unsigned long i = 0; i < data.eyes.size(); ++i) {
+  for (auto i = decltype(data.eyes.size()){0};
+       i < data.eyes.size(); ++i) {
     dlib::assign_image(eyes[i], data.eyes[i]);
 
     dlib::draw_line(eyes[i],

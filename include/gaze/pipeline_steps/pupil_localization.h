@@ -77,8 +77,8 @@ std::vector<dlib::chip_details> get_eyes_chip_details(
  * @param table_y The y components of @f$d_i@f$.
  * @param size The size to grow this table to.
  */
-void fill_displacement_tables(dlib::matrix<double>& table_x,
-                              dlib::matrix<double>& table_y,
+void fill_displacement_tables(dlib::matrix<double>& table_x,  // NOLINT
+                              dlib::matrix<double>& table_y,  // NOLINT
                               int size);
 
 /**
@@ -93,8 +93,8 @@ void fill_displacement_tables(dlib::matrix<double>& table_x,
  */
 template <typename T>
 void normalize_and_threshold_gradients(
-    dlib::matrix<T>& horizontal,
-    dlib::matrix<T>& vertical,
+    dlib::matrix<T>& horizontal,  // NOLINT
+    dlib::matrix<T>& vertical,  // NOLINT
     double relative_threshold = -1) {
   dlib::matrix<T> magnitude;
   magnitude = dlib::sqrt(dlib::squared(horizontal) +

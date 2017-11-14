@@ -57,6 +57,7 @@ void adjust_widget(std::shared_ptr<widget_type> widget,
 }
 
 template<typename widget_type>
+// NOLINTNEXTLINE
 std::shared_ptr<widget_type> create_widget(dlib::drawable_window& parent) {
   return std::shared_ptr<widget_type>(new widget_type(parent));
 }
@@ -68,8 +69,21 @@ class VisualizeableBase {
  public:
   virtual ~VisualizeableBase() = default;
 
-  virtual std::shared_ptr<dlib::drawable> init(dlib::drawable_window& parent,
-    int width, int height, std::string text = "No visualization.") = 0;
+  /**
+   * Initializes the widget by creating a widget and adjusting it.
+   *
+   * @note Some widgets do not support all adjustments (width/height/text).
+   *       Please refer to the widget documentations for details.
+   *
+   * @param parent The parent window.
+   * @param width The widget width
+   * @param height The widget height
+   * @param text The widget text
+   */
+  virtual std::shared_ptr<dlib::drawable> init(
+      dlib::drawable_window& parent,  // NOLINT
+      int width, int height,
+      std::string text = "No visualization.") = 0;
 
   void remove_widget() {
     this->widget = std::shared_ptr<dlib::drawable>(nullptr);
@@ -85,7 +99,7 @@ class VisualizeableBase {
    *
    * @param data The data object to be visualized.
    */
-  virtual void visualize(util::Data& data) = 0;
+  virtual void visualize(util::Data& data) = 0;  // NOLINT
 };
 
 template<typename widget_type = dlib::label>
@@ -94,19 +108,12 @@ class Visualizeable : public VisualizeableBase {
   std::shared_ptr<widget_type> widget;
 
  public:
-  /**
-   * Override this method if you need more destruction control.
-   */
   virtual ~Visualizeable() = default;
 
-  /**
-   * Sets the gui widget for this object. Is usually called by the
-   * DebugWindow.
-   *
-   * @param widget a pointer to the widget.
-   */
-  std::shared_ptr<dlib::drawable> init(dlib::drawable_window& parent,
-      int width, int height, std::string text = "No visualization.") final {
+  std::shared_ptr<dlib::drawable> init(
+      dlib::drawable_window& parent,  // NOLINT
+      int width, int height,
+      std::string text = "No visualization.") final {
     widget = create_widget<widget_type>(parent);
     adjust_widget<widget_type>(widget, width, height, text);
     return widget;

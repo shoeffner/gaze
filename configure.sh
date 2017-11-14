@@ -13,7 +13,7 @@
 # You may want to override the environment variable BUILD_DIR to use another
 # directory than `build` for the build process.
 
-BUILD_DIR=${BUILD_DIR:=$(pwd)/build}
+BUILD_DIR=${BUILD_DIR:=build}
 
 for arg in $*; do
     case "$arg" in
@@ -71,8 +71,13 @@ mkdir -p ${BUILD_DIR}
           -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE} \
           `[[ ${DEPENDENCY_GRAPH} -eq 0 ]] || echo --graphviz=dependencies/dependencies.dot` \
           ${PROJECT_DIR}
-    echo -e "\n\tYou can cd into ${BUILD_DIR} and call \"make -j8\" there:\n"
-    echo -e "\tcd ${BUILD_DIR}\n\tmake -j8\n"
+    if [[ $? -eq 0 ]]; then
+        echo -e "\n\tYou can cd into ${BUILD_DIR} and call \"make -j8\" there:\n"
+        echo -e "\tcd ${BUILD_DIR}\n\tmake -j8\n"
+    else
+        echo -e "\n\tFailure!\n"
+        return 1
+    fi
 )
 if [[ ${DEPENDENCY_GRAPH} -ne 0 && -f ${BUILD_DIR}/dependencies/dependencies.dot ]]; then
     dot -Tpdf ${BUILD_DIR}/dependencies/dependencies.dot -o ${BUILD_DIR}/dependencies.pdf

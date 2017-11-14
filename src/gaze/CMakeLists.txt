@@ -1,19 +1,19 @@
 include(ExternalProject)
 
-message(STATUS "Configuring gaze")
+message(STATUS "Configuring ${PROJECT_NAME}")
 
 
 # Find packages
 set(OpenCV_COMPONENTS core videoio calib3d)
 find_package(OpenCV ${OpenCV_VERSION} REQUIRED COMPONENTS ${OpenCV_COMPONENTS})
 if(NOT OpenCV_FOUND)
-    message(WARNING "Can not build gaze library, OpenCV was not found.")
+    message(WARNING "Can not build ${PROJECT_NAME} library, OpenCV was not found.")
     return()
 endif(NOT OpenCV_FOUND)
 
 find_package(dlib ${dlib_VERSION} REQUIRED)
 if(NOT dlib_FOUND)
-    message(WARNING "Can not build gaze library, dlib was not found.")
+    message(WARNING "Can not build ${PROJECT_NAME} library, dlib was not found.")
     return()
 endif(NOT dlib_FOUND)
 
@@ -27,7 +27,7 @@ ExternalProject_Add(${YAML_CPP}
     CMAKE_ARGS
         -DYAML_CPP_BUILD_TOOLS=OFF
         -DCMAKE_INSTALL_MESSAGE=LAZY
-        -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+        -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
     UPDATE_COMMAND ""
 )
 ExternalProject_Get_Property(${YAML_CPP} install_dir)

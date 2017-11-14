@@ -33,22 +33,13 @@ class SourceCapture final
     /** @name Creating a source capture */
     //@{
     /**
-     * Creates a cv::VideoCapture with a webcam source.
+     * Creates a cv::VideoCapture as the input source.
      *
-     * Tries to set the FPS to 60, however most webcams only can capture about
-     * 30 FPS. Use get_frames_per_second() to figure out how many frames your
-     * source eventually has.
-     *
-     * @param source The webcam id, usually 0.
+     * If the source specified in the yaml configuration is a string, it is
+     * considered as a path, otherwise the number will be parsed as a webcam
+     * address.
      */
-    explicit SourceCapture(const int source);
-
-    /**
-     * Creates a cv::VideoCapture with a video source.
-     *
-     * @param source The video source file path.
-     */
-    explicit SourceCapture(const std::string source);
+    explicit SourceCapture();
     //@}
 
     ~SourceCapture();

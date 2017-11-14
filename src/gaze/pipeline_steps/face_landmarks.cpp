@@ -2,6 +2,7 @@
 
 #include "gaze/pipeline_steps/face_landmarks.h"
 
+#include <string>
 #include <vector>
 
 #include "dlib/image_processing.h"
@@ -21,7 +22,8 @@ namespace pipeline {
 FaceLandmarks::FaceLandmarks()
     : face_detector(dlib::get_frontal_face_detector()) {
   YAML::Node config = util::get_config(this->number);
-  this->name = config["name"].as<std::string>();
+  this->name = config["name"] ?
+    config["name"].as<std::string>() : "FaceLandmarks";
 
   std::string landmarks_model("shape_predictor_5_face_landmarks.dat");
   dlib::deserialize(config["model"] ?
@@ -38,6 +40,10 @@ void FaceLandmarks::process(util::Data& data) {
 
 void FaceLandmarks::visualize(util::Data& data) {
   this->widget->clear_overlay();
+
+  // Reprocess the data in case multiple pipeline steps
+  // interfered - this is good for comparisons.
+  this->process(data);
 
   if (data.landmarks.get_rect().is_empty()) {
     this->widget->set_image(data.image);

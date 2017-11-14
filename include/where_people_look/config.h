@@ -17,7 +17,6 @@ namespace wpl {
 class Config {
   std::string subject_id;
 
-  boost::filesystem::path result_dir_path = boost::filesystem::initial_path();
   boost::filesystem::path stimuli_dir_path = boost::filesystem::initial_path();
 
  public:
@@ -27,12 +26,10 @@ class Config {
    *
    * @returns true if all information is provided.
    */
-  const bool assistant_data_complete() const;
+  bool assistant_data_complete() const;
 
   /** @name Getters */
   //@{
-  const boost::filesystem::path get_result_dir_path() const;
-
   const boost::filesystem::path get_stimuli_dir_path() const;
 
   const std::string get_subject_id() const;
@@ -44,15 +41,11 @@ class Config {
    * boost::filesystem::path and std::string.
    */
   //@{
-  const void set_result_dir_path(const std::string path);
+  void set_stimuli_dir_path(const std::string path);
 
-  const void set_result_dir_path(const boost::filesystem::path path);
+  void set_stimuli_dir_path(const boost::filesystem::path path);
 
-  const void set_stimuli_dir_path(const std::string path);
-
-  const void set_stimuli_dir_path(const boost::filesystem::path path);
-
-  const void set_subject_id(const std::string id);
+  void set_subject_id(const std::string id);
   //@}
 };
 

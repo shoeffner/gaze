@@ -2,13 +2,16 @@
 
 #include "gaze/pipeline_steps/head_pose_estimation.h"
 
-#include <vector>
 #include <cstdlib>
+#include <string>
+#include <vector>
 
 #include "dlib/gui_widgets.h"
 #include "dlib/image_processing.h"
 #include "opencv2/opencv.hpp"
+#include "yaml-cpp/yaml.h"
 
+#include "gaze/util/config.h"
 #include "gaze/util/data.h"
 
 
@@ -30,23 +33,13 @@ cv::Mat distortions(const util::Data&) {
   return cv::Mat::zeros(4, 1, CV_32F);
 }
 
-dlib::point estimate_nosetip(const util::Data& data) {
-  auto x_offset = ((data.landmarks.part(2) - data.landmarks.part(3)).length() -
-    (data.landmarks.part(0) - data.landmarks.part(1)).length()) / 4;
-  auto y_offset = -
-    std::abs(
-        (data.landmarks.part(1).y() + data.landmarks.part(3).y()) / 2
-         - data.landmarks.part(4).y()) * 2 / 5;
-
-  return dlib::point(data.landmarks.part(4).x() + x_offset,
-      data.landmarks.part(4).y() + y_offset);
-}
-
 }  // namespace
 
 
 HeadPoseEstimation::HeadPoseEstimation() {
-  this->name = "Head pose";
+  YAML::Node config = util::get_config(this->number);
+  this->name = config["name"] ?
+    config["name"].as<std::string>() : "HeadPoseEstimation";
 
   this->overlay.push_back({{-1, -1}, {-1, -1}, dlib::rgb_pixel(255, 0, 0)});
   this->overlay.push_back({{-1, -1}, {-1, -1}, dlib::rgb_pixel(0, 255, 0)});

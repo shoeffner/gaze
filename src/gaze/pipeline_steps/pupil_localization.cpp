@@ -1,8 +1,10 @@
 // Copyright 2017 Sebastian Höffner
 
 #include "gaze/pipeline_steps/pupil_localization.h"
+
 #include <algorithm>
 #include <limits>
+#include <string>
 #include <vector>
 
 #include "dlib/image_processing.h"
@@ -11,7 +13,9 @@
 #include "dlib/opencv.h"
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
+#include "yaml-cpp/yaml.h"
 
+#include "gaze/util/config.h"
 #include "gaze/util/data.h"
 
 
@@ -90,12 +94,15 @@ PupilLocalization::PupilLocalization()
     // for parameters
     : SIGMA_FACTOR(0.005),
       RELATIVE_THRESHOLD_FACTOR(0.8) {
-  this->name = "Eye center";
+  YAML::Node config = util::get_config(this->number);
+  this->name = config["name"] ?
+    config["name"].as<std::string>() : "PupilLocalization";
+
   // Pre-calculate displacement table
   util::fill_displacement_tables(
       this->displacement_table_x,
       this->displacement_table_y,
-      131);
+      config["table_size"] ? config["table_size"].as<int>() : 131);
 }
 
 void PupilLocalization::process(util::Data& data) {

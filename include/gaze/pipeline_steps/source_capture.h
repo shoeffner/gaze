@@ -39,7 +39,7 @@ class SourceCapture final
      * considered as a path, otherwise the number will be parsed as a webcam
      * address.
      */
-    explicit SourceCapture();
+    SourceCapture();
     //@}
 
     ~SourceCapture();

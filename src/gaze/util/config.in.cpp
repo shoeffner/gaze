@@ -1,3 +1,5 @@
+// Copyright 2017 Sebastian Höffner
+
 #include "gaze/util/config.h"
 
 #include <iostream>

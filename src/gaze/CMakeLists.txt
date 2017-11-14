@@ -49,9 +49,12 @@ link_directories(
 )
 
 
-# Library
-set(DEFAULT_CONFIGURATION_FILE_PATH ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/gaze.default.yaml)
+# Read default configuration
+file(READ ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.default.yaml DEFAULT_CONFIGURATION_FILE)
+string(REGEX REPLACE "\n" "\"\n\"" DEFAULT_CONFIGURATION_FILE ${DEFAULT_CONFIGURATION_FILE})
 configure_file(util/config.in.cpp util/config.cpp @ONLY)
+
+# Add files to compile
 list(APPEND LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/gaze_tracker.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/gui/debug_window.cpp
@@ -114,10 +117,5 @@ target_link_libraries(${PROJECT_NAME}
 
 install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION lib)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/gaze
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/${PROJECT_NAME}
         DESTINATION include)
-install(FILES ${CMAKE_SOURCE_DIR}/gaze.default.yaml
-        DESTINATION share/${PROJECT_NAME})
-install(FILES ${CMAKE_SOURCE_DIR}/gaze.yaml
-        DESTINATION share/${PROJECT_NAME}
-        OPTIONAL)

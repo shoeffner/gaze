@@ -14,9 +14,8 @@ YAML::Node get_config() {
   try {
     config = YAML::LoadFile("gaze.yaml");
   } catch (YAML::BadFile) {
-    std::cerr << "Can not load gaze.yaml! "
-                 "Loading @DEFAULT_CONFIGURATION_FILE_PATH@" << std::endl;
-    config = YAML::LoadFile("@DEFAULT_CONFIGURATION_FILE_PATH@");
+    std::cout << "loading default configuration." << std::endl;
+    config = YAML::LoadAll("@DEFAULT_CONFIGURATION_FILE@");
   }
   return config;
 }

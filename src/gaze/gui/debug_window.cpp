@@ -103,7 +103,9 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
   }
 
   this->show();
-  EventManager::instance().subscribe(this);
+  if (this->pipeline_steps.size() > 0) {
+    EventManager::instance().subscribe(this);
+  }
 }
 
 DebugWindow::~DebugWindow() {

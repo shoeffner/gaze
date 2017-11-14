@@ -72,10 +72,11 @@ void GazeTracker::init_pipeline(const std::string subject_id) {
     return;
   }
   YAML::Node config = util::get_config()["pipeline"];
-  std::cout << config << std::endl;
+
   for (YAML::Node step_config : config) {
     std::string type  = step_config["type"].as<std::string>();
     PipelineStep* step;
+
     if (!type.compare("FaceLandmarks")) {
       step = new pipeline::FaceLandmarks();
     } else if (!type.compare("GazePointCalculation")) {
@@ -87,6 +88,7 @@ void GazeTracker::init_pipeline(const std::string subject_id) {
     } else if (!type.compare("SourceCapture")) {
       step = new pipeline::SourceCapture();
     }
+
     this->pipeline_steps.push_back(step);
   }
   this->pipeline = new Pipeline(this->pipeline_steps, true);

@@ -17,7 +17,7 @@ YAML::Node get_config() {
     config = YAML::LoadFile("gaze.yaml");
   } catch (YAML::BadFile) {
     std::cout << "loading default configuration." << std::endl;
-    config = YAML::LoadAll("@DEFAULT_CONFIGURATION_FILE@");
+    config = YAML::Load("@DEFAULT_CONFIGURATION_FILE@");
   }
   return config;
 }

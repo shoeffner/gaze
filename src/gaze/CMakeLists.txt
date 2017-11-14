@@ -22,9 +22,10 @@ endif(NOT dlib_FOUND)
 set(YAML_CPP yaml-cpp)
 ExternalProject_Add(${YAML_CPP}
     GIT_REPOSITORY "https://github.com/jbeder/${YAML_CPP}.git"
-    GIT_TAG "5a519a4c6cb03a2aa440b8d53a829ef2db30bb9e"
+    GIT_TAG "master"
     GIT_SHALLOW 1
     CMAKE_ARGS
+        -DYAML_CPP_BUILD_TESTS=OFF
         -DYAML_CPP_BUILD_TOOLS=OFF
         -DCMAKE_INSTALL_MESSAGE=LAZY
         -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
@@ -38,12 +39,10 @@ set(YAML_CPP_LIBRARY_DIRS ${install_dir}/lib)
 
 # Includes and libraries
 include_directories(
-    ${dlib_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
     ${YAML_CPP_INCLUDE_DIRS}
 )
 link_directories(
-    ${dlib_LIBRARY_DIRS}
     ${OpenCV_LIBRARY_DIRS}
     ${YAML_CPP_LIBRARY_DIRS}
 )
@@ -51,7 +50,7 @@ link_directories(
 
 # Read default configuration
 file(READ ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.default.yaml DEFAULT_CONFIGURATION_FILE)
-string(REGEX REPLACE "\n" "\"\n\"" DEFAULT_CONFIGURATION_FILE ${DEFAULT_CONFIGURATION_FILE})
+string(REGEX REPLACE "\n" "\\\\n\"\n\"" DEFAULT_CONFIGURATION_FILE ${DEFAULT_CONFIGURATION_FILE})
 configure_file(util/config.in.cpp util/config.cpp @ONLY)
 
 # Add files to compile
@@ -110,7 +109,7 @@ set_target_properties(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-    ${dlib_LIBRARIES}
+    dlib::dlib
     ${OpenCV_LIBRARIES}
     ${YAML_CPP_LIBRARIES}
 )

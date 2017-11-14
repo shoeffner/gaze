@@ -9,6 +9,7 @@ parentheses):
 - CMake (3.10.0-rc2)
 - OpenCV (3.3.0)
 - dlib (19.7)
+- yaml-cpp ([5a519a4](https://github.com/jbeder/yaml-cpp/commit/5a519a4c6cb03a2aa440b8d53a829ef2db30bb9e), will be cloned)
 
 
 ### Demos

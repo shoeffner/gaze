@@ -12,11 +12,11 @@ namespace util {
 YAML::Node get_config() {
   YAML::Node config;
   try {
-    config = YAML::LoadFile("gaze_pipeline.yaml");
+    config = YAML::LoadFile("gaze.yaml");
   } catch (YAML::BadFile) {
-    std::cerr << "Can not load gaze_pipeline.yaml! "
-                 "Loading gaze_pipeline.default.yaml" << std::endl;
-    config = YAML::LoadFile("gaze_pipeline.default.yaml");
+    std::cerr << "Can not load gaze.yaml! "
+                 "Loading @DEFAULT_CONFIGURATION_FILE_PATH@" << std::endl;
+    config = YAML::LoadFile("@DEFAULT_CONFIGURATION_FILE_PATH@");
   }
   return config;
 }

@@ -50,6 +50,8 @@ link_directories(
 
 
 # Library
+set(DEFAULT_CONFIGURATION_FILE_PATH ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/gaze.default.yaml)
+configure_file(util/config.in.cpp util/config.cpp @ONLY)
 list(APPEND LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/gaze_tracker.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/gui/debug_window.cpp
@@ -62,7 +64,7 @@ list(APPEND LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/pupil_localization.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/source_capture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/util/data.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/util/config.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/util/config.cpp
 )
 
 
@@ -109,3 +111,13 @@ target_link_libraries(${PROJECT_NAME}
     ${OpenCV_LIBRARIES}
     ${YAML_CPP_LIBRARIES}
 )
+
+install(TARGETS ${PROJECT_NAME}
+        ARCHIVE DESTINATION lib)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/gaze
+        DESTINATION include)
+install(FILES ${CMAKE_SOURCE_DIR}/gaze.default.yaml
+        DESTINATION share/${PROJECT_NAME})
+install(FILES ${CMAKE_SOURCE_DIR}/gaze.yaml
+        DESTINATION share/${PROJECT_NAME}
+        OPTIONAL)

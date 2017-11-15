@@ -22,7 +22,6 @@ namespace gui {
  * @brief A window to inspect computation results.
  */
 class DebugWindow final : public dlib::drawable_window {
-  int current_tab = 0;
   util::Data data;
   dlib::button pause_button;
   bool paused;

@@ -68,7 +68,6 @@ DebugWindow::DebugWindow(Pipeline* pipeline)
       this->pipeline_steps.size() > 0 ? this->pipeline_steps.size() : 1);
   this->pipeline_tabs.set_click_handler([this](auto new_idx, auto)
       -> void {
-        this->current_tab = new_idx;
         this->process_data(new_idx);
       });
 
@@ -121,10 +120,7 @@ DebugWindow::~DebugWindow() {
 }
 
 void DebugWindow::process_data(int idx) {
-  // TODO(shoeffner): this->pipeline_tabs.selected_tab() does not compile:
-  // `error: no member named 'selected_tab' in 'dlib::tabbed_display'`
-  // See https://github.com/davisking/dlib/pulls/957
-  idx = idx < 0 ? this->current_tab : idx;
+  idx = idx < 0 ? this->pipeline_tabs.selected_tab() : idx;
 
   if (this->pipeline_steps.size() == 0) {
     return;

@@ -25,10 +25,18 @@ pipeline:
   - type: FaceLandmarks
     name: FaceLandmarks68
     model: shape_predictor_68_face_landmarks.dat
-  - type: FaceLandmarks
-    name: FaceLandmarks5
-    model: shape_predictor_5_face_landmarks.dat
   - type: HeadPoseEstimation
+    name: HeadPose68
+    landmark_indices: [30, 8, 36, 45, 48, 54]
+    model: [
+      [0.0, 0.0, 0.0],
+      [0.0, -0.33, -0.065],
+      [-0.225, 0.17, -0.135],
+      [0.225, 0.17, -0.135],
+      [-0.15, -0.15, -0.125],
+      [0.15, -0.15, -0.125]
+    ]
+    model_scale: 1
   - type: PupilLocalization
     table_size: 131
   - type: GazePointCalculation

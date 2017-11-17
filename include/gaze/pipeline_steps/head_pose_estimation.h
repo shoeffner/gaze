@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "dlib/gui_widgets.h"
+#include "opencv2/opencv.hpp"
 
 #include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
@@ -25,8 +26,10 @@ namespace pipeline {
 class HeadPoseEstimation final
     : public PipelineStep,
       public gui::ImageVisualizeable {
-  std::vector<cv::Point3f> model_points;
-  std::vector<dlib::image_display::overlay_line> overlay;
+  std::vector<int> index_list;
+  std::vector<cv::Point3d> model_points;
+  double model_scale = 1;
+  std::vector<dlib::image_display::overlay_line> coord_base_overlay;
 
   void update_overlay(const util::Data& data);
 

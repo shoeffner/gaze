@@ -1,3 +1,21 @@
+meta:
+  target:
+    width: 8
+    height: 5
+  camera:
+    position:
+      # in cm, from upper left screen corner
+      x: 0.1725
+      y: 0.007
+  screen:
+    resolution:
+      # in pixels
+      width: 2880
+      height: 1800
+    measurements:
+      # in m
+      width: 0.335
+      height: 0.207
 pipeline:
   - type: SourceCapture
     source: 0

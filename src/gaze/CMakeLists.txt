@@ -49,9 +49,11 @@ link_directories(
 
 
 # Read default configuration
-file(READ ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.default.yaml DEFAULT_CONFIGURATION_FILE)
+set(DEFAULT_CONFIG_SRC ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.default.yaml)
+file(READ ${DEFAULT_CONFIG_SRC} DEFAULT_CONFIGURATION_FILE)
 string(REGEX REPLACE "\n" "\\\\n\"\n\"" DEFAULT_CONFIGURATION_FILE ${DEFAULT_CONFIGURATION_FILE})
-configure_file(util/config.in.cpp util/config.cpp @ONLY)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${DEFAULT_CONFIG_SRC})
+configure_file(util/config.in.cpp util/config.cpp)
 
 # Add files to compile
 list(APPEND LIBRARY_SOURCE_FILES

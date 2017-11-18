@@ -10,7 +10,9 @@
 #include "dlib/opencv.h"
 #include "opencv2/core.hpp"
 #include "opencv2/videoio.hpp"
+#include "yaml-cpp/yaml.h"
 
+#include "gaze/util/config.h"
 #include "gaze/util/data.h"
 
 
@@ -18,16 +20,31 @@ namespace gaze {
 
 namespace pipeline {
 
-SourceCapture::SourceCapture(int source) : video_capture(source) {
-  this->name = "Source Capture";
-  // Set goal FPS to 60, still often webcams cap much lower.
-  // (Not that the tracker would achieve this speed...)
-  this->video_capture.set(cv::CAP_PROP_FPS, 60.0);
-  this->video_capture.set(cv::CAP_PROP_FRAME_WIDTH, 640.0);
-  this->video_capture.set(cv::CAP_PROP_FRAME_HEIGHT, 360.0);
-}
+SourceCapture::SourceCapture() {
+  YAML::Node config = util::get_config(this->number);
+  this->name = config["name"] ?
+    config["name"].as<std::string>() : "SourceCapture";
 
-SourceCapture::SourceCapture(std::string source) : video_capture(source) {
+  std::string source = config["source"] ?
+    config["source"].as<std::string>() : "0";
+
+  bool is_webcam = true;
+  try {
+    int cam_source = std::stoi(source);
+    this->video_capture = cv::VideoCapture(cam_source);
+  } catch (const std::invalid_argument&) {
+    is_webcam = false;
+    this->video_capture = cv::VideoCapture(source);
+  }
+
+  if (is_webcam) {
+    this->video_capture.set(cv::CAP_PROP_FPS,
+        config["fps"] ? config["fps"].as<double>() : 60.0);
+    this->video_capture.set(cv::CAP_PROP_FRAME_WIDTH,
+        config["width"] ? config["width"].as<double>() : 640.0);
+    this->video_capture.set(cv::CAP_PROP_FRAME_HEIGHT,
+        config["height"] ? config["height"].as<double>() : 360.0);
+  }
 }
 
 SourceCapture::~SourceCapture() {

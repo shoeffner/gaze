@@ -9,6 +9,7 @@
 #ifndef INCLUDE_GAZE_UTIL_H_
 #define INCLUDE_GAZE_UTIL_H_
 
+#include "gaze/util/config.h"
 #include "gaze/util/data.h"
 
 #endif  // INCLUDE_GAZE_UTIL_H_

@@ -29,7 +29,7 @@ struct Data {
   /** @name Constructors */
   //@{
   Data();
-  Data(Data& data);
+  Data(const Data& data);
 
   /**
    * Uses copy and Data::swap().
@@ -48,7 +48,7 @@ struct Data {
   cv::Mat source_image;
 
   /**
-   * The (possibly modified) source image.
+   * The source image for dlib.
    */
   dlib::array2d<dlib::bgr_pixel> image;
   //@}
@@ -74,6 +74,19 @@ struct Data {
    * Eye center locations.
    */
   dlib::array<dlib::point> centers;
+
+  /** @name Head pose */
+  //@{
+  /**
+   * The head orientation.
+   */
+  cv::Mat head_rotation;
+
+  /**
+   * The head translation.
+   */
+  cv::Mat head_translation;
+  //@}
 
   /**
    * Maps the step identifiers to their processing times.

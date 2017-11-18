@@ -8,6 +8,7 @@
 
 #include "dlib/matrix.h"
 
+#include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
 
@@ -76,8 +77,8 @@ std::vector<dlib::chip_details> get_eyes_chip_details(
  * @param table_y The y components of @f$d_i@f$.
  * @param size The size to grow this table to.
  */
-void fill_displacement_tables(dlib::matrix<double>& table_x,
-                              dlib::matrix<double>& table_y,
+void fill_displacement_tables(dlib::matrix<double>& table_x,  // NOLINT
+                              dlib::matrix<double>& table_y,  // NOLINT
                               int size);
 
 /**
@@ -92,8 +93,8 @@ void fill_displacement_tables(dlib::matrix<double>& table_x,
  */
 template <typename T>
 void normalize_and_threshold_gradients(
-    dlib::matrix<T>& horizontal,
-    dlib::matrix<T>& vertical,
+    dlib::matrix<T>& horizontal,  // NOLINT
+    dlib::matrix<T>& vertical,  // NOLINT
     double relative_threshold = -1) {
   dlib::matrix<T> magnitude;
   magnitude = dlib::sqrt(dlib::squared(horizontal) +
@@ -137,15 +138,16 @@ namespace pipeline {
  * For details you can also refer to Tristan's blog post
  * <a href="http://thume.ca/projects/2012/11/04/simple-accurate-eye-center-tracking-in-opencv/">Simple, accurate eye center tracking in OpenCV</a>.
  */
-class PupilLocalization final : public PipelineStep {
+class PupilLocalization final
+    : public PipelineStep,
+      public gui::ImageVisualizeable {
   dlib::matrix<double> displacement_table_x;
   dlib::matrix<double> displacement_table_y;
-  const double SIGMA_FACTOR;
-  const double RELATIVE_THRESHOLD_FACTOR;
+  double relative_threshold_factor;
+  double sigma;
+  double sigma_factor;
 
   // TODO(shoeffner): Add unit tests.
-
-
  public:
     /**
      */

@@ -64,18 +64,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="halign">start</property>
-            <property name="label" translatable="yes">Result directory</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkFileChooserButton" id="StimuliDirectoryChooser">
             <property name="name">stimuli_dir_path</property>
             <property name="visible">True</property>
@@ -102,20 +90,6 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFileChooserButton" id="ResultDirectoryChooser">
-            <property name="name">result_dir_path</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="action">select-folder</property>
-            <property name="title" translatable="yes">Select or create a result directory</property>
-            <signal name="file-set" handler="cb_update_config" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
           </packing>
         </child>
       </object>

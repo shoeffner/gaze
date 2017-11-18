@@ -6,6 +6,7 @@
 #include "dlib/image_processing.h"
 #include "dlib/image_processing/frontal_face_detector.h"
 
+#include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
 
@@ -20,7 +21,9 @@ namespace pipeline {
  *
  * // TODO(shoeffner): Write documentation for FaceLandmarks.
  */
-class FaceLandmarks final : public PipelineStep {
+class FaceLandmarks final
+    : public PipelineStep,
+      public gui::ImageVisualizeable {
   dlib::frontal_face_detector face_detector;
   dlib::shape_predictor shape_predictor;
 

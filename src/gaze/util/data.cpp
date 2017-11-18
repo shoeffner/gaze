@@ -4,7 +4,7 @@
 
 #include <utility>
 
-#include <iostream>
+
 namespace gaze {
 
 namespace util {
@@ -15,18 +15,22 @@ Data::Data()
       execution_times() {
 }
 
-Data::Data(Data& data)
+Data::Data(const Data& data)
     : source_image(data.source_image),
       landmarks(data.landmarks),
       eyes(2),
       centers(2),
+      head_rotation(data.head_rotation),
+      head_translation(data.head_translation),
       execution_times(data.execution_times) {
   dlib::assign_image(this->image, data.image);
 
-  for (unsigned long i = 0; i < data.eyes.size(); ++i) {
+  for (auto i = decltype(data.eyes.size()){0};
+       i < data.eyes.size(); ++i) {
     dlib::assign_image(this->eyes[i], data.eyes[i]);
   }
-  for (unsigned long i = 0; i < data.centers.size(); ++i) {
+  for (auto i = decltype(data.centers.size()){0};
+       i < data.centers.size(); ++i) {
     this->centers[i] = data.centers[i];
   }
 }
@@ -42,6 +46,8 @@ void Data::swap(Data& data) {
   std::swap(this->landmarks, data.landmarks);
   std::swap(this->eyes, data.eyes);
   std::swap(this->centers, data.centers);
+  std::swap(this->head_rotation, data.head_rotation);
+  std::swap(this->head_translation, data.head_translation);
   std::swap(this->execution_times, data.execution_times);
 }
 

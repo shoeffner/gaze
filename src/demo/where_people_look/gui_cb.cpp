@@ -43,9 +43,6 @@ bool cb_update_config(GtkWidget* const widget,
   if (!widget_name.compare("subject_id")) {
     experiment->get_config()->set_subject_id(
       std::string(gtk_entry_get_text(GTK_ENTRY(widget))));
-  } else if (!widget_name.compare("result_dir_path")) {
-    experiment->get_config()->set_result_dir_path(
-      std::string(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget))));
   } else if (!widget_name.compare("stimuli_dir_path")) {
     experiment->get_config()->set_stimuli_dir_path(
       std::string(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget))));

@@ -7,39 +7,23 @@
 #include <utility>
 
 #include "opencv2/core.hpp"
+#include "yaml-cpp/yaml.h"
 
 #include "gaze/gui/debug_window.h"
 #include "gaze/pipeline.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/pipeline_steps.h"
+#include "gaze/util/config.h"
 
 
 namespace gaze {
 
-GazeTracker::GazeTracker(const bool debug) : debug(debug) {
-  this->initialized = false;
-}
-
-GazeTracker::GazeTracker(const int source,
-                         const std::string subject_id,
-                         const std::string result_dir,
-                         const bool debug)
+GazeTracker::GazeTracker(const std::string subject_id,
+                         bool debug)
     : debug(debug),
-      result_dir(result_dir),
       subject_id(subject_id) {
   this->initialized = false;
-  this->init(source, subject_id, result_dir, debug);
-}
-
-GazeTracker::GazeTracker(const std::string source,
-                         const std::string subject_id,
-                         const std::string result_dir,
-                         const bool debug)
-    : debug(debug),
-      result_dir(result_dir),
-      subject_id(subject_id) {
-  this->initialized = false;
-  this->init(source, subject_id, result_dir, debug);
+  this->init(subject_id, debug);
 }
 
 GazeTracker::~GazeTracker() {
@@ -69,42 +53,44 @@ const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
   return std::pair<int, int>(120, 130);
 }
 
-void GazeTracker::init(const int source,
-                       const std::string subject_id,
-                       const std::string result_dir,
-                       const bool debug) {
-  this->init(std::to_string(source), subject_id, result_dir, debug);
-}
-
-void GazeTracker::init(const std::string source,
-                       const std::string subject_id,
-                       const std::string result_dir,
+void GazeTracker::init(const std::string subject_id,
                        const bool debug) {
   if (this->initialized) {
     return;
   }
   this->debug = debug;
-  try {
-    int cam_source = std::stoi(source);
-    this->pipeline_steps.push_back(new pipeline::SourceCapture(cam_source));
-  } catch (const std::invalid_argument&) {
-    this->pipeline_steps.push_back(new pipeline::SourceCapture(source));
-  }
-  this->result_dir = result_dir;
   this->subject_id = subject_id;
-  this->init_pipeline();
+  this->init_pipeline(subject_id);
   if (this->debug) {
     gui::open_debug_window(this->pipeline);
   }
   this->initialized = true;
 }
 
-void GazeTracker::init_pipeline() {
+void GazeTracker::init_pipeline(const std::string subject_id) {
   if (this->initialized) {
     return;
   }
-  this->pipeline_steps.push_back(new pipeline::FaceLandmarks());
-  this->pipeline_steps.push_back(new pipeline::PupilLocalization());
+  YAML::Node config = util::get_config()["pipeline"];
+
+  for (YAML::Node step_config : config) {
+    std::string type  = step_config["type"].as<std::string>();
+    PipelineStep* step;
+
+    if (!type.compare("FaceLandmarks")) {
+      step = new pipeline::FaceLandmarks();
+    } else if (!type.compare("GazePointCalculation")) {
+      step = new pipeline::GazePointCalculation();
+    } else if (!type.compare("HeadPoseEstimation")) {
+      step = new pipeline::HeadPoseEstimation();
+    } else if (!type.compare("PupilLocalization")) {
+      step = new pipeline::PupilLocalization();
+    } else if (!type.compare("SourceCapture")) {
+      step = new pipeline::SourceCapture();
+    }
+
+    this->pipeline_steps.push_back(step);
+  }
   this->pipeline = new Pipeline(this->pipeline_steps, true);
 }
 

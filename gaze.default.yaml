@@ -1,0 +1,47 @@
+meta:
+  target:
+    width: 8
+    height: 5
+  camera:
+    position:
+      # in cm, from upper left screen corner
+      x: 0.1725
+      y: 0.007
+  screen:
+    resolution:
+      # in pixels
+      width: 2880
+      height: 1800
+    measurements:
+      # in m
+      width: 0.335
+      height: 0.207
+pipeline:
+  - type: SourceCapture
+    source: 0
+    fps: 30
+    width: 640
+    height: 360
+  - type: FaceLandmarks
+    name: FaceLandmarks68
+    model: shape_predictor_68_face_landmarks.dat
+  - type: HeadPoseEstimation
+    name: HeadPose68
+    landmark_indices: [30, 8, 36, 45, 48, 54]
+    model: [
+      [0.0, 0.0, 0.0],
+      [0.0, -0.33, -0.065],
+      [-0.225, 0.17, -0.135],
+      [0.225, 0.17, -0.135],
+      [-0.15, -0.15, -0.125],
+      [0.15, -0.15, -0.125]
+    ]
+    model_scale: 1
+  - type: PupilLocalization
+    table_size: 131
+    # sigma_factor is multiplied by the head height for the sigma value.
+    # sigma_factor will be ignored, if a sigma: is provided.
+    sigma_factor: 0.005
+    # sigma: 1
+    relative_threshold: 0.8
+  - type: GazePointCalculation

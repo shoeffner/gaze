@@ -29,53 +29,26 @@ class GazeTracker {
   bool initialized;
   Pipeline* pipeline;
   std::vector<PipelineStep*> pipeline_steps;
-  std::string result_dir;
   std::string subject_id;
   std::string video_source;
 
   /**
    * Initializes the thread for the processing pipeline.
+   *
+   * @param subject_id The subject identifier.
    */
-  void init_pipeline();
+  void init_pipeline(const std::string subject_id);
 
  public:
     /**
-     * Constructs a GazeTracker instance. If you use this method, you must
-     * call one of the initialization functions afterwards.
-     *
-     * @param debug Starts the gaze_tracker in debug mode, bringing up
-     *              additional debuggin screens.
-     */
-    explicit GazeTracker(const bool debug = false);
-
-    /**
      * Constructs and initializes a GazeTracker instance for a video source.
      * See GazeTracker::init(std::string, std::string, std::string).
      *
-     * @param source The video file path.
      * @param subject_id The subject identifier.
-     * @param result_dir The directory to store the results.
      * @param debug Starts the gaze_tracker in debug mode, bringing up
      *              additional debuggin screens.
      */
-    GazeTracker(const int source,
-                const std::string subject_id = "default_subject",
-                const std::string result_dir = "./",
-                const bool debug = false);
-
-    /**
-     * Constructs and initializes a GazeTracker instance for a video source.
-     * See GazeTracker::init(std::string, std::string, std::string).
-     *
-     * @param source The video file path.
-     * @param subject_id The subject identifier.
-     * @param result_dir The directory to store the results.
-     * @param debug Starts the gaze_tracker in debug mode, bringing up
-     *              additional debuggin screens.
-     */
-    GazeTracker(const std::string source,
-                const std::string subject_id = "default_subject",
-                const std::string result_dir = "./",
+    GazeTracker(const std::string subject_id = "default_subject",
                 const bool debug = false);
 
     ~GazeTracker();
@@ -98,43 +71,22 @@ class GazeTracker {
 
     /** @name Initialization
      *
-     * These methods allow initialization of a GazeTracker instance.
+     * This method allows initialization of a GazeTracker instance.
      * If GazeTracker() was used to construct the instance, you must call
      * either of these functions before perfoming any actions.
      */
     //@{
     /**
-     * Initializes the GazeTracker to use a webcam.
+     * Initializes the GazeTracker.
      *
      * It immediately starts tracking.
      *
-     * @param source The webcam ID to be used.
      * @param subject_id The subject ID, used to store the data in the correct
      *                   file.
-     * @param result_dir The directory where the results should be stored.
      * @param debug Starts the gaze_tracker in debug mode, bringing up
      *              additional debuggin screens.
      */
-    void init(const int source,
-              const std::string subject_id,
-              const std::string result_dir = "./",
-              const bool debug = false);
-
-    /**
-     * Initializes the GazeTracker to use a video.
-     *
-     * It immediately starts tracking.
-     *
-     * @param source The video file path to be used.
-     * @param subject_id The subject ID, used to store the data in the correct
-     *                   file.
-     * @param result_dir The directory where the results should be stored.
-     * @param debug Starts the gaze_tracker in debug mode, bringing up
-     *              additional debuggin screens.
-     */
-    void init(const std::string source,
-              const std::string subject_id,
-              const std::string result_dir = "./",
+    void init(const std::string subject_id,
               const bool debug = false);
     //@}
 

@@ -143,8 +143,9 @@ class PupilLocalization final
       public gui::ImageVisualizeable {
   dlib::matrix<double> displacement_table_x;
   dlib::matrix<double> displacement_table_y;
-  const double SIGMA_FACTOR;
-  const double RELATIVE_THRESHOLD_FACTOR;
+  double relative_threshold_factor;
+  double sigma;
+  double sigma_factor;
 
   // TODO(shoeffner): Add unit tests.
  public:

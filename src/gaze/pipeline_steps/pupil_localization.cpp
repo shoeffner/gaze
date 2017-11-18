@@ -109,11 +109,25 @@ PupilLocalization::PupilLocalization()
     // See
     // http://thume.ca/projects/2012/11/04/simple-accurate-eye-center-tracking-in-opencv/
     // for parameters
-    : SIGMA_FACTOR(0.005),
-      RELATIVE_THRESHOLD_FACTOR(0.8) {
+    : relative_threshold_factor(0.3),
+      sigma(-1),
+      sigma_factor(0.005) {
   YAML::Node config = util::get_config(this->number);
   this->name = config["name"] ?
     config["name"].as<std::string>() : "PupilLocalization";
+
+  if (config["relative_threshold"]) {
+    this->relative_threshold_factor =
+      config["relative_threshold"]
+        .as<decltype(this->relative_threshold_factor)>();
+  }
+  if (config["sigma"]) {
+    this->sigma = config["sigma"].as<decltype(this->sigma)>();
+  }
+  if (config["sigma_factor"]) {
+    this->sigma_factor =
+      config["sigma_factor"].as<decltype(this->sigma_factor)>();
+  }
 
   // Pre-calculate displacement table
   util::fill_displacement_tables(
@@ -149,7 +163,8 @@ void PupilLocalization::process(util::Data& data) {
     // Blur image
     dlib::matrix<double> eye_gaussian;
     dlib::gaussian_blur(eye_in, eye_gaussian,
-        this->SIGMA_FACTOR * data.landmarks.get_rect().height());
+        this->sigma >= 0 ? this->sigma :
+        this->sigma_factor * data.landmarks.get_rect().height());
 
     // Calculate gradients
     dlib::matrix<double> eye_horizontal;
@@ -158,7 +173,7 @@ void PupilLocalization::process(util::Data& data) {
     eye_horizontal *= -1;
     // eye_vertical *= -1;
     util::normalize_and_threshold_gradients(eye_horizontal, eye_vertical,
-        this->RELATIVE_THRESHOLD_FACTOR);
+        this->relative_threshold_factor);
 
     // Compute objective function t - only implicit
     double max_t = std::numeric_limits<double>::min();

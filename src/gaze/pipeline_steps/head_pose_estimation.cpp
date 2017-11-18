@@ -83,7 +83,6 @@ HeadPoseEstimation::HeadPoseEstimation() {
 
   if (config["model"]) {
     this->model_points = config["model"].as<std::vector<cv::Point3d>>();
-    std::cout << config["model"] << std::endl;
   }
 
   if (config["model_scale"]) {
@@ -104,20 +103,6 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
     return;
   }
 
-  // TODO(shoeffner): store orientation/translation with the data object
-  // Convert dlib::points to cv::Point for solvePNP
-  std::vector<cv::Point2d> im_points;
-  for (auto i : this->index_list) {
-    im_points.push_back(cv::Point2d(data.landmarks.part(i).x(),
-                                    data.landmarks.part(i).y()));
-  }
-
-  cv::Mat rotation;
-  cv::Mat translation;
-  cv::solvePnP(this->model_points, im_points,
-      camera_matrix(data), distortions(data),
-      rotation, translation, false, cv::SOLVEPNP_ITERATIVE);
-
   // Project reference points to image.
   std::vector<cv::Point3d> base_vecs =
     {{0, 0, 0},
@@ -125,7 +110,7 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
      {0, 0.1 * this->model_scale, 0},
      {0, 0, 0.1 * this->model_scale}};
   std::vector<cv::Point2d> image_points;
-  cv::projectPoints(base_vecs, rotation, translation,
+  cv::projectPoints(base_vecs, data.head_rotation, data.head_translation,
       camera_matrix(data), distortions(data), image_points);
 
   // coordinate system
@@ -140,8 +125,9 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
 
   // detected vs. projected points in overlay
   std::vector<cv::Point2d> projected_points;
-  cv::projectPoints(this->model_points, rotation, translation,
-      camera_matrix(data), distortions(data), projected_points);
+  cv::projectPoints(this->model_points, data.head_rotation,
+      data.head_translation, camera_matrix(data), distortions(data),
+      projected_points);
 
   auto color_detection = dlib::rgb_pixel(255, 0, 0);
   auto color_projection = dlib::rgb_pixel(0, 0, 255);
@@ -164,19 +150,17 @@ void HeadPoseEstimation::process(util::Data& data) {
   if (data.landmarks.num_parts() <= 0) {
     return;
   }
-  return;
-  std::vector<cv::Point2d> image_points;
-  for (auto i = decltype(data.landmarks.num_parts()){0};
-       i < data.landmarks.num_parts(); ++i) {
-    image_points.push_back(cv::Point2d(data.landmarks.part(i).x(),
-                                       data.landmarks.part(i).y()));
+
+  // Convert dlib::points to cv::Point for solvePNP
+  std::vector<cv::Point2d> im_points;
+  for (auto i : this->index_list) {
+    im_points.push_back(cv::Point2d(data.landmarks.part(i).x(),
+                                    data.landmarks.part(i).y()));
   }
 
-  cv::Mat rotation;
-  cv::Mat translation;
-  cv::solvePnP(this->model_points, image_points,
+  cv::solvePnP(this->model_points, im_points,
       camera_matrix(data), distortions(data),
-      rotation, translation);
+      data.head_rotation, data.head_translation, false, cv::SOLVEPNP_ITERATIVE);
 }
 
 void HeadPoseEstimation::visualize(util::Data& data) {

@@ -20,6 +20,8 @@ Data::Data(const Data& data)
       landmarks(data.landmarks),
       eyes(2),
       centers(2),
+      head_rotation(data.head_rotation),
+      head_translation(data.head_translation),
       execution_times(data.execution_times) {
   dlib::assign_image(this->image, data.image);
 
@@ -44,6 +46,8 @@ void Data::swap(Data& data) {
   std::swap(this->landmarks, data.landmarks);
   std::swap(this->eyes, data.eyes);
   std::swap(this->centers, data.centers);
+  std::swap(this->head_rotation, data.head_rotation);
+  std::swap(this->head_translation, data.head_translation);
   std::swap(this->execution_times, data.execution_times);
 }
 

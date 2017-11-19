@@ -20,7 +20,6 @@ namespace util {
 /**
  * Determines a bounding box around the eyes from a given object detection.
  * This function is designed to work with 5 feature landmarks.
- * // TODO(shoeffner): Add support for the 68 features.
  *
  * @param object_detection A full object detecetion as acquired from a
  *                         dlib::shape_predictor.

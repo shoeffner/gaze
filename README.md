@@ -6,6 +6,7 @@
 
 You need the following dependencies to build gaze (tested versions in
 parentheses):
+- C++17
 - CMake (3.10.0-rc2)
 - OpenCV (3.3.0)
 - dlib (19.7)

@@ -25,7 +25,7 @@ FaceLandmarks::FaceLandmarks()
   this->name = config["name"] ?
     config["name"].as<std::string>() : "FaceLandmarks";
 
-  std::string landmarks_model("shape_predictor_5_face_landmarks.dat");
+  std::string landmarks_model("shape_predictor_68_face_landmarks.dat");
   dlib::deserialize(config["model"] ?
                     config["model"].as<std::string>() :
                     landmarks_model) >> this->shape_predictor;

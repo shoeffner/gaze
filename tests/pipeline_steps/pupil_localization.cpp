@@ -1,11 +1,22 @@
 // Copyright 2017 Sebastian Höffner
 
-#include <iostream>
+#include "gaze/pipeline_steps/pupil_localization.h"
+
+#include <fstream>
+#include <iomanip>
+#include <list>
+#include <numeric>
+#include <string>
+#include <vector>
 
 #include "dlib/matrix.h"
 #include "doctest/doctest.h"
+#include "opencv2/opencv.hpp"
 
-#include "gaze/pipeline_steps/pupil_localization.h"
+#include "gaze/pipeline_steps/face_landmarks.h"
+#include "gaze/util/data.h"
+#include "gaze/tests/doctest_helper.h"
+
 
 template<typename T>
 void CHECK_MATRIX_APPROX(dlib::matrix<T> expected,
@@ -78,3 +89,92 @@ TEST_CASE("gaze::util::fill_displacement_tables") {
   }
 }
 
+
+TEST_CASE("PupilLocalization::process") {
+  INFO("Shared Setup");
+  // SHARED TEST SETUP
+  std::string FACE;
+  // available test images
+  std::list<int> IMAGE_NUMS(0);  // 120
+
+  // Skipping tests if IMAGE_NUMS(0)
+  if (IMAGE_NUMS.size() == 0) {
+    return;
+  }
+
+  std::iota(IMAGE_NUMS.begin(), IMAGE_NUMS.end(), 0);
+  std::list<std::string> IMAGES;
+  for (auto num : IMAGE_NUMS) {
+    std::stringstream s;
+    s << std::setfill('0') << std::setw(4) << num;
+    IMAGES.push_back(s.str());
+  }
+
+  double TOLERANCE = 15.0 / 60.0;  // roughly 15x15 pixel error for 60px eye
+  std::string PATH("./assets/pexels_faces/");
+  std::string COMMA(", ");  // For crude csv parsing
+
+
+  // Pipeline steps (preparation and tested)
+  gaze::pipeline::FaceLandmarks landmarks;
+  gaze::pipeline::PupilLocalization pupil_localization;
+
+  int target_x[] = {0, 0};
+  int target_y[] = {0, 0};
+
+  // INDIVIDUAL TEST SETUP
+  DOCTEST_VALUE_PARAMETERIZED_DATA(FACE, IMAGES);
+  INFO("Face: " << FACE);
+
+  // Read and parse target values
+  std::ifstream target_reader(PATH + FACE + ".csv");
+  REQUIRE(target_reader.is_open());
+  target_reader >> target_x[0] >> COMMA
+                >> target_y[0]
+                >> target_x[1] >> COMMA
+                >> target_y[1];
+  // Invalid test case (no face annotations)
+  if (target_x[0] + target_y[0] + target_x[1] + target_y[1] == 0) {
+    return;
+  }
+
+  // Create data object and load test image
+  gaze::util::Data data;
+  data.source_image = cv::imread(
+      PATH + FACE + ".jpeg");
+  dlib::assign_image(
+      data.image,
+      dlib::cv_image<dlib::bgr_pixel>(data.source_image));
+
+  // Extract landmark information
+  landmarks.process(data);
+  if (data.landmarks.num_parts() == 0) {
+    return;
+  }
+  std::vector<dlib::chip_details> details =
+    gaze::util::get_eyes_chip_details(data.landmarks);
+
+  // ACTUAL TEST
+  pupil_localization.process(data);
+  for (int i = 0; i < 2; ++i) {
+    int x = target_x[i] - details[i].rect.left();
+    int y = target_y[i] - details[i].rect.top();
+    CHECK(data.centers[i].x() == doctest::Approx(x).epsilon(TOLERANCE));
+    CHECK(data.centers[i].y() == doctest::Approx(y).epsilon(TOLERANCE));
+  }
+
+  // TEARDOWN
+  // Store result for easy debugging of failing test results
+  for (int i = 0; i < 2; ++i) {
+    cv::drawMarker(
+      data.source_image,
+      cv::Point(target_x[i], target_y[i]),
+      cv::Scalar(0, 255, 0));
+    cv::drawMarker(
+      data.source_image,
+      cv::Point(details[i].rect.left() + data.centers[i].x(),
+                details[i].rect.top() + data.centers[i].y()),
+      cv::Scalar(0, 0, 255));
+  }
+  cv::imwrite(PATH + FACE + "_out.jpeg", data.source_image);
+}

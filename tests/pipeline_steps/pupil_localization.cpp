@@ -95,7 +95,7 @@ TEST_CASE("PupilLocalization::process") {
   // SHARED TEST SETUP
   std::string FACE;
   // available test images
-  std::list<int> IMAGE_NUMS(0);  // 120
+  std::list<int> IMAGE_NUMS(1);  // 120
 
   // Skipping tests if IMAGE_NUMS(0)
   if (IMAGE_NUMS.size() == 0) {

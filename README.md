@@ -88,3 +88,12 @@ Starts the gaze tracker in debug mode to see what is tracked.
 
 You can always build the documentation using `make docs`.
 Or you can find it [here](https://shoeffner.github.io/gaze).
+
+## Development
+
+Install [cpplint](https://github.com/cpplint/cpplint).
+
+Add a pre-commit hook (`.git/hooks/pre-commit`):
+```
+cpplint --recursive --extensions cpp,h --quiet src tests include
+```

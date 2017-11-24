@@ -28,6 +28,7 @@ class SourceCapture final
     : public PipelineStep,
       public gui::ImageVisualizeable {
   cv::VideoCapture video_capture;
+  cv::Mat last_frame;
 
  public:
     /** @name Creating a source capture */

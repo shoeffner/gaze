@@ -6,7 +6,7 @@ meta:
     position:
       # in cm, from upper left screen corner
       x: 0.1725
-      y: 0.007
+      y: -0.007
   screen:
     resolution:
       # in pixels

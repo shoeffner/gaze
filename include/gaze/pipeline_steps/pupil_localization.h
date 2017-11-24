@@ -146,7 +146,6 @@ class PupilLocalization final
   double sigma;
   double sigma_factor;
 
-  // TODO(shoeffner): Add unit tests.
  public:
     /**
      */

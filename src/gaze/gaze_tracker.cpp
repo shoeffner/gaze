@@ -87,6 +87,8 @@ void GazeTracker::init_pipeline(const std::string subject_id) {
       step = new pipeline::PupilLocalization();
     } else if (!type.compare("SourceCapture")) {
       step = new pipeline::SourceCapture();
+    } else {
+      step = new pipeline::FallbackStep();
     }
 
     this->pipeline_steps.push_back(step);

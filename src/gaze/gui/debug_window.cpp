@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "gaze/gui/debug_window.h"
 
 #include <memory>

@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #ifndef INCLUDE_GAZE_GUI_DEBUG_WINDOW_H_
 #define INCLUDE_GAZE_GUI_DEBUG_WINDOW_H_
 

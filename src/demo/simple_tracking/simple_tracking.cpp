@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include <cmath>
 #include <functional>
 #include <memory>

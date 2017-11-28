@@ -1,4 +1,3 @@
-// Copyright 2017 Sebastian Höffner
 /**
  * @namespace gaze
  * @brief The gaze library provides gaze tracking capabilities.

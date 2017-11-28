@@ -1,4 +1,3 @@
-// Copyright 2017 Sebastian Höffner
 /**
  * @namespace gaze::pipeline
  * @brief This namespace contains pipeline steps.

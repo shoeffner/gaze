@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "gaze/pipeline_steps/face_landmarks.h"
 
 #include <string>

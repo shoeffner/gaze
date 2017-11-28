@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "gaze/pipeline_steps/head_pose_estimation.h"
 
 #include <cstdlib>

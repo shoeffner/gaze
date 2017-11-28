@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #ifndef INCLUDE_GAZE_PIPELINE_STEP_H_
 #define INCLUDE_GAZE_PIPELINE_STEP_H_
 

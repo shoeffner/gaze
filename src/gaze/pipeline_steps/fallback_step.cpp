@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "gaze/pipeline_steps/fallback_step.h"
 
 #include <string>

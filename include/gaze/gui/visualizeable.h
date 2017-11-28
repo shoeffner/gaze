@@ -61,9 +61,6 @@ std::shared_ptr<widget_type> create_widget(dlib::drawable_window& parent) {
 }
 
 class VisualizeableBase {
- protected:
-  std::shared_ptr<dlib::drawable> widget;
-
  public:
   /**
    * Override this method if you need more destruction control.
@@ -87,13 +84,9 @@ class VisualizeableBase {
       std::string text = "No visualization.") = 0;
 
   /**
-   * Removes the widget by setting its pointer to the nullptr.
+   * Removes the widget or disables it.
    */
-  void remove_widget() {
-    if (this->widget && this->widget.get()) {
-      this->widget->disable();
-    }
-  }
+  virtual void remove_widget() {}
 
   /**
    * Visualizes the data object by updating the widget.
@@ -123,6 +116,16 @@ class Visualizeable : public VisualizeableBase {
     widget = create_widget<widget_type>(parent);
     adjust_widget<widget_type>(widget, width, height, text);
     return widget;
+  }
+
+  /**
+   * Disables and removes the widget.
+   */
+  void remove_widget() override {
+    if (this->widget && this->widget.get()) {
+      this->widget->disable();
+    }
+    this->widget = std::shared_ptr<widget_type>(nullptr);
   }
 };
 

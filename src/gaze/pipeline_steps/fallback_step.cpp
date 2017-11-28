@@ -21,10 +21,10 @@ FallbackStep::FallbackStep() {
   this->config = emitter.c_str();
 }
 
-void FallbackStep::process(util::Data& data) {
+void FallbackStep::process(util::Data&) {
 }
 
-void FallbackStep::visualize(util::Data& data) {
+void FallbackStep::visualize(util::Data&) {
   std::string text(""
       "This is a fallback in case something goes wrong.\n"
       "If you see this, then either your configuration is wrong (see below)\n"

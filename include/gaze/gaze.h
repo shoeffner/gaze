@@ -2,7 +2,10 @@
  * @namespace gaze
  * @brief The gaze library provides gaze tracking capabilities.
  *
- * // TODO(shoeffner): Describe the gaze namespace more.
+ * The gaze library uses a data processing pipeline to detect the face, the
+ * eyes and the pupils.
+ * It determines the head pose and uses a model to estimate the gaze point on
+ * the screen.
  */
 
 #ifndef INCLUDE_GAZE_GAZE_H_

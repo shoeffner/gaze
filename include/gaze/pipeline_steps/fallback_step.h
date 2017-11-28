@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "dlib/gui_widgets.h"
-
 #include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
@@ -25,21 +23,23 @@ class FallbackStep final
 
  public:
   /**
+   * Initializes the FallbackStep.
+   * Reads all configuration for this step, in case something went wrong.
    */
   FallbackStep();
 
   /**
-   * Detects the eye center for each eye.
-   *
-   * @param data The data object to be updated.
-   * @returns via `data` the modified data object.
+   * Does nothing.
    */
-  void process(util::Data& data) override;
+  void process(util::Data&) override;
 
   /**
-   * @param data The data object to be updated.
+   * Shows instructions on how to implement a custom pipeline step and register
+   * it successfully.
+   * Shows all information from gaze.yaml for this step (even if its the wrong
+   * step).
    */
-  void visualize(util::Data& data) override;
+  void visualize(util::Data&) override;
 };
 
 }  // namespace pipeline

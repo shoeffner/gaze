@@ -38,8 +38,47 @@ class PipelineStep {
 
   /** @name Inheriting from PipelineStep
    *
-   * // TODO(shoeffner): Explain in more detail how to inherit from
-   *                     PipelineStep.
+   * To inherit from PipelineStep, i.e. create a new step, follow these steps:
+   *
+   * - Create `include/gaze/pipeline_steps/my_step.h`.
+   *   @code{.cpp}
+   *   #ifndef INCLUDE_GAZE_PIPELINE_STEPS_MY_STEP_H_
+   *   #define INCLUDE_GAZE_PIPELINE_STEPS_MY_STEP_H_
+   *
+   *   #include "gaze/gui/visualizeable.h"
+   *   #include "gaze/pipeline_step.h"
+   *   #include "gaze/util/data.h"
+   *
+   *
+   *   namespace gaze {
+   *
+   *   namespace pipeline {
+   *
+   *   class MyStep final
+   *       : public PipelineStep,
+   *         public gui::LabelVisualizeable {
+   *
+   *    public:
+   *     MyStep();
+   *
+   *     void process(util::Data& data) override;
+   *
+   *     void visualize(util::Data& data) override;
+   *   };
+   *
+   *   }  // namespace pipeline
+   *
+   *   }  // namespace gaze
+   *
+   *   #endif  // INCLUDE_GAZE_PIPELINE_STEPS_MY_STEP_H_
+   *   @endcode
+   * - Create `src/gaze/pipeline_steps/my_step.cpp` where you implement
+   *   MyStep::MyStep(), MyStep::process(util::Data&), (and
+   *   MyStep::visualize(util::Data&) if applicable)
+   * - Add an `\#include` to `include/gaze/pipeline_steps.h`
+   * - Add the *.cpp file to `src/gaze/CMakeLists.txt`
+   * - Add a case to init_pipeline() in `src/gaze/gaze_tracker.cpp`
+   * - If you use a new widget, add traits to `include/gaze/gui/visualizeable.h`
    */
   //@{
   /**

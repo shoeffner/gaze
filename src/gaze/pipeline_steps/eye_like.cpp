@@ -15,13 +15,12 @@ namespace gaze {
 
 /**
  * @namespace eyeLike
+ * @brief Tristan Hume's EyeLike adapted for gaze.
  *
  * The code in this namespace is mainly taken from Tristan Hume's
  * implementation of Timm and Barth (2011) @cite timm2011, eyeLike.
- *
  * The original source was released 2013 under the MIT license, which
  * grants permission to copy and redistribute this code.
- *
  * Some adjustments were made to make the code meet the coding principles
  * used throughout the gaze library, some dead code was removed and
  * everything was placed into this namespace to make it easy to find it.
@@ -222,6 +221,15 @@ cv::Point find_eye_center(
 
 namespace util {
 
+/**
+ * Returns the bounding box around an eye region.
+ * Works for both, the 5 and the 68 landmarks model.
+ *
+ * @param eye 0 for left eye, 1 for right eye.
+ * @param object_detection The detected face landmarks.
+ *
+ * @returns the bounding box.
+ */
 cv::Rect get_eye_region(int eye,
                         dlib::full_object_detection object_detection) {
   int index_ex;

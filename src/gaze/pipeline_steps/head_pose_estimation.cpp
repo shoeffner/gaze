@@ -15,20 +15,26 @@
 
 /**
  * @namespace YAML
+ * @brief This namespace is defined by the yaml-cpp library.
  *
- * This namespace is defined by the yaml-cpp library. It is used to
- * specialize the converter template to make it easier to read
- * cv::Point3d data from a yaml file.
+ * It is used to specialize the converter template.
  */
 namespace YAML {
 
 /**
- * @struct convert
+ * @struct convert<cv::Point3d>
  *
  * Allows to convert between cv::Point3d and YAML::Node.
  */
 template<>
 struct convert<cv::Point3d> {
+  /**
+   * Encodes a cv::Point3d as a YAML node.
+   *
+   * @param rhs The point
+   *
+   * @returns A YAML node representing the point
+   */
   static Node encode(const cv::Point3d& rhs) {
     Node node;
     node.push_back(rhs.x);
@@ -37,6 +43,14 @@ struct convert<cv::Point3d> {
     return node;
   }
 
+  /**
+   * Decodes a cv::Point3d from a YAML node.
+   *
+   * @param node The node to decode.
+   * @param rhs The point to decode into.
+   *
+   * @returns true on success.
+   */
   static bool decode(const Node& node, cv::Point3d& rhs) {  // NOLINT
     if (!node.IsSequence() || node.size() != 3) {
       return false;
@@ -57,6 +71,11 @@ namespace pipeline {
 
 namespace {
 
+/**
+ * Returns an estimated camera matrix for the source image.
+ *
+ * @returns a camera matrix.
+ */
 cv::Matx33d camera_matrix(const util::Data& data) {
   cv::Matx33d camera_matrix;
   camera_matrix << data.source_image.cols, 0, data.source_image.cols / 2,
@@ -65,6 +84,11 @@ cv::Matx33d camera_matrix(const util::Data& data) {
   return camera_matrix;
 }
 
+/**
+ * Returns a zero matrix.
+ *
+ * @returns A zero matrix.
+ */
 cv::Mat distortions(const util::Data&) {
   return cv::Mat::zeros(4, 1, CV_32F);
 }

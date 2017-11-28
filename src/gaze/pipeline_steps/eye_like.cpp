@@ -3,26 +3,60 @@
 #include "gaze/pipeline_steps/eye_like.h"
 
 #include <cmath>
+
 #include "opencv2/opencv.hpp"
 #include "yaml-cpp/yaml.h"
 
 #include "gaze/pipeline_steps/pupil_localization.h"
 #include "gaze/util/config.h"
 #include "gaze/util/data.h"
+#include "gaze/util/dlibcv.h"
+
 
 namespace gaze {
 
+/**
+ * @namespace eyeLike
+ *
+ * The code in this namespace is mainly taken from Tristan Hume's
+ * implementation of Timm and Barth (2011) @cite timm2011, eyeLike.
+ *
+ * The original source was released 2013 under the MIT license, which
+ * grants permission to copy and redistribute this code.
+ *
+ * Some adjustments were made to make the code meet the coding principles
+ * used throughout the gaze library, some dead code was removed and
+ * everything was placed into this namespace to make it easy to find it.
+ *
+ * For the original source please refer to
+ * <a href="https://github.com/trishume/eyeLike">Tristan's GitHub repository</a>.
+ */
 namespace eyelike {
 
+/**
+ * Computes a dynamic threshold to discard low magnitudes.
+ *
+ * @param mat The matrix of magnitudes.
+ * @param std_dev_factor The threshold will be std_dev_factor many standard
+ *                       deviations above the mean.
+ * @returns The threshold.
+ */
 double compute_dynamic_threshold(const cv::Mat& mat, double std_dev_factor) {
   cv::Scalar stdMagnGrad, meanMagnGrad;
   cv::meanStdDev(mat, meanMagnGrad, stdMagnGrad);
-  // TODO(shoeffner): double check
-  // double std_dev = stdMagnGrad[0] / sqrt(mat.rows*mat.cols);
   double std_dev = stdMagnGrad[0];
   return std_dev_factor * std_dev + meanMagnGrad[0];
 }
 
+/**
+ * Computes the horizontal gradient of the input matrix.
+ *
+ * This function is, according to Tristan, similar to the gradient function in
+ * Matlab.
+ *
+ * @param image the input image
+ * @returns the gradient matrix
+ */
 cv::Mat compute_x_gradient(const cv::Mat& image) {
   cv::Mat out(image.rows, image.cols, CV_64F);
 
@@ -40,12 +74,19 @@ cv::Mat compute_x_gradient(const cv::Mat& image) {
   return out;
 }
 
-cv::Mat matrix_magnitude(const cv::Mat& matX, const cv::Mat& matY) {
-  cv::Mat mags(matX.rows, matX.cols, CV_64F);
-  for (auto y = decltype(matX.rows){0}; y < matX.rows; ++y) {
-    const double *Xr = matX.ptr<double>(y), *Yr = matY.ptr<double>(y);
+/**
+ * Calculates the magnitudes of a two dimensional gradient.
+ *
+ * @param mat_x The gradient in x direction.
+ * @param mat_y The gradient in y direction.
+ * @returns the magnitude.
+ */
+cv::Mat matrix_magnitude(const cv::Mat& mat_x, const cv::Mat& mat_y) {
+  cv::Mat mags(mat_x.rows, mat_x.cols, CV_64F);
+  for (auto y = decltype(mat_x.rows){0}; y < mat_x.rows; ++y) {
+    const double *Xr = mat_x.ptr<double>(y), *Yr = mat_y.ptr<double>(y);
     double *row = mags.ptr<double>(y);
-    for (auto x = decltype(matX.cols){0}; x < matX.cols; ++x) {
+    for (auto x = decltype(mat_x.cols){0}; x < mat_x.cols; ++x) {
       double gX = Xr[x], gY = Yr[x];
       double magnitude = std::sqrt((gX * gX) + (gY * gY));
       row[x] = magnitude;
@@ -54,120 +95,134 @@ cv::Mat matrix_magnitude(const cv::Mat& matX, const cv::Mat& matY) {
   return mags;
 }
 
+/**
+ * Evaluates the target function for each possible pupil center.
+ *
+ * The results are added to the respective positions in the out matrix.
+ * As stated in the original code, this is basically changing the order
+ * as it is proposed in Timm and Barth (2011) @cite timm2011, where
+ * the loop is over the centers and then gradients, while here it is
+ * over (relevant) gradients and all possible centers.
+ *
+ * @param x The x coordinate (column).
+ * @param y The y coordinate (row).
+ * @param weight The weight matrix to get the weight for the center point.
+ * @param gx The horizontal gradient value.
+ * @param gy The veritcal gradient value.
+ * @param out The result matrix.
+ */
 void test_possible_centers_formula(
     int x, int y,
     const cv::Mat& weight,
     double gx, double gy,
     cv::Mat& out) {  // NOLINT
-  for (int cy = 0; cy < out.rows; ++cy) {
+  for (auto cy = decltype(out.rows){0}; cy < out.rows; ++cy) {
     double *out_row = out.ptr<double>(cy);
     const unsigned char *Wr = weight.ptr<unsigned char>(cy);
-    for (int cx = 0; cx < out.cols; ++cx) {
+    for (auto cx = decltype(out.cols){0}; cx < out.cols; ++cx) {
       if (x == cx && y == cy) {
         continue;
       }
       double dx = x - cx;
       double dy = y - cy;
       // normalize d
-      double magnitude = std::sqrt((dx * dx) + (dy * dy));
+      double magnitude = std::sqrt(dx * dx + dy * dy);
       dx = dx / magnitude;
       dy = dy / magnitude;
       double dotProduct = dx * gx + dy * gy;
       dotProduct = std::max(0.0, dotProduct);
-      // square and multiply by the weight
       out_row[cx] += dotProduct * dotProduct * Wr[cx];
     }
   }
 }
 
+/**
+ * Transforms a point back to the original eye size.
+ *
+ * @param point The point to transform.
+ * @param orig_size The original size.
+ * @param fast_eye_width The scale width.
+ * @returns A point which is at the respective position in the original image
+ *          as it was in the scaled image.
+ */
 cv::Point unscale_point(cv::Point point, cv::Rect orig_size,
                         double fast_eye_width) {
   double ratio = fast_eye_width / orig_size.width;
-  int x = round(point.x / ratio);
-  int y = round(point.y / ratio);
+  int x = std::round(point.x / ratio);
+  int y = std::round(point.y / ratio);
   return cv::Point(x, y);
 }
 
+/**
+ * Applies the eye center localization algorithm.
+ *
+ * @param face The cropped face.
+ * @param eye The eye boundary.
+ * @param gradient_threshold The value for the adaptive gradient threshold,
+ *        used by compute_dynamic_threshold(magnitudes, gradient_threshold)
+ * @param fast_eye_width Used to scale the eye to size on which the algorithm
+ *        should operate. Default is 50. Used by
+ *        unscale_point(point, original_size, fast_eye_width)
+ * @returns The estimated eye center point.
+ */
 cv::Point find_eye_center(
     const cv::Mat& face, const cv::Rect& eye,
-    double gradient_threshold, double fast_eye_width) {
-  cv::Mat eyeROIUnscaled = face(eye);
-  cv::Mat eyeROI;
+    double gradient_threshold, double fast_eye_width = 50) {
+  cv::Mat eye_roi_unscaled = face(eye);
+  cv::Mat eye_roi;
   cv::resize(
-      eyeROIUnscaled,
-      eyeROI,
+      eye_roi_unscaled,
+      eye_roi,
       cv::Size(fast_eye_width,
-               fast_eye_width / eyeROIUnscaled.cols * eyeROIUnscaled.rows));
+               fast_eye_width / eye_roi_unscaled.cols * eye_roi_unscaled.rows));
 
-
-  cv::Mat gradientX = compute_x_gradient(eyeROI);
-  cv::Mat gradientY = compute_x_gradient(eyeROI.t()).t();
+  cv::Mat gradientX = compute_x_gradient(eye_roi);
+  cv::Mat gradientY = compute_x_gradient(eye_roi.t()).t();
   cv::Mat mags = matrix_magnitude(gradientX, gradientY);
   double gradientThresh = compute_dynamic_threshold(mags,
       gradient_threshold);
 
-  for (int y = 0; y < eyeROI.rows; ++y) {
-    double *Xr = gradientX.ptr<double>(y), *Yr = gradientY.ptr<double>(y);
-    const double *Mr = mags.ptr<double>(y);
-    for (int x = 0; x < eyeROI.cols; ++x) {
-      double gX = Xr[x], gY = Yr[x];
-      double magnitude = Mr[x];
-      if (magnitude > gradientThresh) {
-        Xr[x] = gX / magnitude;
-        Yr[x] = gY / magnitude;
+  for (auto y = decltype(eye_roi.rows){0}; y < eye_roi.rows; ++y) {
+    double *x_row = gradientX.ptr<double>(y);
+    double *y_row = gradientY.ptr<double>(y);
+    const double *M_ROW = mags.ptr<double>(y);
+    for (auto x = decltype(eye_roi.cols){0}; x < eye_roi.cols; ++x) {
+      if (M_ROW[x] > gradientThresh) {
+        x_row[x] /= M_ROW[x];
+        y_row[x] /= M_ROW[x];
       } else {
-        Xr[x] = 0.0;
-        Yr[x] = 0.0;
+        x_row[x] = 0.0;
+        y_row[x] = 0.0;
       }
     }
   }
 
   cv::Mat weight;
-  GaussianBlur(eyeROI, weight, cv::Size(5, 5), 0, 0);
+  cv::GaussianBlur(eye_roi, weight, cv::Size(5, 5), 0, 0);
+  weight = 255 - weight;
+
+  cv::Mat outSum = cv::Mat::zeros(eye_roi.rows, eye_roi.cols, CV_64F);
   for (int y = 0; y < weight.rows; ++y) {
-    unsigned char *row = weight.ptr<unsigned char>(y);
+    const double *X_ROW = gradientX.ptr<double>(y);
+    const double *Y_ROW = gradientY.ptr<double>(y);
     for (int x = 0; x < weight.cols; ++x) {
-      row[x] = 255 - row[x];
-    }
-  }
-  cv::Mat outSum = cv::Mat::zeros(eyeROI.rows, eyeROI.cols, CV_64F);
-  for (int y = 0; y < weight.rows; ++y) {
-    const double *Xr = gradientX.ptr<double>(y), *Yr = gradientY.ptr<double>(y);
-    for (int x = 0; x < weight.cols; ++x) {
-      double gX = Xr[x], gY = Yr[x];
-      if (gX == 0.0 && gY == 0.0) {
+      if (X_ROW[x] == 0.0 && Y_ROW[x] == 0.0) {
         continue;
       }
-      test_possible_centers_formula(x, y, weight, gX, gY, outSum);
+      test_possible_centers_formula(x, y, weight, X_ROW[x], Y_ROW[x], outSum);
     }
   }
-  // scale all the values down, basically averaging them
-  double numGradients = weight.rows * weight.cols;
-  cv::Mat out;
-  outSum.convertTo(out, CV_64F, 1.0 / numGradients);
-  // -- Find the maximum point
+
   cv::Point maxP;
   double maxVal;
-  cv::minMaxLoc(out, nullptr, &maxVal, nullptr, &maxP);
+  cv::minMaxLoc(outSum, nullptr, &maxVal, nullptr, &maxP);
+
   return unscale_point(maxP, eye, fast_eye_width);
 }
 
 }  // namespace eyelike
 
 namespace util {
-
-cv::Rect dlib_to_cv(dlib::rectangle to_convert) {
-  return cv::Rect(to_convert.left(), to_convert.top(),
-                  to_convert.width(), to_convert.height());
-}
-
-dlib::point cv_to_dlib(cv::Point to_convert) {
-  return {to_convert.x, to_convert.y};
-}
-dlib::rectangle cv_to_dlib(cv::Rect to_convert) {
-  return {to_convert.x, to_convert.y,
-          to_convert.width, to_convert.height};
-}
 
 cv::Rect get_eye_region(int eye,
                         dlib::full_object_detection object_detection) {
@@ -218,10 +273,6 @@ EyeLike::EyeLike()
       config["relative_threshold"]
         .as<decltype(this->relative_threshold_factor)>();
   }
-  if (config["sigma_factor"]) {
-    this->sigma_factor =
-      config["sigma_factor"].as<decltype(this->sigma_factor)>();
-  }
 }
 
 void EyeLike::process(util::Data& data) {
@@ -255,6 +306,7 @@ void EyeLike::visualize(util::Data& data) {
   if (data.landmarks.num_parts() < 5) {
     return;
   }
+  // Ensures output of this pipeline step is visualized
   this->process(data);
 
   // define offsets

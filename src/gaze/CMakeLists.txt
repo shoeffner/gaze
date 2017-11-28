@@ -62,6 +62,7 @@ list(APPEND LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/gui/event_manager.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_step.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/eye_like.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/face_landmarks.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/fallback_step.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/gaze_point_calculation.cpp

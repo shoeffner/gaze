@@ -11,6 +11,7 @@
 #define INCLUDE_GAZE_PIPELINE_STEPS_H_
 
 #include "gaze/pipeline_step.h"
+#include "gaze/pipeline_steps/eye_like.h"
 #include "gaze/pipeline_steps/face_landmarks.h"
 #include "gaze/pipeline_steps/fallback_step.h"
 #include "gaze/pipeline_steps/gaze_point_calculation.h"

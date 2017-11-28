@@ -3,7 +3,6 @@
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_PUPIL_LOCALIZATION_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_PUPIL_LOCALIZATION_H_
 
-#include <algorithm>  // Not used, but cpplint detects max() as part of this
 #include <vector>
 
 #include "dlib/matrix.h"
@@ -99,12 +98,6 @@ void normalize_and_threshold_gradients(
   magnitude = dlib::sqrt(dlib::squared(horizontal) +
                          dlib::squared(vertical));
 
-  // normalization
-  horizontal = dlib::pointwise_multiply(
-      horizontal, dlib::reciprocal(magnitude));
-  vertical = dlib::pointwise_multiply(
-      vertical, dlib::reciprocal(magnitude));
-
   // Thresholding
   if (relative_threshold >= 0) {
     T threshold = dlib::mean(magnitude)
@@ -118,6 +111,12 @@ void normalize_and_threshold_gradients(
       }
     }
   }
+
+  // Normalization
+  horizontal = dlib::pointwise_multiply(
+      horizontal, dlib::reciprocal(magnitude));
+  vertical = dlib::pointwise_multiply(
+      vertical, dlib::reciprocal(magnitude));
 }
 
 }  // namespace util
@@ -144,11 +143,8 @@ class PupilLocalization final
   dlib::matrix<double> displacement_table_y;
   double relative_threshold_factor;
   double sigma;
-  double sigma_factor;
 
  public:
-    /**
-     */
     PupilLocalization();
 
     /**

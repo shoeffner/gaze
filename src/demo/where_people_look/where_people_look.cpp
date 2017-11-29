@@ -1,4 +1,3 @@
-// Copyright 2017 Sebastian Höffner
 /**
  * @namespace wpl
  * @brief Data acquisition after Judd et al. (2009) \cite judd2009

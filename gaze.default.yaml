@@ -37,11 +37,10 @@ pipeline:
       [0.15, -0.15, -0.125]
     ]
     model_scale: 1
+# An alternative approach for the pupil localization
+#  - type: EyeLike
+#    relative_threshold: 0.3
   - type: PupilLocalization
     table_size: 131
-    # sigma_factor is multiplied by the head height for the sigma value.
-    # sigma_factor will be ignored, if a sigma: is provided.
-    sigma_factor: 0.005
-    # sigma: 1
-    relative_threshold: 0.8
+    relative_threshold: 0.3
   - type: GazePointCalculation

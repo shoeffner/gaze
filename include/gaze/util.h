@@ -1,4 +1,3 @@
-// Copyright 2017 Sebastian Höffner
 /**
  * @namespace gaze::util
  * @brief Helper classes within the gaze library.

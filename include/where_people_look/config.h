@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #ifndef INCLUDE_WHERE_PEOPLE_LOOK_CONFIG_H_
 #define INCLUDE_WHERE_PEOPLE_LOOK_CONFIG_H_
 

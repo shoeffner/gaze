@@ -1,11 +1,7 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "gaze/pipeline_steps/source_capture.h"
 
-#include <chrono>  // NOLINT
 #include <memory>
 #include <string>
-#include <thread>  // NOLINT
 
 #include "dlib/opencv.h"
 #include "opencv2/core.hpp"
@@ -52,16 +48,15 @@ SourceCapture::~SourceCapture() {
 }
 
 void SourceCapture::process(util::Data& data) {
-  bool end = false;
-  while (!end) {
-    end = this->video_capture.read(data.source_image);
-    dlib::assign_image(
-        data.image,
-        dlib::cv_image<dlib::bgr_pixel>(data.source_image));
-    if (!end) {
-      std::this_thread::sleep_for(std::chrono::milliseconds(15));
-    }
+  bool received = this->video_capture.read(data.source_image);
+  if (received) {
+    this->last_frame = data.source_image;
+  } else {
+    data.source_image = this->last_frame;
   }
+  dlib::assign_image(
+     data.image,
+     dlib::cv_image<dlib::bgr_pixel>(data.source_image));
 }
 
 void SourceCapture::visualize(util::Data& data) {

@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "gaze/pipeline_steps/pupil_localization.h"
 
 #include <algorithm>
@@ -11,8 +9,6 @@
 #include "dlib/image_transforms.h"
 #include "dlib/matrix.h"
 #include "dlib/opencv.h"
-#include "opencv2/highgui.hpp"
-#include "opencv2/imgproc.hpp"
 #include "yaml-cpp/yaml.h"
 
 #include "gaze/util/config.h"
@@ -110,8 +106,7 @@ PupilLocalization::PupilLocalization()
     // http://thume.ca/projects/2012/11/04/simple-accurate-eye-center-tracking-in-opencv/
     // for parameters
     : relative_threshold_factor(0.3),
-      sigma(-1),
-      sigma_factor(0.005) {
+      sigma(1.1) {
   YAML::Node config = util::get_config(this->number);
   this->name = config["name"] ?
     config["name"].as<std::string>() : "PupilLocalization";
@@ -120,13 +115,6 @@ PupilLocalization::PupilLocalization()
     this->relative_threshold_factor =
       config["relative_threshold"]
         .as<decltype(this->relative_threshold_factor)>();
-  }
-  if (config["sigma"]) {
-    this->sigma = config["sigma"].as<decltype(this->sigma)>();
-  }
-  if (config["sigma_factor"]) {
-    this->sigma_factor =
-      config["sigma_factor"].as<decltype(this->sigma_factor)>();
   }
 
   // Pre-calculate displacement table
@@ -141,66 +129,64 @@ void PupilLocalization::process(util::Data& data) {
     return;
   }
 
+  // Extract eye patches
   std::vector<dlib::chip_details> details =
     util::get_eyes_chip_details(data.landmarks);
   dlib::extract_image_chips(data.image, details, data.eyes);
+
+  // Resize lookup table if needed
   int max_size = std::max({data.eyes[0].nr(), data.eyes[0].nc(),
                            data.eyes[1].nr(), data.eyes[1].nc()});
   if (2 * max_size > this->displacement_table_x.nr()) {
-    // TODO(shoeffner): Instead of +1 use +N to prepare for some more variation
     util::fill_displacement_tables(
         this->displacement_table_x,
         this->displacement_table_y,
-        2 * max_size + 1);
+        2 * max_size + 7);
   }
 
   for (int i = 0; i < 2; ++i) {
-    // Assign image and scale to 0..1
     dlib::matrix<double> eye_in;
     dlib::assign_image(eye_in, data.eyes[i]);
-    eye_in /= 255;
-
-    // Blur image
-    dlib::matrix<double> eye_gaussian;
-    dlib::gaussian_blur(eye_in, eye_gaussian,
-        this->sigma >= 0 ? this->sigma :
-        this->sigma_factor * data.landmarks.get_rect().height());
 
     // Calculate gradients
     dlib::matrix<double> eye_horizontal;
     dlib::matrix<double> eye_vertical;
-    dlib::sobel_edge_detector(eye_gaussian, eye_horizontal, eye_vertical);
-    eye_horizontal *= -1;
-    // eye_vertical *= -1;
+    dlib::sobel_edge_detector(eye_in, eye_horizontal, eye_vertical);
+
     util::normalize_and_threshold_gradients(eye_horizontal, eye_vertical,
         this->relative_threshold_factor);
 
-    // Compute objective function t - only implicit
+    // Blur eyes as weights
+    int boundary_offset = 6;
+    dlib::matrix<double> eye_gaussian;
+    dlib::gaussian_blur(eye_in, eye_gaussian, this->sigma, boundary_offset);
+    eye_gaussian = 255 - eye_gaussian;
+
+    // Compute objective function t and select highest value
     double max_t = std::numeric_limits<double>::min();
     int argmax_r;
     int argmax_c;
 
-    int size = this->displacement_table_x.nr();
-    int center = (size - 1) / 2;
-    int nr = eye_in.nr();
-    int nc = eye_in.nc();
-    // TODO(shoeffner): Consider smaller range
-    for (int row = 0; row < nr; ++row) {
-      for (int col = 0; col < nc; ++col) {
+    int center = (this->displacement_table_x.nr() - 1) / 2;
+    auto nr = eye_in.nr();
+    auto nc = eye_in.nc();
+    dlib::matrix<double> zero = dlib::zeros_matrix<double>(nr, nc);
+    dlib::matrix<double> ts = dlib::zeros_matrix<double>(nr, nc);
+    for (auto row = decltype(nr){boundary_offset};
+         row < nr - boundary_offset; ++row) {
+      for (auto col = decltype(nc){boundary_offset};
+           col < nc - boundary_offset; ++col) {
         dlib::matrix<double> d_x = dlib::subm(this->displacement_table_x,
             center - row, center - col, nr, nc);
         dlib::matrix<double> d_y = dlib::subm(this->displacement_table_y,
             center - row, center - col, nr, nc);
 
         double t =
-          dlib::mean(
-            dlib::squared(
-              // TODO(shoeffner): Evaluate abs and non-flipped horizontal
-              // gradient
-              dlib::max_pointwise(
+          dlib::sum(
+              dlib::squared(dlib::max_pointwise(
                 dlib::pointwise_multiply(d_x, eye_horizontal) +
-                dlib::pointwise_multiply(d_y, eye_vertical),
-                dlib::zeros_matrix<double>(nr, nc))));
+                dlib::pointwise_multiply(d_y, eye_vertical), zero))) *
+          eye_gaussian(row, col);
         if (t > max_t) {
           max_t = t;
           argmax_r = row;
@@ -208,7 +194,7 @@ void PupilLocalization::process(util::Data& data) {
         }
       }
     }
-    data.centers[i] = dlib::point(argmax_r, argmax_c);
+    data.centers[i] = dlib::point(argmax_c, argmax_r);
   }
 }
 
@@ -216,13 +202,18 @@ void PupilLocalization::visualize(util::Data& data) {
   if (data.landmarks.num_parts() < 5) {
     return;
   }
+  // Ensures output of this pipeline step is visualized
+  this->process(data);
 
   // define offsets
   dlib::point offset_x(5, 0);
   dlib::point offset_y(0, 5);
+  std::vector<dlib::chip_details> chips =
+    util::get_eyes_chip_details(data.landmarks);
 
   // assign eyes to new images
-  dlib::array<dlib::array2d<dlib::bgr_pixel>> eyes(2);
+  dlib::array<dlib::array2d<dlib::bgr_pixel>> eyes(3);
+  dlib::assign_image(eyes[2], data.image);
   for (auto i = decltype(data.eyes.size()){0};
        i < data.eyes.size(); ++i) {
     dlib::assign_image(eyes[i], data.eyes[i]);
@@ -235,7 +226,17 @@ void PupilLocalization::visualize(util::Data& data) {
                     data.centers[i] + offset_y,
                     data.centers[i] - offset_y,
                     dlib::rgb_pixel(255, 0, 0));
+
+    dlib::draw_line(eyes[2],
+                    data.centers[i] + offset_x + chips[i].rect.tl_corner(),
+                    data.centers[i] - offset_x + chips[i].rect.tl_corner(),
+                    dlib::rgb_pixel(255, 0, 0));
+    dlib::draw_line(eyes[2],
+                    data.centers[i] + offset_y + chips[i].rect.tl_corner(),
+                    data.centers[i] - offset_y + chips[i].rect.tl_corner(),
+                    dlib::rgb_pixel(255, 0, 0));
   }
+  dlib::resize_image(0.5, eyes[2]);
 
   this->widget->set_image(dlib::tile_images(eyes));
 }

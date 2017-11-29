@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "gaze/gaze_tracker.h"
 
 #include <iostream>
@@ -76,8 +74,9 @@ void GazeTracker::init_pipeline(const std::string subject_id) {
   for (YAML::Node step_config : config) {
     std::string type  = step_config["type"].as<std::string>();
     PipelineStep* step;
-
-    if (!type.compare("FaceLandmarks")) {
+    if (!type.compare("EyeLike")) {
+      step = new pipeline::EyeLike();
+    } else if (!type.compare("FaceLandmarks")) {
       step = new pipeline::FaceLandmarks();
     } else if (!type.compare("GazePointCalculation")) {
       step = new pipeline::GazePointCalculation();
@@ -87,6 +86,8 @@ void GazeTracker::init_pipeline(const std::string subject_id) {
       step = new pipeline::PupilLocalization();
     } else if (!type.compare("SourceCapture")) {
       step = new pipeline::SourceCapture();
+    } else {
+      step = new pipeline::FallbackStep();
     }
 
     this->pipeline_steps.push_back(step);

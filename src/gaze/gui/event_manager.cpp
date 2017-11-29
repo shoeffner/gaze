@@ -1,5 +1,3 @@
-// Copyright Sebastian Höffner
-
 #include "gaze/gui/event_manager.h"
 
 #include <vector>

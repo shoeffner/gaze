@@ -75,7 +75,7 @@ class PipelineStep {
    * - Create `src/gaze/pipeline_steps/my_step.cpp` where you implement
    *   MyStep::MyStep(), MyStep::process(util::Data&), (and
    *   MyStep::visualize(util::Data&) if applicable)
-   * - Add an `\#include` to `include/gaze/pipeline_steps.h`
+   * - Add an \c \#include to `include/gaze/pipeline_steps.h`
    * - Add the *.cpp file to `src/gaze/CMakeLists.txt`
    * - Add a case to init_pipeline() in `src/gaze/gaze_tracker.cpp`
    * - If you use a new widget, add traits to `include/gaze/gui/visualizeable.h`

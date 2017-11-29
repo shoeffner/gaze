@@ -23,8 +23,7 @@ namespace YAML {
 
 /**
  * @struct convert<cv::Point3d>
- *
- * Allows to convert between cv::Point3d and YAML::Node.
+ * @brief Allows to convert between cv::Point3d and YAML::Node.
  */
 template<>
 struct convert<cv::Point3d> {

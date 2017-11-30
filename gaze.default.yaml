@@ -27,14 +27,17 @@ pipeline:
     model: shape_predictor_68_face_landmarks.dat
   - type: HeadPoseEstimation
     name: HeadPose68
+    # See https://ibug.doc.ic.ac.uk/resources/facial-point-annotations/
+    # (Here the indices are 0-based, so remember to take care of the offset:
+    #  0 here is 1 in the ibug figure etc.)
     landmark_indices: [30, 8, 36, 45, 48, 54]
     model: [
-      [0.0, 0.0, 0.0],
-      [0.0, -0.33, -0.065],
-      [-0.225, 0.17, -0.135],
-      [0.225, 0.17, -0.135],
-      [-0.15, -0.15, -0.125],
-      [0.15, -0.15, -0.125]
+      [0.0, 0.0, 0.0],  # Nosetip (Pronasal prn)
+      [0.0, -0.33, -0.065],  # Chin tip (Gnathion/Menton gn)
+      [-0.225, 0.17, -0.135],  # Right eye outside corner (right exocanthion ex_r)
+      [0.225, 0.17, -0.135],  # Left eye outside corner (left exocanthion ex_l)
+      [-0.15, -0.15, -0.125],  # Right mouth corner (Cheilion ch_r)
+      [0.15, -0.15, -0.125]  # Left mouth corner (Cheilion ch_l)
     ]
     model_scale: 1
 # An alternative approach for the pupil localization

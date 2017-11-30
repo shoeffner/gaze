@@ -4,7 +4,7 @@ meta:
     height: 5
   camera:
     position:
-      # in cm, from upper left screen corner
+      # in m, from upper left screen corner
       x: 0.1725
       y: -0.007
   screen:

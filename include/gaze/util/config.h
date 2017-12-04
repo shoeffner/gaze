@@ -136,12 +136,13 @@ struct convert<cv::Mat> {
       return false;
     }
 
-    double data[rows * cols];
+    double* data = new double[rows * cols];
     for (auto i = decltype(node["data"].size()){0}; i < node["data"].size();
         ++i) {
       data[i] = node["data"][i].as<double>();
     }
     cv::Mat mat = cv::Mat(rows, cols, CV_64F, data);
+    delete[] data;
     mat.assignTo(rhs);
     return true;
   }

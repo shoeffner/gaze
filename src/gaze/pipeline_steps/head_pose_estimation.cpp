@@ -13,87 +13,9 @@
 #include "gaze/util/data.h"
 
 
-/**
- * @namespace YAML
- * @brief This namespace is defined by the yaml-cpp library.
- *
- * It is used to specialize the converter template.
- */
-namespace YAML {
-
-/**
- * @struct convert<cv::Point3d>
- * @brief Allows to convert between cv::Point3d and YAML::Node.
- */
-template<>
-struct convert<cv::Point3d> {
-  /**
-   * Encodes a cv::Point3d as a YAML node.
-   *
-   * @param rhs The point
-   *
-   * @returns A YAML node representing the point
-   */
-  static Node encode(const cv::Point3d& rhs) {
-    Node node;
-    node.push_back(rhs.x);
-    node.push_back(rhs.y);
-    node.push_back(rhs.z);
-    return node;
-  }
-
-  /**
-   * Decodes a cv::Point3d from a YAML node.
-   *
-   * @param node The node to decode.
-   * @param rhs The point to decode into.
-   *
-   * @returns true on success.
-   */
-  static bool decode(const Node& node, cv::Point3d& rhs) {  // NOLINT
-    if (!node.IsSequence() || node.size() != 3) {
-      return false;
-    }
-    rhs.x = node[0].as<double>();
-    rhs.y = node[1].as<double>();
-    rhs.z = node[2].as<double>();
-    return true;
-  }
-};
-
-}  // namespace YAML
-
-
 namespace gaze {
 
 namespace pipeline {
-
-namespace {
-
-/**
- * Returns an estimated camera matrix for the source image.
- *
- * @returns a camera matrix.
- */
-cv::Matx33d camera_matrix(const util::Data& data) {
-  cv::Matx33d camera_matrix;
-  camera_matrix << data.source_image.cols, 0, data.source_image.cols / 2,
-                   0, data.source_image.cols, data.source_image.rows / 2,
-                   0, 0, 1;
-  return camera_matrix;
-}
-
-/**
- * Returns a zero matrix.
- *
- * @returns A zero matrix.
- */
-cv::Mat distortions(const util::Data&) {
-  return cv::Mat::zeros(4, 1, CV_32F);
-}
-
-}  // namespace
-
 
 HeadPoseEstimation::HeadPoseEstimation() {
   YAML::Node config = util::get_config(this->number);
@@ -132,7 +54,8 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
      {0, 0, 0.1 * this->model_scale}};
   std::vector<cv::Point2d> image_points;
   cv::projectPoints(base_vecs, data.head_rotation, data.head_translation,
-      camera_matrix(data), distortions(data), image_points);
+      this->read_or_set_camera_matrix(data),
+      this->get_and_maybe_read_distortions(data), image_points);
 
   // coordinate system
   for (auto i = decltype(this->coord_base_overlay.size()){0};
@@ -147,8 +70,8 @@ void HeadPoseEstimation::update_overlay(const util::Data& data) {
   // detected vs. projected points in overlay
   std::vector<cv::Point2d> projected_points;
   cv::projectPoints(this->model_points, data.head_rotation,
-      data.head_translation, camera_matrix(data), distortions(data),
-      projected_points);
+      data.head_translation, this->read_or_set_camera_matrix(data),
+      this->get_and_maybe_read_distortions(data), projected_points);
 
   auto color_detection = dlib::rgb_pixel(255, 0, 0);
   auto color_projection = dlib::rgb_pixel(0, 0, 255);
@@ -180,13 +103,46 @@ void HeadPoseEstimation::process(util::Data& data) {
   }
 
   cv::solvePnP(this->model_points, im_points,
-      camera_matrix(data), distortions(data),
+      this->read_or_set_camera_matrix(data),
+      this->get_and_maybe_read_distortions(data),
       data.head_rotation, data.head_translation, false, cv::SOLVEPNP_ITERATIVE);
 }
 
 void HeadPoseEstimation::visualize(util::Data& data) {
   this->widget->set_image(data.image);
   this->update_overlay(data);
+}
+
+cv::Matx33d HeadPoseEstimation::read_or_set_camera_matrix(
+    const util::Data& data) {
+  if (this->has_camera_matrix) {
+    return this->camera_matrix;
+  }
+  YAML::Node camera_config = util::get_config()["meta"]["camera"];
+  if (camera_config["camera_matrix"]) {
+    this->camera_matrix = camera_config["camera_matrix"].as<cv::Mat>();
+  } else {
+    this->camera_matrix <<
+      data.source_image.cols, 0, data.source_image.cols / 2,
+      0, data.source_image.cols, data.source_image.rows / 2,
+      0, 0, 1;
+  }
+  this->has_camera_matrix = true;
+  return this->camera_matrix;
+}
+
+cv::Mat HeadPoseEstimation::get_and_maybe_read_distortions(const util::Data&) {
+  if (this->has_distortions) {
+    return this->distortions;
+  }
+  if (util::get_config()["meta"]["camera"]["distortion_coefficients"]) {
+    this->distortions =
+      util::get_config()["meta"]["camera"]["distortion_coefficients"].as<cv::Mat>();
+  } else {
+    this->distortions = cv::Mat::zeros(4, 1, CV_64F);
+  }
+  this->has_distortions = true;
+  return this->distortions;
 }
 
 }  // namespace pipeline

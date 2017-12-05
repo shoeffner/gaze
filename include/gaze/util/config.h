@@ -142,8 +142,8 @@ struct convert<cv::Mat> {
       data[i] = node["data"][i].as<double>();
     }
     cv::Mat mat = cv::Mat(rows, cols, CV_64F, data);
+    mat.copyTo(rhs);
     delete[] data;
-    mat.assignTo(rhs);
     return true;
   }
 };

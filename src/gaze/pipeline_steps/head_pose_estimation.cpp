@@ -135,9 +135,9 @@ cv::Mat HeadPoseEstimation::get_and_maybe_read_distortions(const util::Data&) {
   if (this->has_distortions) {
     return this->distortions;
   }
-  if (util::get_config()["meta"]["camera"]["distortion_coefficients"]) {
-    this->distortions =
-      util::get_config()["meta"]["camera"]["distortion_coefficients"].as<cv::Mat>();
+  YAML::Node camera_config = util::get_config()["meta"]["camera"];
+  if (camera_config["distortion_coefficients"]) {
+    this->distortions = camera_config["distortion_coefficients"].as<cv::Mat>();
   } else {
     this->distortions = cv::Mat::zeros(4, 1, CV_64F);
   }

@@ -4,8 +4,7 @@
 #include <string>
 
 #include "dlib/opencv.h"
-#include "opencv2/core.hpp"
-#include "opencv2/videoio.hpp"
+#include "opencv2/opencv.hpp"
 #include "yaml-cpp/yaml.h"
 
 #include "gaze/util/config.h"
@@ -34,12 +33,15 @@ SourceCapture::SourceCapture() {
   }
 
   if (is_webcam) {
+    YAML::Node camera_config = util::get_config()["meta"]["camera"];
     this->video_capture.set(cv::CAP_PROP_FPS,
-        config["fps"] ? config["fps"].as<double>() : 60.0);
+        camera_config["fps"] ? camera_config["fps"].as<double>() : 60.0);
     this->video_capture.set(cv::CAP_PROP_FRAME_WIDTH,
-        config["width"] ? config["width"].as<double>() : 640.0);
+        camera_config["resolution"]["width"] ?
+        camera_config["resolution"]["width"].as<double>() : 640.0);
     this->video_capture.set(cv::CAP_PROP_FRAME_HEIGHT,
-        config["height"] ? config["height"].as<double>() : 360.0);
+        camera_config["resolution"]["height"] ?
+        camera_config["resolution"]["height"].as<double>() : 360.0);
   }
 }
 
@@ -48,6 +50,10 @@ SourceCapture::~SourceCapture() {
 }
 
 void SourceCapture::process(util::Data& data) {
+  if (static_cast<int>(this->video_capture.get(cv::CAP_PROP_POS_AVI_RATIO))
+      == 1) {
+    return;
+  }
   bool received = this->video_capture.read(data.source_image);
   if (received) {
     this->last_frame = data.source_image;

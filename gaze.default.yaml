@@ -59,9 +59,6 @@ pipeline:
   - type: SourceCapture
     # This should be a number for webcams, or a path to an image or video file
     source: 0
-    fps: 30
-    width: 640
-    height: 360
   - type: FaceLandmarks
     name: FaceLandmarks68
     model: shape_predictor_68_face_landmarks.dat

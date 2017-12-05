@@ -90,6 +90,9 @@ void GazePointCalculation::process(util::Data& data) {
 }
 
 void GazePointCalculation::visualize(util::Data& data) {
+  if (data.landmarks.num_parts() < 5) {
+    return;
+  }
   // TODO(shoeffner): This is just a WIP copy!
   double interex_dist_m = 0.08671;  // Data taken from FaceBase
   double interex_dist_px = dlib::length(data.landmarks.part(36) -

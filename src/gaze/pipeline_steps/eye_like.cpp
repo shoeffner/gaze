@@ -165,7 +165,13 @@ cv::Point unscale_point(cv::Point point, cv::Rect orig_size,
 cv::Point find_eye_center(
     const cv::Mat& face, const cv::Rect& eye,
     double gradient_threshold, double fast_eye_width = 50) {
-  cv::Mat eye_roi_unscaled = face(eye);
+  cv::Rect eye_roi_cut = eye;
+  eye_roi_cut.width = std::min(eye.width, face.cols - eye.x);
+  eye_roi_cut.height = std::min(eye.height, face.rows - eye.y);
+  eye_roi_cut.x = std::max(eye.x, 0);
+  eye_roi_cut.y = std::max(eye.y, 0);
+
+  cv::Mat eye_roi_unscaled = face(eye_roi_cut);
   cv::Mat eye_roi;
   cv::resize(
       eye_roi_unscaled,
@@ -230,7 +236,7 @@ namespace util {
  *
  * @returns the bounding box.
  */
-cv::Rect get_eye_region(int eye,
+dlib::rectangle get_eye_region(int eye,
                         dlib::full_object_detection object_detection) {
   int index_ex;
   int index_en;
@@ -259,8 +265,8 @@ cv::Rect get_eye_region(int eye,
       return dlib::centered_rect(result, scale, scale);
     };
 
-  return dlib_to_cv(get_rectangle(object_detection.part(index_ex),
-                                  object_detection.part(index_en)));
+  return get_rectangle(object_detection.part(index_ex),
+                       object_detection.part(index_en));
 }
 
 }  // namespace util
@@ -297,12 +303,15 @@ void EyeLike::process(util::Data& data) {
   cv::cvtColor(face_mat, face_mat, cv::COLOR_RGB2GRAY);
 
   for (int i = 0; i < 2; ++i) {
-    cv::Rect eye = util::get_eye_region(i, data.landmarks);
-    eye.x -= face.left();
-    eye.y -= face.top();
-    cv::Point pupil = eyelike::find_eye_center(face_mat, eye,
+    dlib::rectangle eye = util::get_eye_region(i, data.landmarks);
+    eye.set_left(eye.left() - face.left());
+    eye.set_right(eye.right() - face.left());
+    eye.set_top(eye.top() - face.top());
+    eye.set_bottom(eye.bottom() - face.top());
+
+    cv::Point pupil = eyelike::find_eye_center(face_mat,
+        util::dlib_to_cv(eye),
         this->relative_threshold_factor, 50);
-    // change 50 to eye size
 
     data.centers[i] = util::cv_to_dlib(pupil);
   }
@@ -328,8 +337,7 @@ void EyeLike::visualize(util::Data& data) {
   dlib::assign_image(eyes[2], data.image);
   for (auto i = decltype(data.eyes.size()){0};
        i < data.eyes.size(); ++i) {
-    dlib::rectangle eye = util::cv_to_dlib(util::get_eye_region(i,
-          data.landmarks));
+    dlib::rectangle eye = util::get_eye_region(i, data.landmarks);
     dlib::assign_image(eyes[i], data.eyes[i]);
 
     dlib::draw_line(eyes[i],

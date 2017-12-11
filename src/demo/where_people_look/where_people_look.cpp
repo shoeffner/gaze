@@ -1,10 +1,10 @@
 /**
  * @namespace wpl
- * @brief Data acquisition after Judd et al. (2009) \cite judd2009
+ * @brief Data acquisition after Judd et al. (2009) @cite Judd2009
  *
  * This is a reimplementation of the data acquisition experiment described in
  * section 2.1 of Judd et al.: Learning to Predict Where Humans Look (2009)
- * \cite judd2009.
+ * @cite Judd2009.
  *
  * Check out their fantastic website, showing off their results:
  * <a href="http://people.csail.mit.edu/tjudd/WherePeopleLook/interactiveWebsite/seeFixations.html">Interactive fixations</a>

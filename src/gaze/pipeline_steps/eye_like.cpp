@@ -18,7 +18,7 @@ namespace gaze {
  * @brief Tristan Hume's EyeLike adapted for gaze.
  *
  * The code in this namespace is mainly taken from Tristan Hume's
- * implementation of Timm and Barth (2011) @cite timm2011, eyeLike.
+ * implementation of Timm and Barth (2011) @cite Timm2011, eyeLike.
  * The original source was released 2013 under the MIT license, which
  * grants permission to copy and redistribute this code.
  * Some adjustments were made to make the code meet the coding principles
@@ -97,7 +97,7 @@ cv::Mat matrix_magnitude(const cv::Mat& mat_x, const cv::Mat& mat_y) {
  *
  * The results are added to the respective positions in the out matrix.
  * As stated in the original code, this is basically changing the order
- * as it is proposed in Timm and Barth (2011) @cite timm2011, where
+ * as it is proposed in Timm and Barth (2011) @cite Timm2011, where
  * the loop is over the centers and then gradients, while here it is
  * over (relevant) gradients and all possible centers.
  *

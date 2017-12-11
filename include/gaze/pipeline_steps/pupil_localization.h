@@ -28,7 +28,7 @@ std::vector<dlib::chip_details> get_eyes_chip_details(
 
 /**
  * Filles the displacement table to precalculate values for vector @f$d_i@f$
- * @cite timm2011.
+ * @cite Timm2011.
  *
  * The function returns without modifying table_x or table_y if size is
  * smaller than the current table size.
@@ -123,7 +123,7 @@ namespace pipeline {
 
 /**
  * @class PupilLocalization pupil_localization.h "gaze/pipeline_steps/pupil_localization.h"
- * @brief Implements Timm and Barth (2011) @cite timm2011 to detect eye
+ * @brief Implements Timm and Barth (2011) @cite Timm2011 to detect eye
  *        centers.
  *
  * This implementation uses a lookup table to pre-calculate the distance function.

@@ -17,7 +17,7 @@ namespace wpl {
 /**
  * @class Experiment experiment.h "where_people_look/experiment.h"
  *
- * @brief Implements an experiment flow for Judd et al. (2009) \cite judd2009.
+ * @brief Implements an experiment flow for Judd et al. (2009) @cite Judd2009.
  *
  * The data acquisition experiment can be prepared, started, quitted, and
  * is divided into trials.

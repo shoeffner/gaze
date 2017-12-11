@@ -3,3 +3,5 @@ vendor
 gh-pages
 
 *.swp
+*.bak
+*.sav

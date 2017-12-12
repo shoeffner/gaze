@@ -86,6 +86,48 @@ struct convert<cv::Point3d> {
   }
 };
 
+
+/**
+ * @struct convert<cv::Vec3d>
+ * @brief Allows to convert between cv::Vec3d and YAML::Node.
+ */
+template<>
+struct convert<cv::Vec3d> {
+  /**
+   * Encodes a cv::Vec3d as a YAML node.
+   *
+   * @param rhs The vector
+   *
+   * @returns A YAML node representing the vector
+   */
+  static Node encode(const cv::Vec3d& rhs) {
+    Node node;
+    node.push_back(rhs[0]);
+    node.push_back(rhs[1]);
+    node.push_back(rhs[2]);
+    return node;
+  }
+
+  /**
+   * Decodes a cv::Vec3d from a YAML node.
+   *
+   * @param node The node to decode.
+   * @param rhs The vector to decode into.
+   *
+   * @returns true on success.
+   */
+  static bool decode(const Node& node, cv::Vec3d& rhs) {  // NOLINT
+    if (!node.IsSequence() || node.size() != 3) {
+      return false;
+    }
+    rhs[0] = node[0].as<double>();
+    rhs[1] = node[1].as<double>();
+    rhs[2] = node[2].as<double>();
+    return true;
+  }
+};
+
+
 /**
  * @struct convert<cv::Mat>
  * @brief Allows to convert between cv::Mat and YAML::Node.

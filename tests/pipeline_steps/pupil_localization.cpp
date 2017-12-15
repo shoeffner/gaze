@@ -13,6 +13,7 @@
 
 #include "gaze/pipeline_steps/face_landmarks.h"
 #include "gaze/util/data.h"
+#include "gaze/util/pipeline_utils.h"
 #include "gaze/tests/doctest_helper.h"
 
 

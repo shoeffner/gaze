@@ -15,18 +15,6 @@ namespace gaze {
 namespace util {
 
 /**
- * Determines a bounding box around the eyes from a given object detection.
- * This function is designed to work with 5 feature landmarks.
- *
- * @param object_detection A full object detecetion as acquired from a
- *                         dlib::shape_predictor.
- * @returns a vector of dlib::chip_details to use with
- *          dlib::extract_image_chips.
- */
-std::vector<dlib::chip_details> get_eyes_chip_details(
-    const dlib::full_object_detection object_detection);
-
-/**
  * Filles the displacement table to precalculate values for vector @f$d_i@f$
  * @cite Timm2011.
  *

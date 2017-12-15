@@ -5,10 +5,10 @@
 #include "opencv2/opencv.hpp"
 #include "yaml-cpp/yaml.h"
 
-#include "gaze/pipeline_steps/pupil_localization.h"
 #include "gaze/util/config.h"
 #include "gaze/util/data.h"
 #include "gaze/util/dlibcv.h"
+#include "gaze/util/pipeline_utils.h"
 
 
 namespace gaze {

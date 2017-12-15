@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <utility>  // Not used, but cpplint detects swap() as part of this
+#include <vector>
 
 #include "opencv2/core.hpp"
 #include "dlib/opencv.h"
@@ -84,6 +85,14 @@ struct Data {
    * The head translation.
    */
   cv::Mat head_translation;
+  //@}
+
+  /** @name Gaze point */
+  //@{
+  /**
+   * The pupils in model coordinates.
+   */
+  std::vector<cv::Vec3d> pupils;
   //@}
 
   /**

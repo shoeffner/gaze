@@ -1,6 +1,10 @@
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_GAZE_POINT_CALCULATION_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_GAZE_POINT_CALCULATION_H_
 
+#include <vector>
+
+#include "opencv2/opencv.hpp"
+
 #include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
 #include "gaze/util/data.h"
@@ -25,6 +29,68 @@ class GazePointCalculation final
   double sensor_width;
   double pixel_height;
   double pixel_width;
+  cv::Matx33d camera_matrix;
+  cv::Mat distortion_coefficients;
+  std::vector<cv::Vec3d> eye_ball_centers;
+  std::vector<cv::Vec3d> model;
+  std::vector<decltype(util::Data::landmarks.num_parts())> landmark_indices;
+
+  /**
+   * Calculates the distance between the model and its image given
+   * two image points and an expected model distance between them.
+   *
+   * @note This method does *not* take distortions into account.
+   *
+   * @param p0 first point
+   * @param p1 first point
+   * @param expected_model_distance Distance between p0 and p1 in the model.
+   * @return An estimate between the model and the camera. This is only
+   *         accurate for unrotated and undistorted projections.
+   */
+  double calculate_distance(const dlib::point& p0, const dlib::point& p1,
+      double expected_model_distance);
+
+  /**
+   * Calculates the estimated affine transformation from the projected
+   * landmarks to the original 3D model.
+   *
+   * @param landmarks the landmarks with z = estimated distance
+   *
+   * @return An estimated transformation calculated by cv::estimateAffine3D
+   */
+  cv::Matx34d invertProjection(const std::vector<cv::Vec3d>& landmarks);
+
+  /**
+   * This is a proper inverse function to cv::projectPoints.
+   * It undistorts the points, rescales them and reverts the estimated
+   * translation and rotation. It restores points up to each point's
+   * offset between the model and a plane.
+   *
+   * @param points The points to unproject.
+   * @param translation The translation to revert.
+   * @param rotation The rotation to revert.
+   * @param distance The assumed distance to rescale the points.
+   *
+   * @return unprojected points.
+   */
+  std::vector<cv::Vec3d> unprojectPoints(
+    const std::vector<cv::Vec2d>& points, const cv::Vec3d& translation,
+    const cv::Matx33d& rotation, double distance);
+
+  /**
+   * Calculates the direction vector which points from the model origin
+   * to the camera.
+   *
+   * @param data The data object
+   * @param translation The head translation vector
+   * @param rotation The head rotation vector from cv::Rodrigues
+   * @param distance The distance from calculate_distance()
+   *
+   * @return The normal pointing from the model towards the screen.
+   */
+  cv::Vec3d get_model_to_camera_dir(
+    const util::Data& data, const cv::Vec3d& translation,
+    const cv::Matx33d& rotation, double distance);
 
  protected:
   /**

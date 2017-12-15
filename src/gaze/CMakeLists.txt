@@ -71,6 +71,7 @@ list(APPEND LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/source_capture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/util/data.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/util/dlibcv.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/util/pipeline_utils.cpp
 
     ${CMAKE_CURRENT_BINARY_DIR}/util/config.cpp
 )

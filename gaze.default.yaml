@@ -77,10 +77,26 @@ pipeline:
       [0.0289, -0.0289, -0.0241]  # Left mouth corner (Cheilion ch_l)
     ]
     model_scale: 1
-# An alternative approach for the pupil localization
+# An alternative approach for the pupil localization with fixed running times
+# and similar results is EyeLike. It scales detected eyes to a width of 50 px.
+# This way it is faster for subjects sitting close to the camera, but slower
+# for subjects sitting far away from the camera. It is similarly accurate
+# as the PupilLocalization is, as both essentially use the same algorithm.
 #  - type: EyeLike
 #    relative_threshold: 0.3
   - type: PupilLocalization
     table_size: 131
     relative_threshold: 0.3
   - type: GazePointCalculation
+    eye_ball_centers: [
+      [-0.029205, 0.0327, -0.0395],  # Right eye ball center
+      [0.029205, 0.0327, -0.0395]  # Left eye ball center
+    ]
+    model: [
+      [0.0, 0.0, 0.0],
+      [0.0, -0.0636, -0.0125],
+      [-0.0433, 0.0327, -0.026],
+      [0.0433, 0.0327, -0.026],
+      [-0.0289, -0.0289, -0.0241],
+      [0.0289, -0.0289, -0.0241]
+    ]

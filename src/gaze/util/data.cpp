@@ -10,6 +10,7 @@ namespace util {
 Data::Data()
     : eyes(2),
       centers(2),
+      pupils(2),
       execution_times() {
 }
 
@@ -20,6 +21,7 @@ Data::Data(const Data& data)
       centers(2),
       head_rotation(data.head_rotation),
       head_translation(data.head_translation),
+      pupils(2),
       execution_times(data.execution_times) {
   dlib::assign_image(this->image, data.image);
 
@@ -30,6 +32,10 @@ Data::Data(const Data& data)
   for (auto i = decltype(data.centers.size()){0};
        i < data.centers.size(); ++i) {
     this->centers[i] = data.centers[i];
+  }
+  for (auto i = decltype(data.pupils.size()){0};
+       i < data.pupils.size(); ++i) {
+    this->pupils[i] = data.pupils[i];
   }
 }
 
@@ -46,6 +52,7 @@ void Data::swap(Data& data) {
   std::swap(this->centers, data.centers);
   std::swap(this->head_rotation, data.head_rotation);
   std::swap(this->head_translation, data.head_translation);
+  std::swap(this->pupils, data.pupils);
   std::swap(this->execution_times, data.execution_times);
 }
 

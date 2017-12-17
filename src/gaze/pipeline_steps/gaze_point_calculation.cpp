@@ -124,7 +124,8 @@ std::vector<cv::Vec3d> GazePointCalculation::unprojectPoints(
       this->camera_matrix, this->distortion_coefficients);
   std::vector<cv::Vec3d> unprojectedPoints;
   for (const cv::Vec2d& point : restored_points) {
-    cv::Vec3d unprojected(point[0], point[1], 1);
+    // Using -1 to adjust for mirror image
+    cv::Vec3d unprojected(point[0], point[1], -1);
     unprojectedPoints.push_back(
         rotation * ((unprojected / distance) - translation));
   }
@@ -142,7 +143,8 @@ cv::Vec3d GazePointCalculation::get_model_to_camera_dir(
   std::vector<cv::Vec3d> ref3D =
     this->unprojectPoints(ref, translation, rotation, distance);
 
-  return cv::normalize((ref3D[1] - ref3D[0]).cross(ref3D[2] - ref3D[0]));
+  // (2 - 0) x (1 - 0) to adjust for mirror image
+  return cv::normalize((ref3D[2] - ref3D[0]).cross(ref3D[1] - ref3D[0]));
 }
 
 void GazePointCalculation::set_sensor_size(

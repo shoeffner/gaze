@@ -34,6 +34,8 @@ class GazePointCalculation final
   std::vector<cv::Vec3d> eye_ball_centers;
   std::vector<cv::Vec3d> model;
   std::vector<decltype(util::Data::landmarks.num_parts())> landmark_indices;
+  double screen_width_m;
+  double screen_height_m;
 
   /**
    * Calculates the distance between the model and its image given
@@ -74,8 +76,8 @@ class GazePointCalculation final
    * @return unprojected points.
    */
   std::vector<cv::Vec3d> unprojectPoints(
-    const std::vector<cv::Vec2d>& points, const cv::Vec3d& translation,
-    const cv::Matx33d& rotation, double distance);
+      const std::vector<cv::Vec2d>& points, const cv::Vec3d& translation,
+      const cv::Matx33d& rotation, double distance);
 
   /**
    * Calculates the direction vector which points from the model origin
@@ -89,8 +91,20 @@ class GazePointCalculation final
    * @return The normal pointing from the model towards the screen.
    */
   cv::Vec3d get_model_to_camera_dir(
-    const util::Data& data, const cv::Vec3d& translation,
-    const cv::Matx33d& rotation, double distance);
+      const util::Data& data, const cv::Vec3d& translation,
+      const cv::Matx33d& rotation, double distance);
+
+  /**
+   * Calculates the camera position in model coordinates.
+   *
+   * @param model_to_camera_dir Result of get_model_to_camera_dir()
+   * @param distance Distance between model and camera.
+   *
+   * @returns (0, 0, 0) + distance * model_to_camera_dir
+   */
+  cv::Vec3d get_camera_pos(const cv::Vec3d& get_model_to_camera_dir,
+      double distance);
+
 
  protected:
   /**

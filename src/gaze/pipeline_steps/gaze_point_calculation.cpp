@@ -50,31 +50,11 @@ namespace pipeline {
 GazePointCalculation::GazePointCalculation()
     : eye_ball_centers(2) {
   YAML::Node config = util::get_config(this->number);
+  YAML::Node meta_config = util::get_config()["meta"];
+
+  // Step configuration
   this->name = config["name"] ?
     config["name"].as<std::string>() : "GazePoint";
-
-  YAML::Node camera_config = util::get_config()["meta"]["camera"];
-  double sensor_aspect_ratio = camera_config["sensor_aspect_ratio"] ?
-    util::parse_aspect_ratio(
-        camera_config["sensor_aspect_ratio"].as<std::string>())
-    : 16. / 9.;
-
-  this->set_sensor_size(
-      camera_config["sensor_size"] ?
-        camera_config["sensor_size"].as<double>() : 0.00635,
-      sensor_aspect_ratio);
-
-  this->camera_matrix = camera_config["camera_matrix"].as<cv::Mat>();
-  this->distortion_coefficients =
-    camera_config["distortion_coefficients"].as<cv::Mat>();
-
-  this->pixel_width = this->sensor_width /
-    camera_config["resolution"]["width"].as<double>();
-  this->pixel_height = this->sensor_height /
-    camera_config["resolution"]["height"].as<double>();
-
-  this->focus_width = this->pixel_width * this->camera_matrix(0, 0);
-  this->focus_height = this->pixel_height * camera_matrix(1, 1);
 
   if (config["eye_ball_centers"]) {
     this->eye_ball_centers =
@@ -97,6 +77,37 @@ GazePointCalculation::GazePointCalculation()
       {0.0289, -0.0289, -0.0241}
     };
   }
+
+  // Camera configuration
+  YAML::Node camera_config = meta_config["camera"];
+  double sensor_aspect_ratio = camera_config["sensor_aspect_ratio"] ?
+    util::parse_aspect_ratio(
+        camera_config["sensor_aspect_ratio"].as<std::string>())
+    : 16. / 9.;
+
+  this->set_sensor_size(
+      camera_config["sensor_size"] ?
+        camera_config["sensor_size"].as<double>() : 0.00635,
+      sensor_aspect_ratio);
+
+  this->camera_matrix = camera_config["camera_matrix"].as<cv::Mat>();
+  this->distortion_coefficients =
+    camera_config["distortion_coefficients"].as<cv::Mat>();
+
+  this->pixel_width = this->sensor_width /
+    camera_config["resolution"]["width"].as<double>();
+  this->pixel_height = this->sensor_height /
+    camera_config["resolution"]["height"].as<double>();
+
+  this->focus_width = this->pixel_width * this->camera_matrix(0, 0);
+  this->focus_height = this->pixel_height * camera_matrix(1, 1);
+
+  // Screen configuration
+  YAML::Node screen_config = meta_config["screen"];
+  this->screen_width_m =
+    screen_config["measurements"]["width"].as<double>();
+  this->screen_height_m =
+    screen_config["measurements"]["height"].as<double>();
 }
 
 double GazePointCalculation::calculate_distance(
@@ -145,6 +156,11 @@ cv::Vec3d GazePointCalculation::get_model_to_camera_dir(
 
   // (2 - 0) x (1 - 0) to adjust for mirror image
   return cv::normalize((ref3D[2] - ref3D[0]).cross(ref3D[1] - ref3D[0]));
+}
+
+cv::Vec3d GazePointCalculation::get_camera_pos(
+    const cv::Vec3d& model_to_camera_dir, double distance) {
+  return distance * model_to_camera_dir;
 }
 
 void GazePointCalculation::set_sensor_size(

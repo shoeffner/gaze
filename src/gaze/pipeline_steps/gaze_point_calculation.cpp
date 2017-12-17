@@ -202,8 +202,19 @@ void GazePointCalculation::process(util::Data& data) {
   cv::Matx33d R;
   cv::Rodrigues(data.head_rotation, R);
 
-  cv::Vec3d camera_dir = this->get_model_to_camera_dir(
+  cv::Vec3d model_to_camera_dir = this->get_model_to_camera_dir(
       data, data.head_translation, R, distance);
+  cv::Vec3d camera_pos = this->get_camera_pos(model_to_camera_dir, distance);
+
+  std::vector<cv::Vec3d> screen_directions = this->unprojectPoints(
+      {{1, 0}, {0, 1}}, data.head_translation, R, distance);
+  for (auto i = decltype(screen_directions.size()){0};
+       i < screen_directions.size(); ++i) {
+    screen_directions[i] = cv::normalize(screen_directions[i]);
+  }
+
+  // TODO(shoeffner): Calculate gaze/screen intersections and store them
+  // TODO(shoeffner): Add pipeline step to visualize 2D gaze point / area
 }
 
 void GazePointCalculation::visualize(util::Data& data) {
@@ -250,6 +261,12 @@ void GazePointCalculation::visualize(util::Data& data) {
   add_to_overlay(data.pupils, dlib::rgb_pixel(0, 255, 255));
   add_to_overlay(this->eye_ball_centers, dlib::rgb_pixel(255, 0, 255));
   add_to_overlay(world_landmarks, dlib::rgb_pixel(0, 255, 0));
+
+  // Visualize camera position
+  cv::Vec3d camera = this->get_camera_pos(camera_dir, distance);
+  overlay_dots.push_back({{camera[0], camera[1], camera[2]},
+      dlib::rgb_pixel(255, 255, 255)});
+
   this->widget->add_overlay(overlay_dots);
 
   // Draw coordinate axes

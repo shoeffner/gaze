@@ -102,6 +102,9 @@ GazePointCalculation::GazePointCalculation()
   this->focus_width = this->pixel_width * this->camera_matrix(0, 0);
   this->focus_height = this->pixel_height * camera_matrix(1, 1);
 
+  this->camera_offset_x = camera_config["position"]["x"].as<double>();
+  this->camera_offset_y = camera_config["position"]["y"].as<double>();
+
   // Screen configuration
   YAML::Node screen_config = meta_config["screen"];
   this->screen_width_m =
@@ -163,6 +166,30 @@ cv::Vec3d GazePointCalculation::get_camera_pos(
   return distance * model_to_camera_dir;
 }
 
+std::vector<cv::Vec3d> GazePointCalculation::get_screen_corners(
+    const cv::Vec3d& camera_pos, const cv::Vec3d& translation,
+    const cv::Matx33d& rotation, double distance) {
+  std::vector<cv::Vec3d> screen_directions = this->unprojectPoints(
+      {{0, 0}, {1, 0}, {0, 1}}, translation, rotation, distance);
+  for (auto i = decltype(screen_directions.size()){1};
+       i < screen_directions.size(); ++i) {
+    screen_directions[i] =
+      cv::normalize(screen_directions[i] - screen_directions[0]);
+  }
+
+  cv::Vec3d screen_tl = camera_pos
+    - screen_directions[1] * this->camera_offset_x
+    - screen_directions[2] * this->camera_offset_y;
+  cv::Vec3d screen_tr = screen_tl
+    + screen_directions[1] * screen_width_m;
+  cv::Vec3d screen_br = screen_tr
+    + screen_directions[2] * screen_height_m;
+  cv::Vec3d screen_bl = screen_tl
+    + screen_directions[2] * screen_height_m;
+  return {screen_tl, screen_tr, screen_br, screen_bl};
+}
+
+
 void GazePointCalculation::set_sensor_size(
     double sensor_diagonal,
     double aspect_ratio) {
@@ -206,18 +233,12 @@ void GazePointCalculation::process(util::Data& data) {
       data, data.head_translation, R, distance);
   cv::Vec3d camera_pos = this->get_camera_pos(model_to_camera_dir, distance);
 
-  std::vector<cv::Vec3d> screen_directions = this->unprojectPoints(
-      {{1, 0}, {0, 1}}, data.head_translation, R, distance);
-  for (auto i = decltype(screen_directions.size()){0};
-       i < screen_directions.size(); ++i) {
-    screen_directions[i] = cv::normalize(screen_directions[i]);
-  }
-
-  // TODO(shoeffner): Calculate gaze/screen intersections and store them
-  // TODO(shoeffner): Add pipeline step to visualize 2D gaze point / area
+  std::vector<cv::Vec3d> screen_tl_tr_br_bl =
+    this->get_screen_corners(camera_pos, data.head_translation, R, distance);
 }
 
 void GazePointCalculation::visualize(util::Data& data) {
+  // TODO(shoeffner): Add pipeline step to visualize 2D gaze point / area
   this->widget->clear_overlay();
   if (data.landmarks.num_parts() < 5) {
     return;
@@ -244,6 +265,11 @@ void GazePointCalculation::visualize(util::Data& data) {
   cv::Vec3d camera_dir = this->get_model_to_camera_dir(
       data, data.head_translation, R, distance);
 
+  cv::Vec3d camera_pos = this->get_camera_pos(camera_dir, distance);
+
+  // Calculate screen corners
+  std::vector<cv::Vec3d> screen_corners =
+    this->get_screen_corners(camera_pos, data.head_translation, R, distance);
 
   // Helpers to draw points
   std::vector<dlib::perspective_display::overlay_dot>
@@ -257,10 +283,10 @@ void GazePointCalculation::visualize(util::Data& data) {
       }
     };
 
-  add_to_overlay(this->model, dlib::rgb_pixel(255, 255, 0));
-  add_to_overlay(data.pupils, dlib::rgb_pixel(0, 255, 255));
-  add_to_overlay(this->eye_ball_centers, dlib::rgb_pixel(255, 0, 255));
-  add_to_overlay(world_landmarks, dlib::rgb_pixel(0, 255, 0));
+  add_to_overlay(this->model, {255, 255, 0});
+  add_to_overlay(data.pupils, {0, 255, 255});
+  add_to_overlay(this->eye_ball_centers, {255, 0, 255});
+  add_to_overlay(world_landmarks, {0, 255, 0});
 
   // Visualize camera position
   cv::Vec3d camera = this->get_camera_pos(camera_dir, distance);
@@ -269,24 +295,30 @@ void GazePointCalculation::visualize(util::Data& data) {
 
   this->widget->add_overlay(overlay_dots);
 
+  auto to_line = [](const cv::Vec3d& p0, const cv::Vec3d& p1,
+      dlib::rgb_pixel color) ->
+    dlib::perspective_display::overlay_line {
+      return dlib::perspective_display::overlay_line(
+          {p0[0], p0[1], p0[2]}, {p1[0], p1[1], p1[2]}, color);
+    };
+
   // Draw coordinate axes
-  dlib::vector<double, 3> origin(0, 0, 0);
-  dlib::vector<double, 3> xdir(.1, 0, 0);
-  dlib::vector<double, 3> ydir(0, .1, 0);
-  dlib::vector<double, 3> zdir(0, 0, .1);
-  dlib::perspective_display::overlay_line
-    xline(origin, xdir, dlib::rgb_alpha_pixel(255, 0, 0, 80));
-  dlib::perspective_display::overlay_line
-    yline(origin, ydir, dlib::rgb_alpha_pixel(0, 255, 0, 80));
-  dlib::perspective_display::overlay_line
-    zline(origin, zdir, dlib::rgb_alpha_pixel(0, 0, 255, 80));
+  cv::Vec3d origin(0, 0, 0);
+  cv::Vec3d xdir(.1, 0, 0);
+  cv::Vec3d ydir(0, .1, 0);
+  cv::Vec3d zdir(0, 0, .1);
 
-  // Draw screen direction
-  dlib::perspective_display::overlay_line
-    camdir_line(origin, origin + util::cv_to_dlib<double, 3>(camera_dir),
-        dlib::rgb_alpha_pixel(255, 255, 0, 80));
+  this->widget->add_overlay({
+      to_line(origin, xdir, {255, 0, 0}),
+      to_line(origin, ydir, {0, 255, 0}),
+      to_line(origin, zdir, {0, 0, 255}),
+      to_line(origin, origin + camera_dir, {255, 255, 0})});
 
-  this->widget->add_overlay({xline, yline, zline, camdir_line});
+  this->widget->add_overlay({
+      to_line(screen_corners[0], screen_corners[1], {255, 255, 0}),
+      to_line(screen_corners[1], screen_corners[2], {255, 255, 0}),
+      to_line(screen_corners[2], screen_corners[3], {255, 255, 0}),
+      to_line(screen_corners[3], screen_corners[0], {255, 255, 0})});
 }
 
 }  // namespace pipeline

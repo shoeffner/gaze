@@ -36,6 +36,8 @@ class GazePointCalculation final
   std::vector<decltype(util::Data::landmarks.num_parts())> landmark_indices;
   double screen_width_m;
   double screen_height_m;
+  double camera_offset_x;
+  double camera_offset_y;
 
   /**
    * Calculates the distance between the model and its image given
@@ -85,7 +87,7 @@ class GazePointCalculation final
    *
    * @param data The data object
    * @param translation The head translation vector
-   * @param rotation The head rotation vector from cv::Rodrigues
+   * @param rotation The head rotation matrix from cv::Rodrigues()
    * @param distance The distance from calculate_distance()
    *
    * @return The normal pointing from the model towards the screen.
@@ -100,11 +102,25 @@ class GazePointCalculation final
    * @param model_to_camera_dir Result of get_model_to_camera_dir()
    * @param distance Distance between model and camera.
    *
-   * @returns (0, 0, 0) + distance * model_to_camera_dir
+   * @return (0, 0, 0) + distance * model_to_camera_dir
    */
   cv::Vec3d get_camera_pos(const cv::Vec3d& get_model_to_camera_dir,
       double distance);
 
+  /**
+   * Returns the four estimated screen corners.
+   *
+   * @param camera_pos The camera position
+   * @param translation The head translation vector
+   * @param rotation The head rotation matrix from cv::Rodrigues()
+   * @param distance The distance from calculate_distance()
+   *
+   * @return a vector containing the four screen corners in the order:
+   *         top left, rop right, bottom right, bottom left
+   */
+  std::vector<cv::Vec3d> get_screen_corners(
+      const cv::Vec3d& camera_pos, const cv::Vec3d& translation,
+      const cv::Matx33d& rotation, double distance);
 
  protected:
   /**

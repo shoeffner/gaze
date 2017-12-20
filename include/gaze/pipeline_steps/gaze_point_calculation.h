@@ -122,6 +122,26 @@ class GazePointCalculation final
       const cv::Vec3d& camera_pos, const cv::Vec3d& translation,
       const cv::Matx33d& rotation, double distance);
 
+  /**
+   * Calculates the intersection between the line going through
+   * eye_ball_center and pupil and the screen plane.
+   *
+   * The three screen points should describe the plane (i.e. don't lie in one
+   * line).
+   *
+   * @param eye_ball_center The eye ball center
+   * @param pupil The pupil
+   * @param screen_a one screen point
+   * @param screen_b one screen point
+   * @param screen_c one screen point
+   *
+   * @returns The intersection between the line and the plane.
+   */
+  cv::Vec3d calculate_gaze_point(
+      const cv::Vec3d& eye_ball_center, const cv::Vec3d& pupil,
+      const cv::Vec3d& screen_a, const cv::Vec3d& screen_b,
+      const cv::Vec3d& screen_c);
+
  protected:
   /**
    * Calculates the sensor width and sensor height from the sensor

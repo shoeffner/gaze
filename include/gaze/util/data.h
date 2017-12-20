@@ -93,6 +93,16 @@ struct Data {
    * The pupils in model coordinates.
    */
   std::vector<cv::Vec3d> pupils;
+
+  /**
+   * The gaze points in model coordinates.
+   */
+  std::vector<cv::Vec3d> gaze_points;
+
+  /**
+   * The mean gaze point in screen coordinates.
+   */
+  cv::Vec2d estimated_gaze_point;
   //@}
 
   /**

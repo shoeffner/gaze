@@ -133,6 +133,11 @@ cv::Matx34d GazePointCalculation::invertProjection(
 std::vector<cv::Vec3d> GazePointCalculation::unprojectPoints(
     const std::vector<cv::Vec2d>& points, const cv::Vec3d& translation,
     const cv::Matx33d& rotation, double distance) {
+  // Half turn about up-vector to account for camera mirror image vs. model
+  cv::Matx33d rcam;
+  rcam << -1, 0, 0,
+           0, 1, 0,
+           0, 0, -1;
   std::vector<cv::Vec2d> restored_points;
   cv::undistortPoints(points, restored_points,
       this->camera_matrix, this->distortion_coefficients);
@@ -140,7 +145,7 @@ std::vector<cv::Vec3d> GazePointCalculation::unprojectPoints(
   for (const cv::Vec2d& point : restored_points) {
     cv::Vec3d unprojected(point[0], point[1], 1);
     unprojectedPoints.push_back(
-        rotation * ((unprojected / distance) - translation));
+        rcam * rotation * ((unprojected / distance) - translation));
   }
   return unprojectedPoints;
 }
@@ -156,7 +161,7 @@ cv::Vec3d GazePointCalculation::get_model_to_camera_dir(
   std::vector<cv::Vec3d> ref3D =
     this->unprojectPoints(ref, translation, rotation, distance);
 
-  return cv::normalize((ref3D[2] - ref3D[0]).cross(ref3D[1] - ref3D[0]));
+  return cv::normalize((ref3D[1] - ref3D[0]).cross(ref3D[2] - ref3D[0]));
 }
 
 cv::Vec3d GazePointCalculation::get_camera_pos(
@@ -187,6 +192,18 @@ std::vector<cv::Vec3d> GazePointCalculation::get_screen_corners(
   return {screen_tl, screen_tr, screen_br, screen_bl};
 }
 
+cv::Vec3d GazePointCalculation::calculate_gaze_point(
+    const cv::Vec3d& eye_ball_center, const cv::Vec3d& pupil,
+    const cv::Vec3d& screen_a, const cv::Vec3d& screen_b,
+    const cv::Vec3d& screen_c) {
+  cv::Matx33d raycast;
+  cv::Mat components[] = {cv::Mat(eye_ball_center - pupil),
+                          cv::Mat(screen_b - screen_a),
+                          cv::Mat(screen_c - screen_a)};
+  cv::hconcat(components, 3, raycast);
+  double t = (raycast.inv() * (eye_ball_center - screen_a))[0];
+  return eye_ball_center + (pupil - eye_ball_center) * t;
+}
 
 void GazePointCalculation::set_sensor_size(
     double sensor_diagonal,
@@ -233,6 +250,14 @@ void GazePointCalculation::process(util::Data& data) {
 
   std::vector<cv::Vec3d> screen_tl_tr_br_bl =
     this->get_screen_corners(camera_pos, data.head_translation, R, distance);
+
+  // Ray cast
+  for (auto i = decltype(data.gaze_points.size()){0};
+       i < data.gaze_points.size(); ++i) {
+    data.gaze_points[i] = this->calculate_gaze_point(
+      this->eye_ball_centers[i], data.pupils[i],
+      screen_tl_tr_br_bl[0], screen_tl_tr_br_bl[1], screen_tl_tr_br_bl[2]);
+  }
 }
 
 void GazePointCalculation::visualize(util::Data& data) {
@@ -321,6 +346,11 @@ void GazePointCalculation::visualize(util::Data& data) {
   this->widget->add_overlay({
       to_line(this->eye_ball_centers[0], data.pupils[0], {0, 255, 255}),
       to_line(this->eye_ball_centers[1], data.pupils[1], {0, 255, 255})});
+
+  this->widget->add_overlay({
+      to_line(this->eye_ball_centers[0], data.gaze_points[0], {255, 255, 255}),
+      to_line(this->eye_ball_centers[1], data.gaze_points[1],
+          {255, 255, 255})});
 }
 
 }  // namespace pipeline

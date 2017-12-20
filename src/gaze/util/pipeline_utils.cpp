@@ -33,18 +33,18 @@ std::vector<dlib::chip_details> get_eyes_chip_details(
     index_ex_right = 0;
     index_en_right = 1;
   } else {  // 68 landmarks
-    index_ex_left = 36;
-    index_en_left = 39;
-    index_ex_right = 45;
-    index_en_right = 42;
+    index_ex_left = 45;
+    index_en_left = 42;
+    index_ex_right = 36;
+    index_en_right = 39;
   }
 
   details.push_back(dlib::chip_details(
-        get_rectangle(object_detection.part(index_ex_left),
-                      object_detection.part(index_en_left))));
-  details.push_back(dlib::chip_details(
         get_rectangle(object_detection.part(index_ex_right),
                       object_detection.part(index_en_right))));
+  details.push_back(dlib::chip_details(
+        get_rectangle(object_detection.part(index_ex_left),
+                      object_detection.part(index_en_left))));
 
   return details;
 }

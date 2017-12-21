@@ -47,8 +47,11 @@ const std::pair<int, int> GazeTracker::get_current_gaze_point() const {
       std::endl;
     return std::pair<int, int>(-1, -1);
   }
-  // TODO(shoeffner): Remove dummy values once tracking is implemented.
-  return std::pair<int, int>(120, 130);
+  int x =
+    static_cast<int>(this->pipeline->get_data().estimated_gaze_point(0));
+  int y =
+    static_cast<int>(this->pipeline->get_data().estimated_gaze_point(1));
+  return std::pair<int, int>(x, y);
 }
 
 void GazeTracker::init(const std::string subject_id,

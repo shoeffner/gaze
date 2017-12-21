@@ -17,16 +17,6 @@ namespace gaze {
 
 namespace util {
 
-/**
- * Parses a string representing an aspect ratio.
- * If the string contains : or /, it is split there and the aspect ratio is the
- * quotient between the values left and right:
- * `a:b` is equal to `a/b`.
- * If non of the tokens is present, the string is parsed as a double.
- *
- * @param aspect_ratio_string The string to parse.
- * @returns the parsed aspect ratio.
- */
 double parse_aspect_ratio(std::string aspect_ratio_string) {
   double aspect_ratio;
   int delim = aspect_ratio_string.find(":");
@@ -41,6 +31,15 @@ double parse_aspect_ratio(std::string aspect_ratio_string) {
     aspect_ratio = std::stod(aspect_ratio_string);
   }
   return aspect_ratio;
+}
+
+double clamp(double value, double min, double max) {
+  if (value < min) {
+    return min;
+  } else if (value > max) {
+    return max;
+  }
+  return value;
 }
 
 }  // namespace util
@@ -111,6 +110,10 @@ GazePointCalculation::GazePointCalculation()
     screen_config["measurements"]["width"].as<double>();
   this->screen_height_m =
     screen_config["measurements"]["height"].as<double>();
+  this->screen_width_px =
+    screen_config["resolution"]["width"].as<int>();
+  this->screen_height_px =
+    screen_config["resolution"]["height"].as<int>();
 }
 
 double GazePointCalculation::calculate_distance(
@@ -192,7 +195,7 @@ std::vector<cv::Vec3d> GazePointCalculation::get_screen_corners(
   return {screen_tl, screen_tr, screen_br, screen_bl};
 }
 
-cv::Vec3d GazePointCalculation::calculate_gaze_point(
+cv::Matx32d GazePointCalculation::calculate_gaze_point(
     const cv::Vec3d& eye_ball_center, const cv::Vec3d& pupil,
     const cv::Vec3d& screen_a, const cv::Vec3d& screen_b,
     const cv::Vec3d& screen_c) {
@@ -201,8 +204,13 @@ cv::Vec3d GazePointCalculation::calculate_gaze_point(
                           cv::Mat(screen_b - screen_a),
                           cv::Mat(screen_c - screen_a)};
   cv::hconcat(components, 3, raycast);
-  double t = (raycast.inv() * (eye_ball_center - screen_a))[0];
-  return eye_ball_center + (pupil - eye_ball_center) * t;
+  cv::Vec3d tuv = (raycast.inv() * (eye_ball_center - screen_a));
+  cv::Vec3d gaze_point = eye_ball_center + (pupil - eye_ball_center) * tuv[0];
+
+  cv::Matx32d result;
+  cv::Mat vecs[] = {cv::Mat(gaze_point), cv::Mat(tuv)};
+  cv::hconcat(vecs, 2, result);
+  return result;
 }
 
 void GazePointCalculation::set_sensor_size(
@@ -252,12 +260,24 @@ void GazePointCalculation::process(util::Data& data) {
     this->get_screen_corners(camera_pos, data.head_translation, R, distance);
 
   // Ray cast
+  cv::Vec2d screen_coord_coeffs(0, 0);
   for (auto i = decltype(data.gaze_points.size()){0};
        i < data.gaze_points.size(); ++i) {
-    data.gaze_points[i] = this->calculate_gaze_point(
-      this->eye_ball_centers[i], data.pupils[i],
-      screen_tl_tr_br_bl[0], screen_tl_tr_br_bl[1], screen_tl_tr_br_bl[2]);
+    cv::Matx32d gaze_point = this->calculate_gaze_point(
+        this->eye_ball_centers[i], data.pupils[i],
+        screen_tl_tr_br_bl[0], screen_tl_tr_br_bl[1], screen_tl_tr_br_bl[3]);
+    data.gaze_points[i] =
+        cv::Vec3d(gaze_point(0, 0), gaze_point(1, 0), gaze_point(2, 0));
+    screen_coord_coeffs[0] += gaze_point(1, 1);
+    screen_coord_coeffs[1] += gaze_point(1, 2);
   }
+  screen_coord_coeffs /= 2;
+  screen_coord_coeffs[0] = util::clamp(screen_coord_coeffs[0], 0, 1);
+  screen_coord_coeffs[1] = util::clamp(screen_coord_coeffs[1], 0, 1);
+
+  data.estimated_gaze_point = cv::Vec2d(
+      this->screen_width_px * screen_coord_coeffs[0],
+      this->screen_height_px * screen_coord_coeffs[1]);
 }
 
 void GazePointCalculation::visualize(util::Data& data) {

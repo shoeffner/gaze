@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_GAZE_POINT_CALCULATION_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_GAZE_POINT_CALCULATION_H_
 
+#include <string>
 #include <vector>
 
 #include "opencv2/opencv.hpp"
@@ -11,6 +12,35 @@
 
 
 namespace gaze {
+
+namespace util {
+
+/**
+ * Parses a string representing an aspect ratio.
+ * If the string contains : or /, it is split there and the aspect ratio is the
+ * quotient between the values left and right:
+ * `a:b` is equal to `a/b`.
+ * If non of the tokens is present, the string is parsed as a double.
+ *
+ * @param aspect_ratio_string The string to parse.
+ * @returns the parsed aspect ratio.
+ */
+double parse_aspect_ratio(std::string aspect_ratio_string);
+
+/**
+ * If value is smaller than min, min is returned.
+ * If value is bigger than max, max is returned.
+ * Else, the value is returned.
+ *
+ * @param value The value to clamp.
+ * @param min The minimum allowed value.
+ * @param max The maximum allowed value.
+ *
+ * @return The clamped value.
+ */
+double clamp(double value, double min, double max);
+
+}  // namespace util
 
 namespace pipeline {
 
@@ -36,6 +66,8 @@ class GazePointCalculation final
   std::vector<decltype(util::Data::landmarks.num_parts())> landmark_indices;
   double screen_width_m;
   double screen_height_m;
+  double screen_width_px;
+  double screen_height_px;
   double camera_offset_x;
   double camera_offset_y;
 
@@ -129,15 +161,40 @@ class GazePointCalculation final
    * The three screen points should describe the plane (i.e. don't lie in one
    * line).
    *
+   * This method solves the following system (see
+   * <a href="https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection#Parametric_form">wikipedia for details</a>):
+   * @f[
+   * \left(\begin{array}{c}
+   * t \\
+   * u \\
+   * v
+   * \end{array}\right)
+   * =
+   * \left(\begin{array}{ccc}
+   * e_x - p_x & b_x - a_x & c_x - a_x \\
+   * e_y - p_y & b_y - a_y & c_y - a_y \\
+   * e_z - p_z & b_z - a_z & c_z - a_z
+   * \end{array}\right)^{-1}
+   * \left(\begin{array}{c}
+   * e_x - a_x \\
+   * e_y - a_y \\
+   * e_z - a_z
+   * \end{array}\right),
+   * @f]
+   * with @f$a, b, c@f$ being the screen corners, @f$e, p@f$ the eye ball
+   * center and pupil, all in model coordinates.
+   *
    * @param eye_ball_center The eye ball center
    * @param pupil The pupil
    * @param screen_a one screen point
    * @param screen_b one screen point
    * @param screen_c one screen point
    *
-   * @returns The intersection between the line and the plane.
+   * @returns A matrix containing two column vectors:
+   *          The first column is the 3D gaze point, the second
+   *          column contains the scalars t, u, v.
    */
-  cv::Vec3d calculate_gaze_point(
+  cv::Matx32d calculate_gaze_point(
       const cv::Vec3d& eye_ball_center, const cv::Vec3d& pupil,
       const cv::Vec3d& screen_a, const cv::Vec3d& screen_b,
       const cv::Vec3d& screen_c);

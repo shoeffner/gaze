@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['set_5fsensor_5fsize',['set_sensor_size',['../classgaze_1_1pipeline_1_1_gaze_point_calculation.html#ae190813d2898f90dc168e641a0c68138',1,'gaze::pipeline::GazePointCalculation']]],
   ['sizeable',['sizeable',['../structgaze_1_1gui_1_1traits_1_1sizeable.html',1,'gaze::gui::traits']]],
   ['source_5fimage',['source_image',['../structgaze_1_1util_1_1_data.html#a8406634aa145a854aa389f6bc82c6cd0',1,'gaze::util::Data']]],
   ['sourcecapture',['SourceCapture',['../classgaze_1_1pipeline_1_1_source_capture.html',1,'gaze::pipeline']]],

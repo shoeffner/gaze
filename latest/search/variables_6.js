@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['source_5fimage',['source_image',['../structgaze_1_1util_1_1_data.html#a8406634aa145a854aa389f6bc82c6cd0',1,'gaze::util::Data']]]
+  ['name',['name',['../classgaze_1_1_pipeline_step.html#ac87249a515fa0cd433197f300e9300b0',1,'gaze::PipelineStep']]],
+  ['number',['number',['../classgaze_1_1_pipeline_step.html#a40e0c764e4067f769bfd9f3c2f8cb61f',1,'gaze::PipelineStep']]]
 ];

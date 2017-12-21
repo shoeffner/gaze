@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['widget',['widget',['../classgaze_1_1gui_1_1_visualizeable.html#af881cd99f0aae7e92e4217cb191777e0',1,'gaze::gui::Visualizeable']]]
+  ['pupils',['pupils',['../structgaze_1_1util_1_1_data.html#a15f3d6d3022b9521148a5ec74a5dd6a5',1,'gaze::util::Data']]]
 ];

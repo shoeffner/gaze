@@ -165,13 +165,13 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="gaze__tracker_8cpp_source.html#l00019">19</a> of file <a class="el" href="gaze__tracker_8cpp_source.html">gaze_tracker.cpp</a>.</p>
 
-<p>References <a class="el" href="gaze__tracker_8cpp_source.html#l00054">init()</a>.</p>
+<p>References <a class="el" href="gaze__tracker_8cpp_source.html#l00057">init()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    : debug(debug),</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;      subject_id(subject_id) {</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  this-&gt;initialized = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  this-&gt;<a class="code" href="classgaze_1_1_gaze_tracker.html#a5a39d281355fce42f0308ac6d191df13">init</a>(subject_id, debug);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
-<div class="ttc" id="classgaze_1_1_gaze_tracker_html_a5a39d281355fce42f0308ac6d191df13"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#a5a39d281355fce42f0308ac6d191df13">gaze::GazeTracker::init</a></div><div class="ttdeci">void init(const std::string subject_id, const bool debug=false)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00054">gaze_tracker.cpp:54</a></div></div>
+<div class="ttc" id="classgaze_1_1_gaze_tracker_html_a5a39d281355fce42f0308ac6d191df13"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#a5a39d281355fce42f0308ac6d191df13">gaze::GazeTracker::init</a></div><div class="ttdeci">void init(const std::string subject_id, const bool debug=false)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00057">gaze_tracker.cpp:57</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -215,18 +215,24 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the most recent calculated gaze point. If not initialized, returns <img class="formulaInl" alt="$(-1, -1)$" src="form_0.png"/>. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd><a href="https://github.com/shoeffner">shoeffner</a>: Remove dummy values once tracking is implemented. </dd></dl>
 
 <p>Definition at line <a class="el" href="gaze__tracker_8cpp_source.html#l00044">44</a> of file <a class="el" href="gaze__tracker_8cpp_source.html">gaze_tracker.cpp</a>.</p>
+
+<p>References <a class="el" href="data_8h_source.html#l00105">gaze::util::Data::estimated_gaze_point</a>, and <a class="el" href="pipeline_8cpp_source.html#l00069">gaze::Pipeline::get_data()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                                                                  {</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;initialized) {</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] Not initialized (get_current_gaze_point()).&quot;</span> &lt;&lt;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      std::endl;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> std::pair&lt;int, int&gt;(-1, -1);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">// TODO(shoeffner): Remove dummy values once tracking is implemented.</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">return</span> std::pair&lt;int, int&gt;(120, 130);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordtype">int</span> x =</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(this-&gt;pipeline-&gt;<a class="code" href="classgaze_1_1_pipeline.html#a87fe369b8d2e938cd381e16e29906b61">get_data</a>().<a class="code" href="structgaze_1_1util_1_1_data.html#a6db092f4cc8c809d6f6c259e8df2364b">estimated_gaze_point</a>(0));</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">int</span> y =</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(this-&gt;pipeline-&gt;<a class="code" href="classgaze_1_1_pipeline.html#a87fe369b8d2e938cd381e16e29906b61">get_data</a>().<a class="code" href="structgaze_1_1util_1_1_data.html#a6db092f4cc8c809d6f6c259e8df2364b">estimated_gaze_point</a>(1));</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">return</span> std::pair&lt;int, int&gt;(x, y);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="ttc" id="classgaze_1_1_pipeline_html_a87fe369b8d2e938cd381e16e29906b61"><div class="ttname"><a href="classgaze_1_1_pipeline.html#a87fe369b8d2e938cd381e16e29906b61">gaze::Pipeline::get_data</a></div><div class="ttdeci">util::Data get_data()</div><div class="ttdef"><b>Definition:</b> <a href="pipeline_8cpp_source.html#l00069">pipeline.cpp:69</a></div></div>
+<div class="ttc" id="structgaze_1_1util_1_1_data_html_a6db092f4cc8c809d6f6c259e8df2364b"><div class="ttname"><a href="structgaze_1_1util_1_1_data.html#a6db092f4cc8c809d6f6c259e8df2364b">gaze::util::Data::estimated_gaze_point</a></div><div class="ttdeci">cv::Vec2d estimated_gaze_point</div><div class="ttdef"><b>Definition:</b> <a href="data_8h_source.html#l00105">data.h:105</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -263,21 +269,21 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gaze__tracker_8cpp_source.html#l00054">54</a> of file <a class="el" href="gaze__tracker_8cpp_source.html">gaze_tracker.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gaze__tracker_8cpp_source.html#l00057">57</a> of file <a class="el" href="gaze__tracker_8cpp_source.html">gaze_tracker.cpp</a>.</p>
 
 <p>Referenced by <a class="el" href="gaze__tracker_8cpp_source.html#l00019">GazeTracker()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                                         {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">if</span> (this-&gt;initialized) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  this-&gt;debug = debug;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  this-&gt;subject_id = subject_id;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  this-&gt;init_pipeline(subject_id);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">if</span> (this-&gt;debug) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    gui::open_debug_window(this-&gt;pipeline);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  this-&gt;initialized = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                                         {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">if</span> (this-&gt;initialized) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  this-&gt;debug = debug;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  this-&gt;subject_id = subject_id;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  this-&gt;init_pipeline(subject_id);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">if</span> (this-&gt;debug) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    gui::open_debug_window(this-&gt;pipeline);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  this-&gt;initialized = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -303,17 +309,17 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gaze__tracker_8cpp_source.html#l00098">98</a> of file <a class="el" href="gaze__tracker_8cpp_source.html">gaze_tracker.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                                                        {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;initialized) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] Not initialized (start_trial()).&quot;</span> &lt;&lt;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      std::endl;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  this-&gt;current_trial_id = identifier;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] [Stub] Starting trial &quot;</span> &lt;&lt; this-&gt;current_trial_id</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
+<p>Definition at line <a class="el" href="gaze__tracker_8cpp_source.html#l00101">101</a> of file <a class="el" href="gaze__tracker_8cpp_source.html">gaze_tracker.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                                                        {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;initialized) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] Not initialized (start_trial()).&quot;</span> &lt;&lt;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      std::endl;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  this-&gt;current_trial_id = identifier;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] [Stub] Starting trial &quot;</span> &lt;&lt; this-&gt;current_trial_id</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -331,17 +337,17 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Stops associating data with any specific trial. </p>
 
-<p>Definition at line <a class="el" href="gaze__tracker_8cpp_source.html#l00109">109</a> of file <a class="el" href="gaze__tracker_8cpp_source.html">gaze_tracker.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                             {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;initialized) {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] Not initialized (stop_trial()).&quot;</span> &lt;&lt;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      std::endl;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  }</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] [Stub] Stopping trial &quot;</span> &lt;&lt; this-&gt;current_trial_id</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  this-&gt;current_trial_id = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
+<p>Definition at line <a class="el" href="gaze__tracker_8cpp_source.html#l00112">112</a> of file <a class="el" href="gaze__tracker_8cpp_source.html">gaze_tracker.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                             {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;initialized) {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] Not initialized (stop_trial()).&quot;</span> &lt;&lt;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      std::endl;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] [Stub] Stopping trial &quot;</span> &lt;&lt; this-&gt;current_trial_id</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  this-&gt;current_trial_id = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>

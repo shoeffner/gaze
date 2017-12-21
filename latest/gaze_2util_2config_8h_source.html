@@ -93,22 +93,122 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef INCLUDE_GAZE_UTIL_CONFIG_H_</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define INCLUDE_GAZE_UTIL_CONFIG_H_</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;yaml-cpp/yaml.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;opencv2/opencv.hpp&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;yaml-cpp/yaml.h&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>gaze {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span>util {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;YAML::Node <a class="code" href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">get_config</a>();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;YAML::Node <a class="code" href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">get_config</a>(<span class="keywordtype">int</span> pipeline_step_number);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}  <span class="comment">// namespace util</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}  <span class="comment">// namespace gaze</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif  // INCLUDE_GAZE_UTIL_CONFIG_H_</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>gaze {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>util {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;YAML::Node <a class="code" href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">get_config</a>();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;YAML::Node <a class="code" href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">get_config</a>(<span class="keywordtype">int</span> pipeline_step_number);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}  <span class="comment">// namespace util</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}  <span class="comment">// namespace gaze</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">namespace </span>YAML {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html">   54</a></span>&#160;<span class="keyword">struct </span>convert&lt;cv::Point3d&gt; {</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html#a951c97c7d646d2cb02ba9a9acf0e7469">   62</a></span>&#160;  <span class="keyword">static</span> Node <a class="code" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html#a951c97c7d646d2cb02ba9a9acf0e7469">encode</a>(<span class="keyword">const</span> cv::Point3d&amp; rhs) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    Node node;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    node.push_back(rhs.x);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    node.push_back(rhs.y);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    node.push_back(rhs.z);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">return</span> node;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html#a0334befda7cc8d9287a94570efaaa4ce">   78</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html#a0334befda7cc8d9287a94570efaaa4ce">decode</a>(<span class="keyword">const</span> Node&amp; node, cv::Point3d&amp; rhs) {  <span class="comment">// NOLINT</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span> (!node.IsSequence() || node.size() != 3) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    rhs.x = node[0].as&lt;<span class="keywordtype">double</span>&gt;();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    rhs.y = node[1].as&lt;<span class="keywordtype">double</span>&gt;();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    rhs.z = node[2].as&lt;<span class="keywordtype">double</span>&gt;();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html">   95</a></span>&#160;<span class="keyword">struct </span>convert&lt;cv::Vec3d&gt; {</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html#ab16b28a2e7a10c63fe0625be774bd0f2">  103</a></span>&#160;  <span class="keyword">static</span> Node <a class="code" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html#ab16b28a2e7a10c63fe0625be774bd0f2">encode</a>(<span class="keyword">const</span> cv::Vec3d&amp; rhs) {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    Node node;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    node.push_back(rhs[0]);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    node.push_back(rhs[1]);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    node.push_back(rhs[2]);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">return</span> node;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html#a8c8fe9b923c3615dd8b12ceb49bcad03">  119</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html#a8c8fe9b923c3615dd8b12ceb49bcad03">decode</a>(<span class="keyword">const</span> Node&amp; node, cv::Vec3d&amp; rhs) {  <span class="comment">// NOLINT</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordflow">if</span> (!node.IsSequence() || node.size() != 3) {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    rhs[0] = node[0].as&lt;<span class="keywordtype">double</span>&gt;();</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    rhs[1] = node[1].as&lt;<span class="keywordtype">double</span>&gt;();</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    rhs[2] = node[2].as&lt;<span class="keywordtype">double</span>&gt;();</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;};</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html">  136</a></span>&#160;<span class="keyword">struct </span>convert&lt;cv::Mat&gt; {</div>
+<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html#aad620b02594634c56ebf51710c006f77">  143</a></span>&#160;  <span class="keyword">static</span> Node <a class="code" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html#aad620b02594634c56ebf51710c006f77">encode</a>(<span class="keyword">const</span> cv::Mat&amp; rhs) {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    Node node;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    node[<span class="stringliteral">&quot;rows&quot;</span>] = rhs.rows;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    node[<span class="stringliteral">&quot;cols&quot;</span>] = rhs.cols;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    node[<span class="stringliteral">&quot;dt&quot;</span>] = <span class="charliteral">&#39;d&#39;</span>;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    Node data;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> d = rhs.datastart; d != rhs.dataend; ++d) {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      data.push_back(static_cast&lt;double&gt;(*d));</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    node[<span class="stringliteral">&quot;data&quot;</span>] = data;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">return</span> node;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  }</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html#aec0f6ba0ce69ee8f1867c536e5c74649">  165</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html#aec0f6ba0ce69ee8f1867c536e5c74649">decode</a>(<span class="keyword">const</span> Node&amp; node, cv::Mat&amp; rhs) {  <span class="comment">// NOLINT</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">if</span> (!node[<span class="stringliteral">&quot;rows&quot;</span>] || !node[<span class="stringliteral">&quot;cols&quot;</span>] || !node[<span class="stringliteral">&quot;dt&quot;</span>] || !node[<span class="stringliteral">&quot;data&quot;</span>] ||</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        !node[<span class="stringliteral">&quot;data&quot;</span>].IsSequence()) {</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordtype">char</span> dt = node[<span class="stringliteral">&quot;dt&quot;</span>].as&lt;<span class="keywordtype">char</span>&gt;();</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordflow">if</span> (dt != <span class="charliteral">&#39;d&#39;</span>) {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    }</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordtype">int</span> rows = node[<span class="stringliteral">&quot;rows&quot;</span>].as&lt;<span class="keywordtype">int</span>&gt;();</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordtype">int</span> cols = node[<span class="stringliteral">&quot;cols&quot;</span>].as&lt;<span class="keywordtype">int</span>&gt;();</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">static_cast&lt;</span>decltype(node[&quot;data&quot;].size())<span class="keyword">&gt;</span>(rows * cols) !=</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        node[<span class="stringliteral">&quot;data&quot;</span>].size()) {</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;      <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    }</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">double</span>* data = <span class="keyword">new</span> <span class="keywordtype">double</span>[rows * cols];</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = decltype(node[<span class="stringliteral">&quot;data&quot;</span>].size()){0}; i &lt; node[<span class="stringliteral">&quot;data&quot;</span>].size();</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        ++i) {</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      data[i] = node[<span class="stringliteral">&quot;data&quot;</span>][i].as&lt;<span class="keywordtype">double</span>&gt;();</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    }</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    cv::Mat mat = cv::Mat(rows, cols, CV_64F, data);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    mat.copyTo(rhs);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keyword">delete</span>[] data;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  }</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;};</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;}  <span class="comment">// namespace YAML</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">#endif  // INCLUDE_GAZE_UTIL_CONFIG_H_</span></div>
+<div class="ttc" id="struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4_html_a0334befda7cc8d9287a94570efaaa4ce"><div class="ttname"><a href="struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html#a0334befda7cc8d9287a94570efaaa4ce">YAML::convert&lt; cv::Point3d &gt;::decode</a></div><div class="ttdeci">static bool decode(const Node &amp;node, cv::Point3d &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="gaze_2util_2config_8h_source.html#l00078">config.h:78</a></div></div>
+<div class="ttc" id="struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4_html_ab16b28a2e7a10c63fe0625be774bd0f2"><div class="ttname"><a href="struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html#ab16b28a2e7a10c63fe0625be774bd0f2">YAML::convert&lt; cv::Vec3d &gt;::encode</a></div><div class="ttdeci">static Node encode(const cv::Vec3d &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="gaze_2util_2config_8h_source.html#l00103">config.h:103</a></div></div>
+<div class="ttc" id="struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4_html_aad620b02594634c56ebf51710c006f77"><div class="ttname"><a href="struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html#aad620b02594634c56ebf51710c006f77">YAML::convert&lt; cv::Mat &gt;::encode</a></div><div class="ttdeci">static Node encode(const cv::Mat &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="gaze_2util_2config_8h_source.html#l00143">config.h:143</a></div></div>
+<div class="ttc" id="struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4_html_a8c8fe9b923c3615dd8b12ceb49bcad03"><div class="ttname"><a href="struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html#a8c8fe9b923c3615dd8b12ceb49bcad03">YAML::convert&lt; cv::Vec3d &gt;::decode</a></div><div class="ttdeci">static bool decode(const Node &amp;node, cv::Vec3d &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="gaze_2util_2config_8h_source.html#l00119">config.h:119</a></div></div>
+<div class="ttc" id="struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4_html_aec0f6ba0ce69ee8f1867c536e5c74649"><div class="ttname"><a href="struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html#aec0f6ba0ce69ee8f1867c536e5c74649">YAML::convert&lt; cv::Mat &gt;::decode</a></div><div class="ttdeci">static bool decode(const Node &amp;node, cv::Mat &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="gaze_2util_2config_8h_source.html#l00165">config.h:165</a></div></div>
+<div class="ttc" id="struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4_html_a951c97c7d646d2cb02ba9a9acf0e7469"><div class="ttname"><a href="struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html#a951c97c7d646d2cb02ba9a9acf0e7469">YAML::convert&lt; cv::Point3d &gt;::encode</a></div><div class="ttdeci">static Node encode(const cv::Point3d &amp;rhs)</div><div class="ttdef"><b>Definition:</b> <a href="gaze_2util_2config_8h_source.html#l00062">config.h:62</a></div></div>
 <div class="ttc" id="namespacegaze_1_1util_html_a13f3893ed58ff0693776c7727129dadf"><div class="ttname"><a href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">gaze::util::get_config</a></div><div class="ttdeci">YAML::Node get_config()</div><div class="ttdef"><b>Definition:</b> <a href="config_8in_8cpp_source.html#l00012">config.in.cpp:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

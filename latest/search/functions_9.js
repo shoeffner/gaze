@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['parse_5faspect_5fratio',['parse_aspect_ratio',['../namespacegaze_1_1util.html#a9420aace2ba5209448ba4822eaef94c8',1,'gaze::util']]],
   ['pipeline',['Pipeline',['../classgaze_1_1_pipeline.html#acc35cb4a5e9189ea71ea1fa85c3ad229',1,'gaze::Pipeline']]],
   ['pipelinestep',['PipelineStep',['../classgaze_1_1_pipeline_step.html#ad1c0a5fc7005acb129c519e045a705a2',1,'gaze::PipelineStep']]],
   ['prepare',['prepare',['../classwpl_1_1_experiment.html#aa385dc8fae9ca894e40b944ef0e26add',1,'wpl::Experiment']]],

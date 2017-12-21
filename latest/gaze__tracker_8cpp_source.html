@@ -139,83 +139,88 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      std::endl;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> std::pair&lt;int, int&gt;(-1, -1);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">// TODO(shoeffner): Remove dummy values once tracking is implemented.</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">return</span> std::pair&lt;int, int&gt;(120, 130);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classgaze_1_1_gaze_tracker.html#a5a39d281355fce42f0308ac6d191df13">   54</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classgaze_1_1_gaze_tracker.html#a5a39d281355fce42f0308ac6d191df13">GazeTracker::init</a>(<span class="keyword">const</span> std::string subject_id,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                       <span class="keyword">const</span> <span class="keywordtype">bool</span> debug) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordflow">if</span> (this-&gt;initialized) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  this-&gt;debug = debug;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  this-&gt;subject_id = subject_id;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  this-&gt;init_pipeline(subject_id);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keywordflow">if</span> (this-&gt;debug) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    gui::open_debug_window(this-&gt;pipeline);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  this-&gt;initialized = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keywordtype">void</span> GazeTracker::init_pipeline(<span class="keyword">const</span> std::string subject_id) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keywordflow">if</span> (this-&gt;initialized) {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  YAML::Node config = <a class="code" href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">util::get_config</a>()[<span class="stringliteral">&quot;pipeline&quot;</span>];</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">for</span> (YAML::Node step_config : config) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::string type  = step_config[<span class="stringliteral">&quot;type&quot;</span>].as&lt;std::string&gt;();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    PipelineStep* step;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;EyeLike&quot;</span>)) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      step = <span class="keyword">new</span> pipeline::EyeLike();</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;FaceLandmarks&quot;</span>)) {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      step = <span class="keyword">new</span> pipeline::FaceLandmarks();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;GazePointCalculation&quot;</span>)) {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      step = <span class="keyword">new</span> pipeline::GazePointCalculation();</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;HeadPoseEstimation&quot;</span>)) {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      step = <span class="keyword">new</span> pipeline::HeadPoseEstimation();</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;PupilLocalization&quot;</span>)) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;      step = <span class="keyword">new</span> pipeline::PupilLocalization();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;SourceCapture&quot;</span>)) {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;      step = <span class="keyword">new</span> pipeline::SourceCapture();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      step = <span class="keyword">new</span> pipeline::FallbackStep();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    this-&gt;pipeline_steps.push_back(step);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  this-&gt;pipeline = <span class="keyword">new</span> Pipeline(this-&gt;pipeline_steps, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="classgaze_1_1_gaze_tracker.html#afba9342de76358c41f999eb77e4709bd">   98</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classgaze_1_1_gaze_tracker.html#afba9342de76358c41f999eb77e4709bd">GazeTracker::start_trial</a>(<span class="keyword">const</span> std::string identifier) {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;initialized) {</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] Not initialized (start_trial()).&quot;</span> &lt;&lt;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      std::endl;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  this-&gt;current_trial_id = identifier;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] [Stub] Starting trial &quot;</span> &lt;&lt; this-&gt;current_trial_id</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classgaze_1_1_gaze_tracker.html#a44b33bd80c25dab5d89388352b8ee8e8">  109</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classgaze_1_1_gaze_tracker.html#a44b33bd80c25dab5d89388352b8ee8e8">GazeTracker::stop_trial</a>() {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;initialized) {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] Not initialized (stop_trial()).&quot;</span> &lt;&lt;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      std::endl;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  }</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] [Stub] Stopping trial &quot;</span> &lt;&lt; this-&gt;current_trial_id</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  this-&gt;current_trial_id = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}  <span class="comment">// namespace gaze</span></div>
-<div class="ttc" id="classgaze_1_1_gaze_tracker_html_a5a39d281355fce42f0308ac6d191df13"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#a5a39d281355fce42f0308ac6d191df13">gaze::GazeTracker::init</a></div><div class="ttdeci">void init(const std::string subject_id, const bool debug=false)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00054">gaze_tracker.cpp:54</a></div></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keywordtype">int</span> x =</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(this-&gt;pipeline-&gt;<a class="code" href="classgaze_1_1_pipeline.html#a87fe369b8d2e938cd381e16e29906b61">get_data</a>().<a class="code" href="structgaze_1_1util_1_1_data.html#a6db092f4cc8c809d6f6c259e8df2364b">estimated_gaze_point</a>(0));</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordtype">int</span> y =</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(this-&gt;pipeline-&gt;<a class="code" href="classgaze_1_1_pipeline.html#a87fe369b8d2e938cd381e16e29906b61">get_data</a>().<a class="code" href="structgaze_1_1util_1_1_data.html#a6db092f4cc8c809d6f6c259e8df2364b">estimated_gaze_point</a>(1));</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">return</span> std::pair&lt;int, int&gt;(x, y);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classgaze_1_1_gaze_tracker.html#a5a39d281355fce42f0308ac6d191df13">   57</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classgaze_1_1_gaze_tracker.html#a5a39d281355fce42f0308ac6d191df13">GazeTracker::init</a>(<span class="keyword">const</span> std::string subject_id,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                       <span class="keyword">const</span> <span class="keywordtype">bool</span> debug) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keywordflow">if</span> (this-&gt;initialized) {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  this-&gt;debug = debug;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  this-&gt;subject_id = subject_id;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  this-&gt;init_pipeline(subject_id);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordflow">if</span> (this-&gt;debug) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    gui::open_debug_window(this-&gt;pipeline);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  this-&gt;initialized = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordtype">void</span> GazeTracker::init_pipeline(<span class="keyword">const</span> std::string subject_id) {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordflow">if</span> (this-&gt;initialized) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  YAML::Node config = <a class="code" href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">util::get_config</a>()[<span class="stringliteral">&quot;pipeline&quot;</span>];</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">for</span> (YAML::Node step_config : config) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    std::string type  = step_config[<span class="stringliteral">&quot;type&quot;</span>].as&lt;std::string&gt;();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    PipelineStep* step;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;EyeLike&quot;</span>)) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      step = <span class="keyword">new</span> pipeline::EyeLike();</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;FaceLandmarks&quot;</span>)) {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      step = <span class="keyword">new</span> pipeline::FaceLandmarks();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;GazePointCalculation&quot;</span>)) {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      step = <span class="keyword">new</span> pipeline::GazePointCalculation();</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;HeadPoseEstimation&quot;</span>)) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;      step = <span class="keyword">new</span> pipeline::HeadPoseEstimation();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;PupilLocalization&quot;</span>)) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      step = <span class="keyword">new</span> pipeline::PupilLocalization();</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!type.compare(<span class="stringliteral">&quot;SourceCapture&quot;</span>)) {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      step = <span class="keyword">new</span> pipeline::SourceCapture();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;      step = <span class="keyword">new</span> pipeline::FallbackStep();</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    this-&gt;pipeline_steps.push_back(step);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  this-&gt;pipeline = <span class="keyword">new</span> Pipeline(this-&gt;pipeline_steps, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classgaze_1_1_gaze_tracker.html#afba9342de76358c41f999eb77e4709bd">  101</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classgaze_1_1_gaze_tracker.html#afba9342de76358c41f999eb77e4709bd">GazeTracker::start_trial</a>(<span class="keyword">const</span> std::string identifier) {</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;initialized) {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] Not initialized (start_trial()).&quot;</span> &lt;&lt;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      std::endl;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  this-&gt;current_trial_id = identifier;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] [Stub] Starting trial &quot;</span> &lt;&lt; this-&gt;current_trial_id</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classgaze_1_1_gaze_tracker.html#a44b33bd80c25dab5d89388352b8ee8e8">  112</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classgaze_1_1_gaze_tracker.html#a44b33bd80c25dab5d89388352b8ee8e8">GazeTracker::stop_trial</a>() {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keywordflow">if</span> (!this-&gt;initialized) {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    std::cerr &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] Not initialized (stop_trial()).&quot;</span> &lt;&lt;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;      std::endl;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;  }</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[GazeTracker] [Stub] Stopping trial &quot;</span> &lt;&lt; this-&gt;current_trial_id</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  this-&gt;current_trial_id = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}  <span class="comment">// namespace gaze</span></div>
+<div class="ttc" id="classgaze_1_1_gaze_tracker_html_a5a39d281355fce42f0308ac6d191df13"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#a5a39d281355fce42f0308ac6d191df13">gaze::GazeTracker::init</a></div><div class="ttdeci">void init(const std::string subject_id, const bool debug=false)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00057">gaze_tracker.cpp:57</a></div></div>
 <div class="ttc" id="classgaze_1_1_pipeline_step_html"><div class="ttname"><a href="classgaze_1_1_pipeline_step.html">gaze::PipelineStep</a></div><div class="ttdoc">Abstract base class for PipelineSteps. Must be inherited from. </div><div class="ttdef"><b>Definition:</b> <a href="pipeline__step_8h_source.html#l00018">pipeline_step.h:18</a></div></div>
-<div class="ttc" id="classgaze_1_1_gaze_tracker_html_a44b33bd80c25dab5d89388352b8ee8e8"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#a44b33bd80c25dab5d89388352b8ee8e8">gaze::GazeTracker::stop_trial</a></div><div class="ttdeci">void stop_trial()</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00109">gaze_tracker.cpp:109</a></div></div>
+<div class="ttc" id="classgaze_1_1_gaze_tracker_html_a44b33bd80c25dab5d89388352b8ee8e8"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#a44b33bd80c25dab5d89388352b8ee8e8">gaze::GazeTracker::stop_trial</a></div><div class="ttdeci">void stop_trial()</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00112">gaze_tracker.cpp:112</a></div></div>
+<div class="ttc" id="classgaze_1_1_pipeline_html_a87fe369b8d2e938cd381e16e29906b61"><div class="ttname"><a href="classgaze_1_1_pipeline.html#a87fe369b8d2e938cd381e16e29906b61">gaze::Pipeline::get_data</a></div><div class="ttdeci">util::Data get_data()</div><div class="ttdef"><b>Definition:</b> <a href="pipeline_8cpp_source.html#l00069">pipeline.cpp:69</a></div></div>
 <div class="ttc" id="classgaze_1_1_gaze_tracker_html_a03913ac81393023fc991d8e877807b87"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#a03913ac81393023fc991d8e877807b87">gaze::GazeTracker::get_current_gaze_point</a></div><div class="ttdeci">const std::pair&lt; int, int &gt; get_current_gaze_point() const </div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00044">gaze_tracker.cpp:44</a></div></div>
 <div class="ttc" id="classgaze_1_1_gaze_tracker_html_a011cd63e47d9bc94d1e360c8bd9aa08e"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#a011cd63e47d9bc94d1e360c8bd9aa08e">gaze::GazeTracker::calibrate</a></div><div class="ttdeci">void calibrate()</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00036">gaze_tracker.cpp:36</a></div></div>
-<div class="ttc" id="classgaze_1_1_gaze_tracker_html_afba9342de76358c41f999eb77e4709bd"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#afba9342de76358c41f999eb77e4709bd">gaze::GazeTracker::start_trial</a></div><div class="ttdeci">void start_trial(const std::string identifier)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00098">gaze_tracker.cpp:98</a></div></div>
+<div class="ttc" id="structgaze_1_1util_1_1_data_html_a6db092f4cc8c809d6f6c259e8df2364b"><div class="ttname"><a href="structgaze_1_1util_1_1_data.html#a6db092f4cc8c809d6f6c259e8df2364b">gaze::util::Data::estimated_gaze_point</a></div><div class="ttdeci">cv::Vec2d estimated_gaze_point</div><div class="ttdef"><b>Definition:</b> <a href="data_8h_source.html#l00105">data.h:105</a></div></div>
+<div class="ttc" id="classgaze_1_1_gaze_tracker_html_afba9342de76358c41f999eb77e4709bd"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#afba9342de76358c41f999eb77e4709bd">gaze::GazeTracker::start_trial</a></div><div class="ttdeci">void start_trial(const std::string identifier)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00101">gaze_tracker.cpp:101</a></div></div>
 <div class="ttc" id="classgaze_1_1_gaze_tracker_html_a21e26f7e540e02c2d4775e6128dd0d58"><div class="ttname"><a href="classgaze_1_1_gaze_tracker.html#a21e26f7e540e02c2d4775e6128dd0d58">gaze::GazeTracker::GazeTracker</a></div><div class="ttdeci">GazeTracker(const std::string subject_id=&quot;default_subject&quot;, const bool debug=false)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__tracker_8cpp_source.html#l00019">gaze_tracker.cpp:19</a></div></div>
 <div class="ttc" id="namespacegaze_1_1util_html_a13f3893ed58ff0693776c7727129dadf"><div class="ttname"><a href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">gaze::util::get_config</a></div><div class="ttdeci">YAML::Node get_config()</div><div class="ttdef"><b>Definition:</b> <a href="config_8in_8cpp_source.html#l00012">config.in.cpp:12</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

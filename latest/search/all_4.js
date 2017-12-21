@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['encode',['encode',['../struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html#a951c97c7d646d2cb02ba9a9acf0e7469',1,'YAML::convert&lt; cv::Point3d &gt;']]],
+  ['encode',['encode',['../struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html#a951c97c7d646d2cb02ba9a9acf0e7469',1,'YAML::convert&lt; cv::Point3d &gt;::encode()'],['../struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html#ab16b28a2e7a10c63fe0625be774bd0f2',1,'YAML::convert&lt; cv::Vec3d &gt;::encode()'],['../struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html#aad620b02594634c56ebf51710c006f77',1,'YAML::convert&lt; cv::Mat &gt;::encode()']]],
+  ['estimated_5fgaze_5fpoint',['estimated_gaze_point',['../structgaze_1_1util_1_1_data.html#a6db092f4cc8c809d6f6c259e8df2364b',1,'gaze::util::Data']]],
   ['eventmanager',['EventManager',['../classgaze_1_1gui_1_1_event_manager.html',1,'gaze::gui']]],
   ['events',['Events',['../class_events.html',1,'']]],
   ['execution_5ftimes',['execution_times',['../structgaze_1_1util_1_1_data.html#ac56ed1071903482d1d9b88dd7538cbd4',1,'gaze::util::Data']]],

@@ -414,6 +414,13 @@
       <anchor>acaffe412870ed499be707ead822486bb</anchor>
       <arglist>(util::Data &amp;data) override</arglist>
     </member>
+    <member kind="function" protection="protected">
+      <type>void</type>
+      <name>set_sensor_size</name>
+      <anchorfile>classgaze_1_1pipeline_1_1_gaze_point_calculation.html</anchorfile>
+      <anchor>ae190813d2898f90dc168e641a0c68138</anchor>
+      <arglist>(double sensor_diagonal, double aspect_ratio)</arglist>
+    </member>
   </compound>
   <compound kind="class">
     <name>gaze::pipeline::HeadPoseEstimation</name>
@@ -433,6 +440,20 @@
       <anchorfile>classgaze_1_1pipeline_1_1_head_pose_estimation.html</anchorfile>
       <anchor>a73dbd10b30be0d2f47ccd4d43a648a93</anchor>
       <arglist>(util::Data &amp;data) override</arglist>
+    </member>
+    <member kind="function" protection="protected">
+      <type>cv::Matx33d</type>
+      <name>read_or_set_camera_matrix</name>
+      <anchorfile>classgaze_1_1pipeline_1_1_head_pose_estimation.html</anchorfile>
+      <anchor>a41b7b713e936c9a5153b8810e3804fb3</anchor>
+      <arglist>(const util::Data &amp;data)</arglist>
+    </member>
+    <member kind="function" protection="protected">
+      <type>cv::Mat</type>
+      <name>get_and_maybe_read_distortions</name>
+      <anchorfile>classgaze_1_1pipeline_1_1_head_pose_estimation.html</anchorfile>
+      <anchor>af1631b6daa2c394812fefc63f8dba33a</anchor>
+      <arglist>(const util::Data &amp;data)</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -487,18 +508,25 @@
     <filename>namespacegaze_1_1util.html</filename>
     <class kind="struct">gaze::util::Data</class>
     <member kind="function">
-      <type>cv::Rect</type>
+      <type>dlib::rectangle</type>
       <name>get_eye_region</name>
       <anchorfile>namespacegaze_1_1util.html</anchorfile>
-      <anchor>a68c01f501c1b1e2bbc7efd9d4a356fb0</anchor>
+      <anchor>a1ebd13439848a4d9ac10d7e8dee7dc0e</anchor>
       <arglist>(int eye, dlib::full_object_detection object_detection)</arglist>
     </member>
     <member kind="function">
-      <type>std::vector&lt; dlib::chip_details &gt;</type>
-      <name>get_eyes_chip_details</name>
+      <type>double</type>
+      <name>parse_aspect_ratio</name>
       <anchorfile>namespacegaze_1_1util.html</anchorfile>
-      <anchor>af5a6dafca98936bb6a798476b61a1ced</anchor>
-      <arglist>(const dlib::full_object_detection object_detection)</arglist>
+      <anchor>a9420aace2ba5209448ba4822eaef94c8</anchor>
+      <arglist>(std::string aspect_ratio_string)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>clamp</name>
+      <anchorfile>namespacegaze_1_1util.html</anchorfile>
+      <anchor>a15dc5bd0f165141adfc7473fd9bcfe83</anchor>
+      <arglist>(double value, double min, double max)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -525,22 +553,29 @@
       <type>dlib::point</type>
       <name>cv_to_dlib</name>
       <anchorfile>namespacegaze_1_1util.html</anchorfile>
-      <anchor>a5ceea19f92d82588175be97afc2b99e7</anchor>
-      <arglist>(cv::Point to_convert)</arglist>
+      <anchor>a8bb31dd9ecd2a956736ef9139d413163</anchor>
+      <arglist>(const cv::Point &amp;to_convert)</arglist>
     </member>
     <member kind="function">
       <type>dlib::rectangle</type>
       <name>cv_to_dlib</name>
       <anchorfile>namespacegaze_1_1util.html</anchorfile>
-      <anchor>ad98da3cfa84ff0d25fc878cf537bc9a5</anchor>
-      <arglist>(cv::Rect to_convert)</arglist>
+      <anchor>abf8749a1df5cb54d7d0450bc1bce7b7b</anchor>
+      <arglist>(const cv::Rect &amp;to_convert)</arglist>
     </member>
     <member kind="function">
       <type>cv::Rect</type>
       <name>dlib_to_cv</name>
       <anchorfile>namespacegaze_1_1util.html</anchorfile>
-      <anchor>a97479e6a9ce9f121730116924d0e7ace</anchor>
-      <arglist>(dlib::rectangle to_convert)</arglist>
+      <anchor>a3a3a294e5f20904c54676bbde3c606f3</anchor>
+      <arglist>(const dlib::rectangle &amp;to_convert)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; dlib::chip_details &gt;</type>
+      <name>get_eyes_chip_details</name>
+      <anchorfile>namespacegaze_1_1util.html</anchorfile>
+      <anchor>af5a6dafca98936bb6a798476b61a1ced</anchor>
+      <arglist>(const dlib::full_object_detection object_detection)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -555,6 +590,13 @@
       <anchorfile>namespacegaze_1_1util.html</anchorfile>
       <anchor>a09cb2e917c4d30fa24862b41abf6851f</anchor>
       <arglist>(std::ostream &amp;ostr, const Data &amp;data)</arglist>
+    </member>
+    <member kind="function">
+      <type>dlib::point</type>
+      <name>cv_to_dlib</name>
+      <anchorfile>namespacegaze_1_1util.html</anchorfile>
+      <anchor>a51a246c53cfc1bc40ad2895f6673d879</anchor>
+      <arglist>(const cv::Vec3d &amp;to_convert)</arglist>
     </member>
   </compound>
   <compound kind="struct">
@@ -621,6 +663,27 @@
       <name>head_translation</name>
       <anchorfile>structgaze_1_1util_1_1_data.html</anchorfile>
       <anchor>a98d2d33a264de2b3f423ac4e5a5abe0e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>std::vector&lt; cv::Vec3d &gt;</type>
+      <name>pupils</name>
+      <anchorfile>structgaze_1_1util_1_1_data.html</anchorfile>
+      <anchor>a15f3d6d3022b9521148a5ec74a5dd6a5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>std::vector&lt; cv::Vec3d &gt;</type>
+      <name>gaze_points</name>
+      <anchorfile>structgaze_1_1util_1_1_data.html</anchorfile>
+      <anchor>a1c53807aa254ecc3be1037a64995c0c8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>cv::Vec2d</type>
+      <name>estimated_gaze_point</name>
+      <anchorfile>structgaze_1_1util_1_1_data.html</anchorfile>
+      <anchor>a6db092f4cc8c809d6f6c259e8df2364b</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -727,6 +790,8 @@
     <name>YAML</name>
     <filename>namespace_y_a_m_l.html</filename>
     <class kind="struct">YAML::convert&lt; cv::Point3d &gt;</class>
+    <class kind="struct">YAML::convert&lt; cv::Vec3d &gt;</class>
+    <class kind="struct">YAML::convert&lt; cv::Mat &gt;</class>
   </compound>
   <compound kind="struct">
     <name>YAML::convert&lt; cv::Point3d &gt;</name>
@@ -744,6 +809,42 @@
       <anchorfile>struct_y_a_m_l_1_1convert_3_01cv_1_1_point3d_01_4.html</anchorfile>
       <anchor>a0334befda7cc8d9287a94570efaaa4ce</anchor>
       <arglist>(const Node &amp;node, cv::Point3d &amp;rhs)</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>YAML::convert&lt; cv::Vec3d &gt;</name>
+    <filename>struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html</filename>
+    <member kind="function" static="yes">
+      <type>static Node</type>
+      <name>encode</name>
+      <anchorfile>struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html</anchorfile>
+      <anchor>ab16b28a2e7a10c63fe0625be774bd0f2</anchor>
+      <arglist>(const cv::Vec3d &amp;rhs)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static bool</type>
+      <name>decode</name>
+      <anchorfile>struct_y_a_m_l_1_1convert_3_01cv_1_1_vec3d_01_4.html</anchorfile>
+      <anchor>a8c8fe9b923c3615dd8b12ceb49bcad03</anchor>
+      <arglist>(const Node &amp;node, cv::Vec3d &amp;rhs)</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>YAML::convert&lt; cv::Mat &gt;</name>
+    <filename>struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html</filename>
+    <member kind="function" static="yes">
+      <type>static Node</type>
+      <name>encode</name>
+      <anchorfile>struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html</anchorfile>
+      <anchor>aad620b02594634c56ebf51710c006f77</anchor>
+      <arglist>(const cv::Mat &amp;rhs)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>static bool</type>
+      <name>decode</name>
+      <anchorfile>struct_y_a_m_l_1_1convert_3_01cv_1_1_mat_01_4.html</anchorfile>
+      <anchor>aec0f6ba0ce69ee8f1867c536e5c74649</anchor>
+      <arglist>(const Node &amp;node, cv::Mat &amp;rhs)</arglist>
     </member>
   </compound>
   <compound kind="dir">
@@ -851,6 +952,7 @@
     <file>config.in.cpp</file>
     <file>data.cpp</file>
     <file>dlibcv.cpp</file>
+    <file>pipeline_utils.cpp</file>
   </compound>
   <compound kind="dir">
     <name>include/gaze/util</name>
@@ -859,6 +961,7 @@
     <file>config.h</file>
     <file>data.h</file>
     <file>dlibcv.h</file>
+    <file>pipeline_utils.h</file>
   </compound>
   <compound kind="dir">
     <name>src/demo/where_people_look</name>

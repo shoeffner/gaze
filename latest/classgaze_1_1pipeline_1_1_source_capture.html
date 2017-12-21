@@ -153,7 +153,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Retrieves frames from a webcam or video source. </p>
 <p>Should be used at the beginning of a <a class="el" href="classgaze_1_1_pipeline.html" title="The processing pipeline from input to output. ">Pipeline</a>. </p>
 
-<p>Definition at line <a class="el" href="source__capture_8h_source.html#l00025">25</a> of file <a class="el" href="source__capture_8h_source.html">source_capture.h</a>.</p>
+<p>Definition at line <a class="el" href="source__capture_8h_source.html#l00024">24</a> of file <a class="el" href="source__capture_8h_source.html">source_capture.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ab3eb1a760ed34b121050887b0f94e755"></a>
 <div class="memitem">
@@ -170,35 +170,38 @@ Additional Inherited Members</h2></td></tr>
 <p>Creates a cv::VideoCapture as the input source.</p>
 <p>If the source specified in the yaml configuration is a string, it is considered as a path, otherwise the number will be parsed as a webcam address. </p>
 
-<p>Definition at line <a class="el" href="source__capture_8cpp_source.html#l00019">19</a> of file <a class="el" href="source__capture_8cpp_source.html">source_capture.cpp</a>.</p>
+<p>Definition at line <a class="el" href="source__capture_8cpp_source.html#l00018">18</a> of file <a class="el" href="source__capture_8cpp_source.html">source_capture.cpp</a>.</p>
 
 <p>References <a class="el" href="config_8in_8cpp_source.html#l00012">gaze::util::get_config()</a>, <a class="el" href="pipeline__step_8h_source.html#l00031">gaze::PipelineStep::name</a>, and <a class="el" href="pipeline__step_8h_source.html#l00025">gaze::PipelineStep::number</a>.</p>
-<div class="fragment"><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                             {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  YAML::Node config = <a class="code" href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">util::get_config</a>(this-&gt;<a class="code" href="classgaze_1_1_pipeline_step.html#a40e0c764e4067f769bfd9f3c2f8cb61f">number</a>);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  this-&gt;<a class="code" href="classgaze_1_1_pipeline_step.html#ac87249a515fa0cd433197f300e9300b0">name</a> = config[<span class="stringliteral">&quot;name&quot;</span>] ?</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    config[<span class="stringliteral">&quot;name&quot;</span>].as&lt;std::string&gt;() : <span class="stringliteral">&quot;SourceCapture&quot;</span>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  std::string source = config[<span class="stringliteral">&quot;source&quot;</span>] ?</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    config[<span class="stringliteral">&quot;source&quot;</span>].as&lt;std::string&gt;() : <span class="stringliteral">&quot;0&quot;</span>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keywordtype">bool</span> is_webcam = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keywordflow">try</span> {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">int</span> cam_source = std::stoi(source);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    this-&gt;video_capture = cv::VideoCapture(cam_source);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::invalid_argument&amp;) {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    is_webcam = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    this-&gt;video_capture = cv::VideoCapture(source);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  }</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordflow">if</span> (is_webcam) {</div>
+<div class="fragment"><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                             {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  YAML::Node config = <a class="code" href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">util::get_config</a>(this-&gt;<a class="code" href="classgaze_1_1_pipeline_step.html#a40e0c764e4067f769bfd9f3c2f8cb61f">number</a>);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  this-&gt;<a class="code" href="classgaze_1_1_pipeline_step.html#ac87249a515fa0cd433197f300e9300b0">name</a> = config[<span class="stringliteral">&quot;name&quot;</span>] ?</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    config[<span class="stringliteral">&quot;name&quot;</span>].as&lt;std::string&gt;() : <span class="stringliteral">&quot;SourceCapture&quot;</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  std::string source = config[<span class="stringliteral">&quot;source&quot;</span>] ?</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    config[<span class="stringliteral">&quot;source&quot;</span>].as&lt;std::string&gt;() : <span class="stringliteral">&quot;0&quot;</span>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keywordtype">bool</span> is_webcam = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">int</span> cam_source = std::stoi(source);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    this-&gt;video_capture = cv::VideoCapture(cam_source);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::invalid_argument&amp;) {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    is_webcam = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    this-&gt;video_capture = cv::VideoCapture(source);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keywordflow">if</span> (is_webcam) {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    YAML::Node camera_config = <a class="code" href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">util::get_config</a>()[<span class="stringliteral">&quot;meta&quot;</span>][<span class="stringliteral">&quot;camera&quot;</span>];</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    this-&gt;video_capture.set(cv::CAP_PROP_FPS,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        config[<span class="stringliteral">&quot;fps&quot;</span>] ? config[<span class="stringliteral">&quot;fps&quot;</span>].as&lt;double&gt;() : 60.0);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        camera_config[<span class="stringliteral">&quot;fps&quot;</span>] ? camera_config[<span class="stringliteral">&quot;fps&quot;</span>].as&lt;double&gt;() : 60.0);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    this-&gt;video_capture.set(cv::CAP_PROP_FRAME_WIDTH,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        config[<span class="stringliteral">&quot;width&quot;</span>] ? config[<span class="stringliteral">&quot;width&quot;</span>].as&lt;double&gt;() : 640.0);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    this-&gt;video_capture.set(cv::CAP_PROP_FRAME_HEIGHT,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        config[<span class="stringliteral">&quot;height&quot;</span>] ? config[<span class="stringliteral">&quot;height&quot;</span>].as&lt;double&gt;() : 360.0);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        camera_config[<span class="stringliteral">&quot;resolution&quot;</span>][<span class="stringliteral">&quot;width&quot;</span>] ?</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        camera_config[<span class="stringliteral">&quot;resolution&quot;</span>][<span class="stringliteral">&quot;width&quot;</span>].as&lt;double&gt;() : 640.0);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    this-&gt;video_capture.set(cv::CAP_PROP_FRAME_HEIGHT,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        camera_config[<span class="stringliteral">&quot;resolution&quot;</span>][<span class="stringliteral">&quot;height&quot;</span>] ?</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        camera_config[<span class="stringliteral">&quot;resolution&quot;</span>][<span class="stringliteral">&quot;height&quot;</span>].as&lt;double&gt;() : 360.0);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
 <div class="ttc" id="classgaze_1_1_pipeline_step_html_a40e0c764e4067f769bfd9f3c2f8cb61f"><div class="ttname"><a href="classgaze_1_1_pipeline_step.html#a40e0c764e4067f769bfd9f3c2f8cb61f">gaze::PipelineStep::number</a></div><div class="ttdeci">int number</div><div class="ttdef"><b>Definition:</b> <a href="pipeline__step_8h_source.html#l00025">pipeline_step.h:25</a></div></div>
 <div class="ttc" id="classgaze_1_1_pipeline_step_html_ac87249a515fa0cd433197f300e9300b0"><div class="ttname"><a href="classgaze_1_1_pipeline_step.html#ac87249a515fa0cd433197f300e9300b0">gaze::PipelineStep::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Definition:</b> <a href="pipeline__step_8h_source.html#l00031">pipeline_step.h:31</a></div></div>
 <div class="ttc" id="namespacegaze_1_1util_html_a13f3893ed58ff0693776c7727129dadf"><div class="ttname"><a href="namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf">gaze::util::get_config</a></div><div class="ttdeci">YAML::Node get_config()</div><div class="ttdef"><b>Definition:</b> <a href="config_8in_8cpp_source.html#l00012">config.in.cpp:12</a></div></div>
@@ -238,20 +241,24 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classgaze_1_1_pipeline_step.html#a98ea605fed6983188c8af8d222908b59">gaze::PipelineStep</a>.</p>
 
-<p>Definition at line <a class="el" href="source__capture_8cpp_source.html#l00050">50</a> of file <a class="el" href="source__capture_8cpp_source.html">source_capture.cpp</a>.</p>
+<p>Definition at line <a class="el" href="source__capture_8cpp_source.html#l00052">52</a> of file <a class="el" href="source__capture_8cpp_source.html">source_capture.cpp</a>.</p>
 
-<p>References <a class="el" href="data_8h_source.html#l00051">gaze::util::Data::image</a>, and <a class="el" href="data_8h_source.html#l00046">gaze::util::Data::source_image</a>.</p>
-<div class="fragment"><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                                          {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">bool</span> received = this-&gt;video_capture.read(data.source_image);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordflow">if</span> (received) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    this-&gt;last_frame = data.source_image;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    data.source_image = this-&gt;last_frame;</div>
+<p>References <a class="el" href="data_8h_source.html#l00052">gaze::util::Data::image</a>, and <a class="el" href="data_8h_source.html#l00047">gaze::util::Data::source_image</a>.</p>
+<div class="fragment"><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                                          {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keywordflow">if</span> (static_cast&lt;int&gt;(this-&gt;video_capture.get(cv::CAP_PROP_POS_AVI_RATIO))</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      == 1) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  dlib::assign_image(</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;     data.image,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;     dlib::cv_image&lt;dlib::bgr_pixel&gt;(data.source_image));</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">bool</span> received = this-&gt;video_capture.read(data.source_image);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keywordflow">if</span> (received) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    this-&gt;last_frame = data.source_image;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    data.source_image = this-&gt;last_frame;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  dlib::assign_image(</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;     data.image,</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;     dlib::cv_image&lt;dlib::bgr_pixel&gt;(data.source_image));</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -286,12 +293,12 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classgaze_1_1gui_1_1_visualizeable_base.html#a3ada293be1d674531f0a0f65221032aa">gaze::gui::VisualizeableBase</a>.</p>
 
-<p>Definition at line <a class="el" href="source__capture_8cpp_source.html#l00062">62</a> of file <a class="el" href="source__capture_8cpp_source.html">source_capture.cpp</a>.</p>
+<p>Definition at line <a class="el" href="source__capture_8cpp_source.html#l00068">68</a> of file <a class="el" href="source__capture_8cpp_source.html">source_capture.cpp</a>.</p>
 
-<p>References <a class="el" href="data_8h_source.html#l00051">gaze::util::Data::image</a>, and <a class="el" href="visualizeable_8h_source.html#l00228">gaze::gui::Visualizeable&lt; widget_type &gt;::widget</a>.</p>
-<div class="fragment"><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                                            {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  this-&gt;<a class="code" href="classgaze_1_1gui_1_1_visualizeable.html#af881cd99f0aae7e92e4217cb191777e0">widget</a>-&gt;set_image(data.image);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<p>References <a class="el" href="data_8h_source.html#l00052">gaze::util::Data::image</a>, and <a class="el" href="visualizeable_8h_source.html#l00228">gaze::gui::Visualizeable&lt; widget_type &gt;::widget</a>.</p>
+<div class="fragment"><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                                            {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  this-&gt;<a class="code" href="classgaze_1_1gui_1_1_visualizeable.html#af881cd99f0aae7e92e4217cb191777e0">widget</a>-&gt;set_image(data.image);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
 <div class="ttc" id="classgaze_1_1gui_1_1_visualizeable_html_af881cd99f0aae7e92e4217cb191777e0"><div class="ttname"><a href="classgaze_1_1gui_1_1_visualizeable.html#af881cd99f0aae7e92e4217cb191777e0">gaze::gui::Visualizeable::widget</a></div><div class="ttdeci">std::shared_ptr&lt; widget_type &gt; widget</div><div class="ttdef"><b>Definition:</b> <a href="visualizeable_8h_source.html#l00228">visualizeable.h:228</a></div></div>
 </div><!-- fragment -->
 </div>

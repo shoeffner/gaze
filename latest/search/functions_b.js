@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['set_5fsensor_5fsize',['set_sensor_size',['../classgaze_1_1pipeline_1_1_gaze_point_calculation.html#ae190813d2898f90dc168e641a0c68138',1,'gaze::pipeline::GazePointCalculation']]],
   ['sourcecapture',['SourceCapture',['../classgaze_1_1pipeline_1_1_source_capture.html#ab3eb1a760ed34b121050887b0f94e755',1,'gaze::pipeline::SourceCapture']]],
   ['start',['start',['../classgaze_1_1_pipeline.html#a3c41315291e9c7d9217c2b4ea73d6527',1,'gaze::Pipeline::start()'],['../classwpl_1_1_experiment.html#a74ea63fcfaa7b47d733d7d288ec9044c',1,'wpl::Experiment::start()']]],
   ['start_5ftrial',['start_trial',['../classgaze_1_1_gaze_tracker.html#afba9342de76358c41f999eb77e4709bd',1,'gaze::GazeTracker']]],

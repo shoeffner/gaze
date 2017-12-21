@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['landmarks',['landmarks',['../structgaze_1_1util_1_1_data.html#a835ed40d954fb1204babf2f8bf8c8b5f',1,'gaze::util::Data']]]
+  ['image',['image',['../structgaze_1_1util_1_1_data.html#ae36af4e078234ba6bde8a296b6d27746',1,'gaze::util::Data']]]
 ];

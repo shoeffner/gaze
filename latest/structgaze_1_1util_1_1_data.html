@@ -136,13 +136,20 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a2512c11ebf59eda33a14a482ad36ced6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98d2d33a264de2b3f423ac4e5a5abe0e"><td class="memItemLeft" align="right" valign="top">cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgaze_1_1util_1_1_data.html#a98d2d33a264de2b3f423ac4e5a5abe0e">head_translation</a></td></tr>
 <tr class="separator:a98d2d33a264de2b3f423ac4e5a5abe0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Gaze point</div></td></tr>
+<tr class="memitem:a15f3d6d3022b9521148a5ec74a5dd6a5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; cv::Vec3d &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgaze_1_1util_1_1_data.html#a15f3d6d3022b9521148a5ec74a5dd6a5">pupils</a></td></tr>
+<tr class="separator:a15f3d6d3022b9521148a5ec74a5dd6a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c53807aa254ecc3be1037a64995c0c8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; cv::Vec3d &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgaze_1_1util_1_1_data.html#a1c53807aa254ecc3be1037a64995c0c8">gaze_points</a></td></tr>
+<tr class="separator:a1c53807aa254ecc3be1037a64995c0c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6db092f4cc8c809d6f6c259e8df2364b"><td class="memItemLeft" align="right" valign="top">cv::Vec2d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgaze_1_1util_1_1_data.html#a6db092f4cc8c809d6f6c259e8df2364b">estimated_gaze_point</a></td></tr>
+<tr class="separator:a6db092f4cc8c809d6f6c259e8df2364b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Wraps the data acquired per frame into a single instance. </p>
 <p>This data can then be written in different data formats. ///</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd><a href="https://github.com/shoeffner">shoeffner</a>: Write at least one writer. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd><a href="https://github.com/shoeffner">shoeffner</a>: Write at least one writer. </dd></dl>
 
-<p>Definition at line <a class="el" href="data_8h_source.html#l00026">26</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+<p>Definition at line <a class="el" href="data_8h_source.html#l00027">27</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="aaa9cf84b89acbc292f5de22f5eea1424"></a>
 <div class="memitem">
@@ -166,11 +173,11 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a reference to <code>this</code>. </dd></dl>
 
-<p>Definition at line <a class="el" href="data_8cpp_source.html#l00036">36</a> of file <a class="el" href="data_8cpp_source.html">data.cpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                               {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  this-&gt;swap(data);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
+<p>Definition at line <a class="el" href="data_8cpp_source.html#l00052">52</a> of file <a class="el" href="data_8cpp_source.html">data.cpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                               {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  this-&gt;swap(data);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -186,9 +193,26 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Eye center locations. </p>
 
-<p>Definition at line <a class="el" href="data_8h_source.html#l00074">74</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+<p>Definition at line <a class="el" href="data_8h_source.html#l00075">75</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
 
-<p>Referenced by <a class="el" href="eye__like_8cpp_source.html#l00284">gaze::pipeline::EyeLike::process()</a>, <a class="el" href="pupil__localization_8cpp_source.html#l00127">gaze::pipeline::PupilLocalization::process()</a>, <a class="el" href="eye__like_8cpp_source.html#l00311">gaze::pipeline::EyeLike::visualize()</a>, and <a class="el" href="pupil__localization_8cpp_source.html#l00201">gaze::pipeline::PupilLocalization::visualize()</a>.</p>
+<p>Referenced by <a class="el" href="eye__like_8cpp_source.html#l00290">gaze::pipeline::EyeLike::process()</a>, <a class="el" href="pupil__localization_8cpp_source.html#l00088">gaze::pipeline::PupilLocalization::process()</a>, <a class="el" href="gaze__point__calculation_8cpp_source.html#l00224">gaze::pipeline::GazePointCalculation::process()</a>, <a class="el" href="eye__like_8cpp_source.html#l00320">gaze::pipeline::EyeLike::visualize()</a>, and <a class="el" href="pupil__localization_8cpp_source.html#l00162">gaze::pipeline::PupilLocalization::visualize()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6db092f4cc8c809d6f6c259e8df2364b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">cv::Vec2d gaze::util::Data::estimated_gaze_point</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The mean gaze point in screen coordinates. </p>
+
+<p>Definition at line <a class="el" href="data_8h_source.html#l00105">105</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+
+<p>Referenced by <a class="el" href="gaze__tracker_8cpp_source.html#l00044">gaze::GazeTracker::get_current_gaze_point()</a>, and <a class="el" href="gaze__point__calculation_8cpp_source.html#l00224">gaze::pipeline::GazePointCalculation::process()</a>.</p>
 
 </div>
 </div>
@@ -203,7 +227,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Maps the step identifiers to their processing times. </p>
 
-<p>Definition at line <a class="el" href="data_8h_source.html#l00092">92</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+<p>Definition at line <a class="el" href="data_8h_source.html#l00111">111</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
 
 <p>Referenced by <a class="el" href="debug__window_8cpp_source.html#l00121">gaze::gui::DebugWindow::process_data()</a>.</p>
 
@@ -220,9 +244,26 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The 0th element is the left eye, the 1st the right eye. </p>
 
-<p>Definition at line <a class="el" href="data_8h_source.html#l00068">68</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+<p>Definition at line <a class="el" href="data_8h_source.html#l00069">69</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
 
-<p>Referenced by <a class="el" href="data_8h_source.html#l00111">gaze::util::operator&lt;&lt;()</a>, <a class="el" href="pupil__localization_8cpp_source.html#l00127">gaze::pipeline::PupilLocalization::process()</a>, <a class="el" href="eye__like_8cpp_source.html#l00311">gaze::pipeline::EyeLike::visualize()</a>, and <a class="el" href="pupil__localization_8cpp_source.html#l00201">gaze::pipeline::PupilLocalization::visualize()</a>.</p>
+<p>Referenced by <a class="el" href="data_8h_source.html#l00130">gaze::util::operator&lt;&lt;()</a>, <a class="el" href="pupil__localization_8cpp_source.html#l00088">gaze::pipeline::PupilLocalization::process()</a>, <a class="el" href="eye__like_8cpp_source.html#l00320">gaze::pipeline::EyeLike::visualize()</a>, and <a class="el" href="pupil__localization_8cpp_source.html#l00162">gaze::pipeline::PupilLocalization::visualize()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1c53807aa254ecc3be1037a64995c0c8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;cv::Vec3d&gt; gaze::util::Data::gaze_points</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The gaze points in model coordinates. </p>
+
+<p>Definition at line <a class="el" href="data_8h_source.html#l00100">100</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+
+<p>Referenced by <a class="el" href="gaze__point__calculation_8cpp_source.html#l00224">gaze::pipeline::GazePointCalculation::process()</a>.</p>
 
 </div>
 </div>
@@ -237,9 +278,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The head orientation. </p>
 
-<p>Definition at line <a class="el" href="data_8h_source.html#l00081">81</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+<p>Definition at line <a class="el" href="data_8h_source.html#l00082">82</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
 
-<p>Referenced by <a class="el" href="head__pose__estimation_8cpp_source.html#l00170">gaze::pipeline::HeadPoseEstimation::process()</a>.</p>
+<p>Referenced by <a class="el" href="head__pose__estimation_8cpp_source.html#l00093">gaze::pipeline::HeadPoseEstimation::process()</a>, <a class="el" href="gaze__point__calculation_8cpp_source.html#l00224">gaze::pipeline::GazePointCalculation::process()</a>, and <a class="el" href="gaze__point__calculation_8cpp_source.html#l00283">gaze::pipeline::GazePointCalculation::visualize()</a>.</p>
 
 </div>
 </div>
@@ -254,9 +295,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The head translation. </p>
 
-<p>Definition at line <a class="el" href="data_8h_source.html#l00086">86</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+<p>Definition at line <a class="el" href="data_8h_source.html#l00087">87</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
 
-<p>Referenced by <a class="el" href="head__pose__estimation_8cpp_source.html#l00170">gaze::pipeline::HeadPoseEstimation::process()</a>.</p>
+<p>Referenced by <a class="el" href="head__pose__estimation_8cpp_source.html#l00093">gaze::pipeline::HeadPoseEstimation::process()</a>, <a class="el" href="gaze__point__calculation_8cpp_source.html#l00224">gaze::pipeline::GazePointCalculation::process()</a>, and <a class="el" href="gaze__point__calculation_8cpp_source.html#l00283">gaze::pipeline::GazePointCalculation::visualize()</a>.</p>
 
 </div>
 </div>
@@ -271,9 +312,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The source image for dlib. </p>
 
-<p>Definition at line <a class="el" href="data_8h_source.html#l00051">51</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+<p>Definition at line <a class="el" href="data_8h_source.html#l00052">52</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
 
-<p>Referenced by <a class="el" href="data_8h_source.html#l00111">gaze::util::operator&lt;&lt;()</a>, <a class="el" href="face__landmarks_8cpp_source.html#l00032">gaze::pipeline::FaceLandmarks::process()</a>, <a class="el" href="source__capture_8cpp_source.html#l00050">gaze::pipeline::SourceCapture::process()</a>, <a class="el" href="pupil__localization_8cpp_source.html#l00127">gaze::pipeline::PupilLocalization::process()</a>, <a class="el" href="eye__like_8cpp_source.html#l00311">gaze::pipeline::EyeLike::visualize()</a>, <a class="el" href="face__landmarks_8cpp_source.html#l00039">gaze::pipeline::FaceLandmarks::visualize()</a>, <a class="el" href="head__pose__estimation_8cpp_source.html#l00187">gaze::pipeline::HeadPoseEstimation::visualize()</a>, <a class="el" href="source__capture_8cpp_source.html#l00062">gaze::pipeline::SourceCapture::visualize()</a>, and <a class="el" href="pupil__localization_8cpp_source.html#l00201">gaze::pipeline::PupilLocalization::visualize()</a>.</p>
+<p>Referenced by <a class="el" href="data_8h_source.html#l00130">gaze::util::operator&lt;&lt;()</a>, <a class="el" href="face__landmarks_8cpp_source.html#l00032">gaze::pipeline::FaceLandmarks::process()</a>, <a class="el" href="source__capture_8cpp_source.html#l00052">gaze::pipeline::SourceCapture::process()</a>, <a class="el" href="pupil__localization_8cpp_source.html#l00088">gaze::pipeline::PupilLocalization::process()</a>, <a class="el" href="eye__like_8cpp_source.html#l00320">gaze::pipeline::EyeLike::visualize()</a>, <a class="el" href="face__landmarks_8cpp_source.html#l00039">gaze::pipeline::FaceLandmarks::visualize()</a>, <a class="el" href="source__capture_8cpp_source.html#l00068">gaze::pipeline::SourceCapture::visualize()</a>, <a class="el" href="head__pose__estimation_8cpp_source.html#l00111">gaze::pipeline::HeadPoseEstimation::visualize()</a>, and <a class="el" href="pupil__localization_8cpp_source.html#l00162">gaze::pipeline::PupilLocalization::visualize()</a>.</p>
 
 </div>
 </div>
@@ -288,9 +329,26 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>These landmarks are detected by the model. They contain information about the face (dlib::full_object_detection::get_rect()) and about the eyes (use <a class="el" href="namespacegaze_1_1util.html#af5a6dafca98936bb6a798476b61a1ced">util::get_eyes_chip_details</a>). </p>
 
-<p>Definition at line <a class="el" href="data_8h_source.html#l00063">63</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+<p>Definition at line <a class="el" href="data_8h_source.html#l00064">64</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
 
-<p>Referenced by <a class="el" href="data_8h_source.html#l00111">gaze::util::operator&lt;&lt;()</a>, <a class="el" href="eye__like_8cpp_source.html#l00284">gaze::pipeline::EyeLike::process()</a>, <a class="el" href="face__landmarks_8cpp_source.html#l00032">gaze::pipeline::FaceLandmarks::process()</a>, <a class="el" href="head__pose__estimation_8cpp_source.html#l00170">gaze::pipeline::HeadPoseEstimation::process()</a>, <a class="el" href="pupil__localization_8cpp_source.html#l00127">gaze::pipeline::PupilLocalization::process()</a>, <a class="el" href="eye__like_8cpp_source.html#l00311">gaze::pipeline::EyeLike::visualize()</a>, <a class="el" href="face__landmarks_8cpp_source.html#l00039">gaze::pipeline::FaceLandmarks::visualize()</a>, and <a class="el" href="pupil__localization_8cpp_source.html#l00201">gaze::pipeline::PupilLocalization::visualize()</a>.</p>
+<p>Referenced by <a class="el" href="data_8h_source.html#l00130">gaze::util::operator&lt;&lt;()</a>, <a class="el" href="eye__like_8cpp_source.html#l00290">gaze::pipeline::EyeLike::process()</a>, <a class="el" href="face__landmarks_8cpp_source.html#l00032">gaze::pipeline::FaceLandmarks::process()</a>, <a class="el" href="head__pose__estimation_8cpp_source.html#l00093">gaze::pipeline::HeadPoseEstimation::process()</a>, <a class="el" href="pupil__localization_8cpp_source.html#l00088">gaze::pipeline::PupilLocalization::process()</a>, <a class="el" href="gaze__point__calculation_8cpp_source.html#l00224">gaze::pipeline::GazePointCalculation::process()</a>, <a class="el" href="eye__like_8cpp_source.html#l00320">gaze::pipeline::EyeLike::visualize()</a>, <a class="el" href="face__landmarks_8cpp_source.html#l00039">gaze::pipeline::FaceLandmarks::visualize()</a>, <a class="el" href="pupil__localization_8cpp_source.html#l00162">gaze::pipeline::PupilLocalization::visualize()</a>, and <a class="el" href="gaze__point__calculation_8cpp_source.html#l00283">gaze::pipeline::GazePointCalculation::visualize()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a15f3d6d3022b9521148a5ec74a5dd6a5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;cv::Vec3d&gt; gaze::util::Data::pupils</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The pupils in model coordinates. </p>
+
+<p>Definition at line <a class="el" href="data_8h_source.html#l00095">95</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+
+<p>Referenced by <a class="el" href="gaze__point__calculation_8cpp_source.html#l00224">gaze::pipeline::GazePointCalculation::process()</a>, and <a class="el" href="gaze__point__calculation_8cpp_source.html#l00283">gaze::pipeline::GazePointCalculation::visualize()</a>.</p>
 
 </div>
 </div>
@@ -305,9 +363,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>The unaltered image from the source stream. </p>
 
-<p>Definition at line <a class="el" href="data_8h_source.html#l00046">46</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
+<p>Definition at line <a class="el" href="data_8h_source.html#l00047">47</a> of file <a class="el" href="data_8h_source.html">data.h</a>.</p>
 
-<p>Referenced by <a class="el" href="data_8h_source.html#l00111">gaze::util::operator&lt;&lt;()</a>, <a class="el" href="eye__like_8cpp_source.html#l00284">gaze::pipeline::EyeLike::process()</a>, and <a class="el" href="source__capture_8cpp_source.html#l00050">gaze::pipeline::SourceCapture::process()</a>.</p>
+<p>Referenced by <a class="el" href="data_8h_source.html#l00130">gaze::util::operator&lt;&lt;()</a>, <a class="el" href="eye__like_8cpp_source.html#l00290">gaze::pipeline::EyeLike::process()</a>, <a class="el" href="source__capture_8cpp_source.html#l00052">gaze::pipeline::SourceCapture::process()</a>, and <a class="el" href="head__pose__estimation_8cpp_source.html#l00116">gaze::pipeline::HeadPoseEstimation::read_or_set_camera_matrix()</a>.</p>
 
 </div>
 </div>

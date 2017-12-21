@@ -96,47 +96,46 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;opencv2/core.hpp&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;opencv2/videoio.hpp&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;gaze/gui/visualizeable.h&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;gaze/pipeline_step.h&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;gaze/util/data.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;opencv2/opencv.hpp&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;gaze/gui/visualizeable.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;gaze/pipeline_step.h&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;gaze/util/data.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">namespace </span>gaze {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span>pipeline {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classgaze_1_1pipeline_1_1_source_capture.html">   25</a></span>&#160;<span class="keyword">class </span><a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html">SourceCapture</a> final</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    : <span class="keyword">public</span> <a class="code" href="classgaze_1_1_pipeline_step.html">PipelineStep</a>,</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      <span class="keyword">public</span> <a class="code" href="classgaze_1_1gui_1_1_visualizeable.html">gui::ImageVisualizeable</a> {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  cv::VideoCapture video_capture;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  cv::Mat last_frame;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html#ab3eb1a760ed34b121050887b0f94e755">SourceCapture</a>();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    ~<a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html">SourceCapture</a>();</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html#a5a008007a14ac66b975a8f1f0e02c5c9">process</a>(<a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a>&amp; data) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html#a8501a73d078a9b07c175acda76ed4cf5">visualize</a>(<a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a>&amp; data) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}  <span class="comment">// namespace pipeline</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}  <span class="comment">// namespace gaze</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif  // INCLUDE_GAZE_PIPELINE_STEPS_SOURCE_CAPTURE_H_</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>gaze {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>pipeline {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classgaze_1_1pipeline_1_1_source_capture.html">   24</a></span>&#160;<span class="keyword">class </span><a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html">SourceCapture</a> final</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    : <span class="keyword">public</span> <a class="code" href="classgaze_1_1_pipeline_step.html">PipelineStep</a>,</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      <span class="keyword">public</span> <a class="code" href="classgaze_1_1gui_1_1_visualizeable.html">gui::ImageVisualizeable</a> {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  cv::VideoCapture video_capture;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  cv::Mat last_frame;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html#ab3eb1a760ed34b121050887b0f94e755">SourceCapture</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    ~<a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html">SourceCapture</a>();</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html#a5a008007a14ac66b975a8f1f0e02c5c9">process</a>(<a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a>&amp; data) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_source_capture.html#a8501a73d078a9b07c175acda76ed4cf5">visualize</a>(<a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a>&amp; data) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}  <span class="comment">// namespace pipeline</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;}  <span class="comment">// namespace gaze</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif  // INCLUDE_GAZE_PIPELINE_STEPS_SOURCE_CAPTURE_H_</span></div>
 <div class="ttc" id="classgaze_1_1_pipeline_step_html"><div class="ttname"><a href="classgaze_1_1_pipeline_step.html">gaze::PipelineStep</a></div><div class="ttdoc">Abstract base class for PipelineSteps. Must be inherited from. </div><div class="ttdef"><b>Definition:</b> <a href="pipeline__step_8h_source.html#l00018">pipeline_step.h:18</a></div></div>
-<div class="ttc" id="classgaze_1_1pipeline_1_1_source_capture_html_a5a008007a14ac66b975a8f1f0e02c5c9"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_source_capture.html#a5a008007a14ac66b975a8f1f0e02c5c9">gaze::pipeline::SourceCapture::process</a></div><div class="ttdeci">void process(util::Data &amp;data) override</div><div class="ttdef"><b>Definition:</b> <a href="source__capture_8cpp_source.html#l00050">source_capture.cpp:50</a></div></div>
-<div class="ttc" id="classgaze_1_1pipeline_1_1_source_capture_html_a8501a73d078a9b07c175acda76ed4cf5"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_source_capture.html#a8501a73d078a9b07c175acda76ed4cf5">gaze::pipeline::SourceCapture::visualize</a></div><div class="ttdeci">void visualize(util::Data &amp;data) override</div><div class="ttdef"><b>Definition:</b> <a href="source__capture_8cpp_source.html#l00062">source_capture.cpp:62</a></div></div>
+<div class="ttc" id="classgaze_1_1pipeline_1_1_source_capture_html_a5a008007a14ac66b975a8f1f0e02c5c9"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_source_capture.html#a5a008007a14ac66b975a8f1f0e02c5c9">gaze::pipeline::SourceCapture::process</a></div><div class="ttdeci">void process(util::Data &amp;data) override</div><div class="ttdef"><b>Definition:</b> <a href="source__capture_8cpp_source.html#l00052">source_capture.cpp:52</a></div></div>
+<div class="ttc" id="classgaze_1_1pipeline_1_1_source_capture_html_a8501a73d078a9b07c175acda76ed4cf5"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_source_capture.html#a8501a73d078a9b07c175acda76ed4cf5">gaze::pipeline::SourceCapture::visualize</a></div><div class="ttdeci">void visualize(util::Data &amp;data) override</div><div class="ttdef"><b>Definition:</b> <a href="source__capture_8cpp_source.html#l00068">source_capture.cpp:68</a></div></div>
 <div class="ttc" id="classgaze_1_1gui_1_1_visualizeable_html"><div class="ttname"><a href="classgaze_1_1gui_1_1_visualizeable.html">gaze::gui::Visualizeable</a></div><div class="ttdoc">Implements VisualizeableBase for several widget types. </div><div class="ttdef"><b>Definition:</b> <a href="visualizeable_8h_source.html#l00223">visualizeable.h:223</a></div></div>
-<div class="ttc" id="classgaze_1_1pipeline_1_1_source_capture_html"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_source_capture.html">gaze::pipeline::SourceCapture</a></div><div class="ttdoc">Retrieves frames from a webcam or video source. </div><div class="ttdef"><b>Definition:</b> <a href="source__capture_8h_source.html#l00025">source_capture.h:25</a></div></div>
-<div class="ttc" id="classgaze_1_1pipeline_1_1_source_capture_html_ab3eb1a760ed34b121050887b0f94e755"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_source_capture.html#ab3eb1a760ed34b121050887b0f94e755">gaze::pipeline::SourceCapture::SourceCapture</a></div><div class="ttdeci">SourceCapture()</div><div class="ttdef"><b>Definition:</b> <a href="source__capture_8cpp_source.html#l00019">source_capture.cpp:19</a></div></div>
-<div class="ttc" id="structgaze_1_1util_1_1_data_html"><div class="ttname"><a href="structgaze_1_1util_1_1_data.html">gaze::util::Data</a></div><div class="ttdoc">Wraps the data acquired per frame into a single instance. </div><div class="ttdef"><b>Definition:</b> <a href="data_8h_source.html#l00026">data.h:26</a></div></div>
+<div class="ttc" id="classgaze_1_1pipeline_1_1_source_capture_html"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_source_capture.html">gaze::pipeline::SourceCapture</a></div><div class="ttdoc">Retrieves frames from a webcam or video source. </div><div class="ttdef"><b>Definition:</b> <a href="source__capture_8h_source.html#l00024">source_capture.h:24</a></div></div>
+<div class="ttc" id="classgaze_1_1pipeline_1_1_source_capture_html_ab3eb1a760ed34b121050887b0f94e755"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_source_capture.html#ab3eb1a760ed34b121050887b0f94e755">gaze::pipeline::SourceCapture::SourceCapture</a></div><div class="ttdeci">SourceCapture()</div><div class="ttdef"><b>Definition:</b> <a href="source__capture_8cpp_source.html#l00018">source_capture.cpp:18</a></div></div>
+<div class="ttc" id="structgaze_1_1util_1_1_data_html"><div class="ttname"><a href="structgaze_1_1util_1_1_data.html">gaze::util::Data</a></div><div class="ttdoc">Wraps the data acquired per frame into a single instance. </div><div class="ttdef"><b>Definition:</b> <a href="data_8h_source.html#l00027">data.h:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

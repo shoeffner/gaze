@@ -1,5 +1,8 @@
 build
 vendor
 gh-pages
+tags
 
 *.swp
+*.bak
+*.sav

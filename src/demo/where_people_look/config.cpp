@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "where_people_look/config.h"
 
 #include <string>

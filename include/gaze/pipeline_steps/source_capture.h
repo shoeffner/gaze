@@ -1,13 +1,10 @@
-// Copyright 2017 Sebastian Höffner
-
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_SOURCE_CAPTURE_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_SOURCE_CAPTURE_H_
 
 #include <memory>
 #include <string>
 
-#include "opencv2/core.hpp"
-#include "opencv2/videoio.hpp"
+#include "opencv2/opencv.hpp"
 
 #include "gaze/gui/visualizeable.h"
 #include "gaze/pipeline_step.h"
@@ -28,6 +25,7 @@ class SourceCapture final
     : public PipelineStep,
       public gui::ImageVisualizeable {
   cv::VideoCapture video_capture;
+  cv::Mat last_frame;
 
  public:
     /** @name Creating a source capture */

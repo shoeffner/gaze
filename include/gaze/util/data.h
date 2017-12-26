@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #ifndef INCLUDE_GAZE_UTIL_DATA_H_
 #define INCLUDE_GAZE_UTIL_DATA_H_
 
@@ -8,6 +6,7 @@
 #include <map>
 #include <string>
 #include <utility>  // Not used, but cpplint detects swap() as part of this
+#include <vector>
 
 #include "opencv2/core.hpp"
 #include "dlib/opencv.h"
@@ -48,7 +47,7 @@ struct Data {
   cv::Mat source_image;
 
   /**
-   * The (possibly modified) source image.
+   * The source image for dlib.
    */
   dlib::array2d<dlib::bgr_pixel> image;
   //@}
@@ -74,6 +73,37 @@ struct Data {
    * Eye center locations.
    */
   dlib::array<dlib::point> centers;
+
+  /** @name Head pose */
+  //@{
+  /**
+   * The head orientation.
+   */
+  cv::Mat head_rotation;
+
+  /**
+   * The head translation.
+   */
+  cv::Mat head_translation;
+  //@}
+
+  /** @name Gaze point */
+  //@{
+  /**
+   * The pupils in model coordinates.
+   */
+  std::vector<cv::Vec3d> pupils;
+
+  /**
+   * The gaze points in model coordinates.
+   */
+  std::vector<cv::Vec3d> gaze_points;
+
+  /**
+   * The mean gaze point in screen coordinates.
+   */
+  cv::Vec2d estimated_gaze_point;
+  //@}
 
   /**
    * Maps the step identifiers to their processing times.

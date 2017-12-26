@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "gaze/pipeline.h"
 
 #include <shared_mutex>  // NOLINT

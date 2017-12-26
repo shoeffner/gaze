@@ -49,9 +49,11 @@ link_directories(
 
 
 # Read default configuration
-file(READ ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.default.yaml DEFAULT_CONFIGURATION_FILE)
+set(DEFAULT_CONFIG_SRC ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.default.yaml)
+file(READ ${DEFAULT_CONFIG_SRC} DEFAULT_CONFIGURATION_FILE)
 string(REGEX REPLACE "\n" "\\\\n\"\n\"" DEFAULT_CONFIGURATION_FILE ${DEFAULT_CONFIGURATION_FILE})
-configure_file(util/config.in.cpp util/config.cpp @ONLY)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${DEFAULT_CONFIG_SRC})
+configure_file(util/config.in.cpp util/config.cpp)
 
 # Add files to compile
 list(APPEND LIBRARY_SOURCE_FILES
@@ -60,12 +62,17 @@ list(APPEND LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/gui/event_manager.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_step.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/eye_like.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/face_landmarks.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/fallback_step.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/gaze_point_calculation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/head_pose_estimation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/pupil_localization.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/source_capture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/util/data.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/util/dlibcv.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/util/pipeline_utils.cpp
+
     ${CMAKE_CURRENT_BINARY_DIR}/util/config.cpp
 )
 

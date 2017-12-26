@@ -1,9 +1,6 @@
-// Copyright 2017 Sebastian Höffner
-
 #ifndef INCLUDE_GAZE_PIPELINE_STEPS_PUPIL_LOCALIZATION_H_
 #define INCLUDE_GAZE_PIPELINE_STEPS_PUPIL_LOCALIZATION_H_
 
-#include <algorithm>  // Not used, but cpplint detects max() as part of this
 #include <vector>
 
 #include "dlib/matrix.h"
@@ -18,21 +15,8 @@ namespace gaze {
 namespace util {
 
 /**
- * Determines a bounding box around the eyes from a given object detection.
- * This function is designed to work with 5 feature landmarks.
- * // TODO(shoeffner): Add support for the 68 features.
- *
- * @param object_detection A full object detecetion as acquired from a
- *                         dlib::shape_predictor.
- * @returns a vector of dlib::chip_details to use with
- *          dlib::extract_image_chips.
- */
-std::vector<dlib::chip_details> get_eyes_chip_details(
-    const dlib::full_object_detection object_detection);
-
-/**
  * Filles the displacement table to precalculate values for vector @f$d_i@f$
- * @cite timm2011.
+ * @cite Timm2011.
  *
  * The function returns without modifying table_x or table_y if size is
  * smaller than the current table size.
@@ -100,12 +84,6 @@ void normalize_and_threshold_gradients(
   magnitude = dlib::sqrt(dlib::squared(horizontal) +
                          dlib::squared(vertical));
 
-  // normalization
-  horizontal = dlib::pointwise_multiply(
-      horizontal, dlib::reciprocal(magnitude));
-  vertical = dlib::pointwise_multiply(
-      vertical, dlib::reciprocal(magnitude));
-
   // Thresholding
   if (relative_threshold >= 0) {
     T threshold = dlib::mean(magnitude)
@@ -119,6 +97,12 @@ void normalize_and_threshold_gradients(
       }
     }
   }
+
+  // Normalization
+  horizontal = dlib::pointwise_multiply(
+      horizontal, dlib::reciprocal(magnitude));
+  vertical = dlib::pointwise_multiply(
+      vertical, dlib::reciprocal(magnitude));
 }
 
 }  // namespace util
@@ -127,7 +111,7 @@ namespace pipeline {
 
 /**
  * @class PupilLocalization pupil_localization.h "gaze/pipeline_steps/pupil_localization.h"
- * @brief Implements Timm and Barth (2011) @cite timm2011 to detect eye
+ * @brief Implements Timm and Barth (2011) @cite Timm2011 to detect eye
  *        centers.
  *
  * This implementation uses a lookup table to pre-calculate the distance function.
@@ -143,13 +127,10 @@ class PupilLocalization final
       public gui::ImageVisualizeable {
   dlib::matrix<double> displacement_table_x;
   dlib::matrix<double> displacement_table_y;
-  const double SIGMA_FACTOR;
-  const double RELATIVE_THRESHOLD_FACTOR;
+  double relative_threshold_factor;
+  double sigma;
 
-  // TODO(shoeffner): Add unit tests.
  public:
-    /**
-     */
     PupilLocalization();
 
     /**

@@ -1,16 +1,102 @@
+meta:
+  # relative target grid on the screen
+  target:
+    width: 8
+    height: 5
+  camera:
+    # In m, from upper left screen corner
+    position:
+      x: 0.1725
+      y: -0.007
+    # Resolution to use
+    resolution:
+      width: 640
+      height: 360
+    # Frames per second
+    fps: 30
+    # The sensor size is tricky to get, as it is not always reported.
+    # In fact, https://www.cnet.com/products/apple-isight/specs/ reports
+    # this size for the 640x480 iSight, while in this file we use a more modern iSight
+    # with 1280x720.
+    # In m.
+    sensor_size: 0.00635
+    sensor_aspect_ratio: 16:9
+    # The camera matrix can be created using OpenCV's calibration tool.
+    # https://github.com/opencv/opencv/blob/fc9e031454fd456d09e15944c99a419e73d80661/samples/cpp/calibration.cpp
+    # In case you do not calibrate it, you can either leave out this section,
+    # or set the data to:
+    # [ SourceCaptureWidth, 0, SourceCaptureWidth / 2,
+    #   0, SourceCaptureWidth, SourceCaptureHeight / 2,
+    #   0, 0, 1 ]
+    # as an approximation.
+    # Note that you should calibrate your camera for the size you supply in
+    # SourceCapture!
+    camera_matrix: !!opencv-matrix
+       rows: 3
+       cols: 3
+       dt: d
+       data: [ 640, 0, 320, 0, 640, 180, 0, 0, 1]
+    # The distortion coefficients can be created using OpenCV's calibration tool.
+    # https://github.com/opencv/opencv/blob/fc9e031454fd456d09e15944c99a419e73d80661/samples/cpp/calibration.cpp
+    # In case you do not calibrate it, just use a 4x1 matrix filled with zeros.
+    # Note that during calibration, you might also get a 5x1 matrix or others,
+    # don't worry!
+    distortion_coefficients: !!opencv-matrix
+       rows: 4
+       cols: 1
+       dt: d
+       data: [0, 0, 0, 0]
+  screen:
+    resolution:
+      # in pixels
+      width: 2880
+      height: 1800
+    measurements:
+      # in m
+      width: 0.335
+      height: 0.207
 pipeline:
   - type: SourceCapture
+    # This should be a number for webcams, or a path to an image or video file
     source: 0
-    fps: 30
-    width: 640
-    height: 360
   - type: FaceLandmarks
     name: FaceLandmarks68
     model: shape_predictor_68_face_landmarks.dat
-  - type: FaceLandmarks
-    name: FaceLandmarks5
-    model: shape_predictor_5_face_landmarks.dat
   - type: HeadPoseEstimation
+    name: HeadPose68
+    # See https://ibug.doc.ic.ac.uk/resources/facial-point-annotations/
+    # (Here the indices are 0-based, so remember to take care of the offset:
+    #  0 here is 1 in the ibug figure etc.)
+    landmark_indices: [30, 8, 36, 45, 48, 54]
+    model: [
+      [0.0, 0.0, 0.0],  # Nosetip (Pronasal prn)
+      [0.0, -0.0636, -0.0125],  # Chin tip (Gnathion/Menton gn)
+      [-0.0433, 0.0327, -0.026],  # Right eye outside corner (right exocanthion ex_r)
+      [0.0433, 0.0327, -0.026],  # Left eye outside corner (left exocanthion ex_l)
+      [-0.0289, -0.0289, -0.0241],  # Right mouth corner (Cheilion ch_r)
+      [0.0289, -0.0289, -0.0241]  # Left mouth corner (Cheilion ch_l)
+    ]
+    model_scale: 1
+# An alternative approach for the pupil localization with fixed running times
+# and similar results is EyeLike. It scales detected eyes to a width of 50 px.
+# This way it is faster for subjects sitting close to the camera, but slower
+# for subjects sitting far away from the camera. It is similarly accurate
+# as the PupilLocalization is, as both essentially use the same algorithm.
+#  - type: EyeLike
+#    relative_threshold: 0.3
   - type: PupilLocalization
     table_size: 131
+    relative_threshold: 0.3
   - type: GazePointCalculation
+    eye_ball_centers: [
+      [-0.029205, 0.0327, -0.0395],  # Right eye ball center
+      [0.029205, 0.0327, -0.0395]  # Left eye ball center
+    ]
+    model: [
+      [0.0, 0.0, 0.0],
+      [0.0, -0.0636, -0.0125],
+      [-0.0433, 0.0327, -0.026],
+      [0.0433, 0.0327, -0.026],
+      [-0.0289, -0.0289, -0.0241],
+      [0.0289, -0.0289, -0.0241]
+    ]

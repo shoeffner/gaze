@@ -1,11 +1,12 @@
 # gaze
 
-[![Build Status](https://semaphoreci.com/api/v1/projects/1c4f3523-8438-462d-a344-993e66c7f978/1595933/shields_badge.svg)](https://semaphoreci.com/hoeffner/gaze)
+[![Build Status](https://semaphoreci.com/api/v1/projects/1c4f3523-8438-462d-a344-993e66c7f978/1574305/badge.svg)](https://semaphoreci.com/hoeffner/gaze)
 
 ## Dependencies
 
 You need the following dependencies to build gaze (tested versions in
 parentheses):
+- C++17
 - CMake (3.10.0-rc2)
 - OpenCV (3.3.0)
 - dlib (19.7)
@@ -70,7 +71,7 @@ make install
 
 #### `where_people_look`
 
-This is a reimplementation of Judd et al. (2009)'s data acquisition experiment \cite judd2009.
+This is a reimplementation of Judd et al. (2009)'s data acquisition experiment @cite Judd2009.
 
 It needs to be *installed* using `make install` to put the images into the
 correct location. You can run it by simply typing `./where_people_look` from
@@ -87,3 +88,12 @@ Starts the gaze tracker in debug mode to see what is tracked.
 
 You can always build the documentation using `make docs`.
 Or you can find it [here](https://shoeffner.github.io/gaze).
+
+## Development
+
+Install [cpplint](https://github.com/cpplint/cpplint).
+
+Add a pre-commit hook (`.git/hooks/pre-commit`):
+```
+cpplint --recursive --extensions cpp,h --quiet src tests include
+```

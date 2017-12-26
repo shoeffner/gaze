@@ -1,5 +1,3 @@
-// Copyright 2017 Sebastian Höffner
-
 #include "gaze/pipeline_step.h"
 
 #include <string>

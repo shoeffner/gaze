@@ -108,42 +108,41 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span>gui {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classgaze_1_1gui_1_1_debug_window.html">   22</a></span>&#160;<span class="keyword">class </span><a class="code" href="classgaze_1_1gui_1_1_debug_window.html">DebugWindow</a> final : <span class="keyword">public</span> dlib::drawable_window {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="keywordtype">int</span> current_tab = 0;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a> data;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  dlib::button pause_button;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keywordtype">bool</span> paused;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <a class="code" href="classgaze_1_1_pipeline.html">Pipeline</a>* pipeline;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  std::vector&lt;PipelineStep*&gt; pipeline_steps;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  dlib::tabbed_display pipeline_tabs;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  dlib::text_grid statistics_widget;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  std::vector&lt;std::shared_ptr&lt;dlib::widget_group&gt;&gt; widgets;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> w_height = 720;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> w_margin = 5;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> w_width = 1280;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> stat_width = 250;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classgaze_1_1gui_1_1_debug_window.html#ac15dac672b6a21dc6282d6b74e5fc9aa">DebugWindow</a>(<a class="code" href="classgaze_1_1_pipeline.html">Pipeline</a>* pipeline);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  ~<a class="code" href="classgaze_1_1gui_1_1_debug_window.html">DebugWindow</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">process_data</a>(<span class="keywordtype">int</span> idx = -1);</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1gui_1_1_debug_window.html#a5e3670910c9ba175a3e6212a9de7c358">on_user_event</a>(<span class="keywordtype">void</span> *event_data, <span class="keywordtype">int</span> event_type) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;};</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordtype">void</span> open_debug_window(<a class="code" href="classgaze_1_1_pipeline.html">Pipeline</a>* pipeline);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}  <span class="comment">// namespace gui</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}  <span class="comment">// namespace gaze</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif  // INCLUDE_GAZE_GUI_DEBUG_WINDOW_H_</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a> data;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  dlib::button pause_button;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keywordtype">bool</span> paused;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <a class="code" href="classgaze_1_1_pipeline.html">Pipeline</a>* pipeline;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  std::vector&lt;PipelineStep*&gt; pipeline_steps;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  dlib::tabbed_display pipeline_tabs;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  dlib::text_grid statistics_widget;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  std::vector&lt;std::shared_ptr&lt;dlib::widget_group&gt;&gt; widgets;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> w_height = 720;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> w_margin = 5;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> w_width = 1280;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">const</span> <span class="keywordtype">int</span> stat_width = 250;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="classgaze_1_1gui_1_1_debug_window.html#ac15dac672b6a21dc6282d6b74e5fc9aa">DebugWindow</a>(<a class="code" href="classgaze_1_1_pipeline.html">Pipeline</a>* pipeline);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  ~<a class="code" href="classgaze_1_1gui_1_1_debug_window.html">DebugWindow</a>();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">process_data</a>(<span class="keywordtype">int</span> idx = -1);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1gui_1_1_debug_window.html#a5e3670910c9ba175a3e6212a9de7c358">on_user_event</a>(<span class="keywordtype">void</span> *event_data, <span class="keywordtype">int</span> event_type) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">void</span> open_debug_window(<a class="code" href="classgaze_1_1_pipeline.html">Pipeline</a>* pipeline);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}  <span class="comment">// namespace gui</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}  <span class="comment">// namespace gaze</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif  // INCLUDE_GAZE_GUI_DEBUG_WINDOW_H_</span></div>
 <div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html_ac15dac672b6a21dc6282d6b74e5fc9aa"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html#ac15dac672b6a21dc6282d6b74e5fc9aa">gaze::gui::DebugWindow::DebugWindow</a></div><div class="ttdeci">DebugWindow(Pipeline *pipeline)</div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8cpp_source.html#l00022">debug_window.cpp:22</a></div></div>
 <div class="ttc" id="classgaze_1_1_pipeline_html"><div class="ttname"><a href="classgaze_1_1_pipeline.html">gaze::Pipeline</a></div><div class="ttdoc">The processing pipeline from input to output. </div><div class="ttdef"><b>Definition:</b> <a href="pipeline_8h_source.html#l00019">pipeline.h:19</a></div></div>
-<div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html_af5d8fb1bc05dba2f0c2bd8c32b3b0d4a"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">gaze::gui::DebugWindow::process_data</a></div><div class="ttdeci">void process_data(int idx=-1)</div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8cpp_source.html#l00121">debug_window.cpp:121</a></div></div>
+<div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html_af5d8fb1bc05dba2f0c2bd8c32b3b0d4a"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">gaze::gui::DebugWindow::process_data</a></div><div class="ttdeci">void process_data(int idx=-1)</div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8cpp_source.html#l00120">debug_window.cpp:120</a></div></div>
 <div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html">gaze::gui::DebugWindow</a></div><div class="ttdoc">A window to inspect computation results. </div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8h_source.html#l00022">debug_window.h:22</a></div></div>
-<div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html_a5e3670910c9ba175a3e6212a9de7c358"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html#a5e3670910c9ba175a3e6212a9de7c358">gaze::gui::DebugWindow::on_user_event</a></div><div class="ttdeci">void on_user_event(void *event_data, int event_type) override</div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8cpp_source.html#l00144">debug_window.cpp:144</a></div></div>
+<div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html_a5e3670910c9ba175a3e6212a9de7c358"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html#a5e3670910c9ba175a3e6212a9de7c358">gaze::gui::DebugWindow::on_user_event</a></div><div class="ttdeci">void on_user_event(void *event_data, int event_type) override</div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8cpp_source.html#l00140">debug_window.cpp:140</a></div></div>
 <div class="ttc" id="structgaze_1_1util_1_1_data_html"><div class="ttname"><a href="structgaze_1_1util_1_1_data.html">gaze::util::Data</a></div><div class="ttdoc">Wraps the data acquired per frame into a single instance. </div><div class="ttdef"><b>Definition:</b> <a href="data_8h_source.html#l00027">data.h:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

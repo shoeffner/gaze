@@ -157,7 +157,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="debug__window_8cpp_source.html#l00022">22</a> of file <a class="el" href="debug__window_8cpp_source.html">debug_window.cpp</a>.</p>
 
-<p>References <a class="el" href="event__manager_8cpp_source.html#l00015">gaze::gui::EventManager::instance()</a>, <a class="el" href="debug__window_8cpp_source.html#l00121">process_data()</a>, and <a class="el" href="event__manager_8cpp_source.html#l00026">gaze::gui::EventManager::subscribe()</a>.</p>
+<p>References <a class="el" href="event__manager_8cpp_source.html#l00015">gaze::gui::EventManager::instance()</a>, <a class="el" href="debug__window_8cpp_source.html#l00120">process_data()</a>, and <a class="el" href="event__manager_8cpp_source.html#l00026">gaze::gui::EventManager::subscribe()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    : dlib::drawable_window(<span class="keyword">false</span>, <span class="keyword">false</span>),</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      pause_button(*<span class="keyword">this</span>),</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;      paused(<span class="keyword">false</span>),</div>
@@ -204,47 +204,46 @@ Public Member Functions</h2></td></tr>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      this-&gt;pipeline_steps.size() &gt; 0 ? this-&gt;pipeline_steps.size() : 1);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  this-&gt;pipeline_tabs.set_click_handler([<span class="keyword">this</span>](<span class="keyword">auto</span> new_idx, <span class="keyword">auto</span>)</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      -&gt; <span class="keywordtype">void</span> {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        this-&gt;current_tab = new_idx;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        this-&gt;<a class="code" href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">process_data</a>(new_idx);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;      });</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">int</span> width = this-&gt;pipeline_tabs.width() - 3 * this-&gt;w_margin;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordtype">int</span> height = this-&gt;pipeline_tabs.height() - 3 * this-&gt;w_margin</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                  - this-&gt;pause_button.height();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = decltype(this-&gt;pipeline_steps.size()){0};</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;       i &lt; this-&gt;pipeline_steps.size(); ++i) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    std::shared_ptr&lt;dlib::drawable&gt; widget;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span> (VisualizeableBase* step =</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        dynamic_cast&lt;VisualizeableBase*&gt;(this-&gt;pipeline_steps[i])) {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      widget = step-&gt;init(*<span class="keyword">this</span>, width, height);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      std::shared_ptr&lt;dlib::label&gt; tmp(<span class="keyword">new</span> dlib::label(*<span class="keyword">this</span>));</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      tmp-&gt;set_text(<span class="stringliteral">&quot;No visualization.&quot;</span>);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;      widget = tmp;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="comment">// Create widget group, add widget to it</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    std::shared_ptr&lt;dlib::widget_group&gt; widget_group_ptr(</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keyword">new</span> dlib::widget_group(*<span class="keyword">this</span>));</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    this-&gt;widgets.push_back(widget_group_ptr);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    widget_group_ptr-&gt;add(*widget.get(), this-&gt;w_margin, this-&gt;w_margin);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// Assign name and add widget group to tab</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    this-&gt;pipeline_tabs.set_tab_name(i, this-&gt;pipeline_steps[i]-&gt;get_name());</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    this-&gt;pipeline_tabs.set_tab_group(i, *widget_group_ptr.get());</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">// Assign name to statistics widget</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    this-&gt;statistics_widget.set_text(i + 1, 0,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        this-&gt;pipeline_steps[i]-&gt;get_name());</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  this-&gt;show();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">if</span> (this-&gt;pipeline_steps.size() &gt; 0) {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <a class="code" href="classgaze_1_1gui_1_1_event_manager.html#aa07e978ef04983dcd610ae72257a8e38">EventManager::instance</a>().<a class="code" href="classgaze_1_1gui_1_1_event_manager.html#a8889fcbaf4859e64b22c34678bbecd47">subscribe</a>(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  }</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;}</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        this-&gt;<a class="code" href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">process_data</a>(new_idx);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      });</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keywordtype">int</span> width = this-&gt;pipeline_tabs.width() - 3 * this-&gt;w_margin;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  <span class="keywordtype">int</span> height = this-&gt;pipeline_tabs.height() - 3 * this-&gt;w_margin</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                  - this-&gt;pause_button.height();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = decltype(this-&gt;pipeline_steps.size()){0};</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;       i &lt; this-&gt;pipeline_steps.size(); ++i) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    std::shared_ptr&lt;dlib::drawable&gt; widget;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">if</span> (VisualizeableBase* step =</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        dynamic_cast&lt;VisualizeableBase*&gt;(this-&gt;pipeline_steps[i])) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      widget = step-&gt;init(*<span class="keyword">this</span>, width, height);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      std::shared_ptr&lt;dlib::label&gt; tmp(<span class="keyword">new</span> dlib::label(*<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;      tmp-&gt;set_text(<span class="stringliteral">&quot;No visualization.&quot;</span>);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;      widget = tmp;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">// Create widget group, add widget to it</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::shared_ptr&lt;dlib::widget_group&gt; widget_group_ptr(</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">new</span> dlib::widget_group(*<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    this-&gt;widgets.push_back(widget_group_ptr);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    widget_group_ptr-&gt;add(*widget.get(), this-&gt;w_margin, this-&gt;w_margin);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// Assign name and add widget group to tab</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    this-&gt;pipeline_tabs.set_tab_name(i, this-&gt;pipeline_steps[i]-&gt;get_name());</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    this-&gt;pipeline_tabs.set_tab_group(i, *widget_group_ptr.get());</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">// Assign name to statistics widget</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    this-&gt;statistics_widget.set_text(i + 1, 0,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        this-&gt;pipeline_steps[i]-&gt;get_name());</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  this-&gt;show();</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordflow">if</span> (this-&gt;pipeline_steps.size() &gt; 0) {</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <a class="code" href="classgaze_1_1gui_1_1_event_manager.html#aa07e978ef04983dcd610ae72257a8e38">EventManager::instance</a>().<a class="code" href="classgaze_1_1gui_1_1_event_manager.html#a8889fcbaf4859e64b22c34678bbecd47">subscribe</a>(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
 <div class="ttc" id="classgaze_1_1gui_1_1_event_manager_html_aa07e978ef04983dcd610ae72257a8e38"><div class="ttname"><a href="classgaze_1_1gui_1_1_event_manager.html#aa07e978ef04983dcd610ae72257a8e38">gaze::gui::EventManager::instance</a></div><div class="ttdeci">static EventManager &amp; instance()</div><div class="ttdef"><b>Definition:</b> <a href="event__manager_8cpp_source.html#l00015">event_manager.cpp:15</a></div></div>
-<div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html_af5d8fb1bc05dba2f0c2bd8c32b3b0d4a"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">gaze::gui::DebugWindow::process_data</a></div><div class="ttdeci">void process_data(int idx=-1)</div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8cpp_source.html#l00121">debug_window.cpp:121</a></div></div>
+<div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html_af5d8fb1bc05dba2f0c2bd8c32b3b0d4a"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">gaze::gui::DebugWindow::process_data</a></div><div class="ttdeci">void process_data(int idx=-1)</div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8cpp_source.html#l00120">debug_window.cpp:120</a></div></div>
 <div class="ttc" id="classgaze_1_1_pipeline_html_ab2b07c6d2343a264fddb73168bb86a8f"><div class="ttname"><a href="classgaze_1_1_pipeline.html#ab2b07c6d2343a264fddb73168bb86a8f">gaze::Pipeline::get_steps</a></div><div class="ttdeci">std::vector&lt; PipelineStep * &gt; get_steps()</div><div class="ttdef"><b>Definition:</b> <a href="pipeline_8cpp_source.html#l00074">pipeline.cpp:74</a></div></div>
 <div class="ttc" id="classgaze_1_1gui_1_1_event_manager_html_a8889fcbaf4859e64b22c34678bbecd47"><div class="ttname"><a href="classgaze_1_1gui_1_1_event_manager.html#a8889fcbaf4859e64b22c34678bbecd47">gaze::gui::EventManager::subscribe</a></div><div class="ttdeci">void subscribe(dlib::base_window *subscriber)</div><div class="ttdef"><b>Definition:</b> <a href="event__manager_8cpp_source.html#l00026">event_manager.cpp:26</a></div></div>
 </div><!-- fragment -->
@@ -293,21 +292,21 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="class_events.html" title="An enum of events to make it easy to distinguish them with names instead of numbers. ">Events</a>). </dd></dl>
 
-<p>Definition at line <a class="el" href="debug__window_8cpp_source.html#l00144">144</a> of file <a class="el" href="debug__window_8cpp_source.html">debug_window.cpp</a>.</p>
+<p>Definition at line <a class="el" href="debug__window_8cpp_source.html#l00140">140</a> of file <a class="el" href="debug__window_8cpp_source.html">debug_window.cpp</a>.</p>
 
-<p>References <a class="el" href="pipeline_8cpp_source.html#l00069">gaze::Pipeline::get_data()</a>, and <a class="el" href="debug__window_8cpp_source.html#l00121">process_data()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                                                     {</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keywordflow">switch</span> (event_type) {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordflow">case</span> Events::PIPELINE_DATA_UPDATED:</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <span class="keywordflow">if</span> (this-&gt;paused) {</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;      }</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;      this-&gt;data = this-&gt;pipeline-&gt;<a class="code" href="classgaze_1_1_pipeline.html#a87fe369b8d2e938cd381e16e29906b61">get_data</a>();</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      this-&gt;<a class="code" href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">process_data</a>();</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  }</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
-<div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html_af5d8fb1bc05dba2f0c2bd8c32b3b0d4a"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">gaze::gui::DebugWindow::process_data</a></div><div class="ttdeci">void process_data(int idx=-1)</div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8cpp_source.html#l00121">debug_window.cpp:121</a></div></div>
+<p>References <a class="el" href="pipeline_8cpp_source.html#l00069">gaze::Pipeline::get_data()</a>, and <a class="el" href="debug__window_8cpp_source.html#l00120">process_data()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                                                     {</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="keywordflow">switch</span> (event_type) {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordflow">case</span> Events::PIPELINE_DATA_UPDATED:</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      <span class="keywordflow">if</span> (this-&gt;paused) {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      }</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      this-&gt;data = this-&gt;pipeline-&gt;<a class="code" href="classgaze_1_1_pipeline.html#a87fe369b8d2e938cd381e16e29906b61">get_data</a>();</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      this-&gt;<a class="code" href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">process_data</a>();</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;      <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;}</div>
+<div class="ttc" id="classgaze_1_1gui_1_1_debug_window_html_af5d8fb1bc05dba2f0c2bd8c32b3b0d4a"><div class="ttname"><a href="classgaze_1_1gui_1_1_debug_window.html#af5d8fb1bc05dba2f0c2bd8c32b3b0d4a">gaze::gui::DebugWindow::process_data</a></div><div class="ttdeci">void process_data(int idx=-1)</div><div class="ttdef"><b>Definition:</b> <a href="debug__window_8cpp_source.html#l00120">debug_window.cpp:120</a></div></div>
 <div class="ttc" id="classgaze_1_1_pipeline_html_a87fe369b8d2e938cd381e16e29906b61"><div class="ttname"><a href="classgaze_1_1_pipeline.html#a87fe369b8d2e938cd381e16e29906b61">gaze::Pipeline::get_data</a></div><div class="ttdeci">util::Data get_data()</div><div class="ttdef"><b>Definition:</b> <a href="pipeline_8cpp_source.html#l00069">pipeline.cpp:69</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -333,35 +332,31 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd><a href="https://github.com/shoeffner): this-&gt;pipeline_tabs.selected_tab(">shoeffner): this-&gt;pipeline_tabs.selected_tab(</a> does not compile: </dd></dl>
 
-<p>Definition at line <a class="el" href="debug__window_8cpp_source.html#l00121">121</a> of file <a class="el" href="debug__window_8cpp_source.html">debug_window.cpp</a>.</p>
+<p>Definition at line <a class="el" href="debug__window_8cpp_source.html#l00120">120</a> of file <a class="el" href="debug__window_8cpp_source.html">debug_window.cpp</a>.</p>
 
 <p>References <a class="el" href="data_8h_source.html#l00111">gaze::util::Data::execution_times</a>.</p>
 
-<p>Referenced by <a class="el" href="debug__window_8cpp_source.html#l00022">DebugWindow()</a>, and <a class="el" href="debug__window_8cpp_source.html#l00144">on_user_event()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                                      {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="comment">// TODO(shoeffner): this-&gt;pipeline_tabs.selected_tab() does not compile:</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="comment">// `error: no member named &#39;selected_tab&#39; in &#39;dlib::tabbed_display&#39;`</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="comment">// See https://github.com/davisking/dlib/pulls/957</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  idx = idx &lt; 0 ? this-&gt;current_tab : idx;</div>
+<p>Referenced by <a class="el" href="debug__window_8cpp_source.html#l00022">DebugWindow()</a>, and <a class="el" href="debug__window_8cpp_source.html#l00140">on_user_event()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                                      {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  idx = idx &lt; 0 ? this-&gt;pipeline_tabs.selected_tab() : idx;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordflow">if</span> (this-&gt;pipeline_steps.size() == 0) {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  }</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keywordflow">if</span> (this-&gt;pipeline_steps.size() == 0) {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;  <span class="keywordflow">if</span> (VisualizeableBase* step =</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      dynamic_cast&lt;VisualizeableBase*&gt;(this-&gt;pipeline_steps[idx])) {</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    step-&gt;visualize(this-&gt;data);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;  }</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = decltype(this-&gt;pipeline_steps.size()){1};</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;       i &lt;= this-&gt;pipeline_steps.size(); ++i) {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    std::ostringstream os;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    os &lt;&lt; this-&gt;data.<a class="code" href="structgaze_1_1util_1_1_data.html#ac56ed1071903482d1d9b88dd7538cbd4">execution_times</a>[this-&gt;pipeline_steps[i - 1]-&gt;get_name()];</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    this-&gt;statistics_widget.set_text(i, 1, os.str());</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;}</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  <span class="keywordflow">if</span> (VisualizeableBase* step =</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      dynamic_cast&lt;VisualizeableBase*&gt;(this-&gt;pipeline_steps[idx])) {</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    step-&gt;visualize(this-&gt;data);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = decltype(this-&gt;pipeline_steps.size()){1};</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;       i &lt;= this-&gt;pipeline_steps.size(); ++i) {</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    std::ostringstream os;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    os &lt;&lt; this-&gt;data.<a class="code" href="structgaze_1_1util_1_1_data.html#ac56ed1071903482d1d9b88dd7538cbd4">execution_times</a>[this-&gt;pipeline_steps[i - 1]-&gt;get_name()];</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    this-&gt;statistics_widget.set_text(i, 1, os.str());</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;  }</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;}</div>
 <div class="ttc" id="structgaze_1_1util_1_1_data_html_ac56ed1071903482d1d9b88dd7538cbd4"><div class="ttname"><a href="structgaze_1_1util_1_1_data.html#ac56ed1071903482d1d9b88dd7538cbd4">gaze::util::Data::execution_times</a></div><div class="ttdeci">std::map&lt; std::string, double &gt; execution_times</div><div class="ttdef"><b>Definition:</b> <a href="data_8h_source.html#l00111">data.h:111</a></div></div>
 </div><!-- fragment -->
 </div>

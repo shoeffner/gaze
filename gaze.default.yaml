@@ -85,13 +85,13 @@ pipeline:
 #  - type: EyeLike
 #    relative_threshold: 0.3
   - type: PupilLocalization
-    table_size: 131
     relative_threshold: 0.3
   - type: GazePointCalculation
     eye_ball_centers: [
       [-0.029205, 0.0327, -0.0395],  # Right eye ball center
       [0.029205, 0.0327, -0.0395]  # Left eye ball center
     ]
+    landmark_indices: [30, 8, 36, 45, 48, 54]
     model: [
       [0.0, 0.0, 0.0],
       [0.0, -0.0636, -0.0125],

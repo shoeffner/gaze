@@ -329,7 +329,21 @@ void GazePointCalculation::visualize(util::Data& data) {
   add_to_overlay(this->model, {255, 255, 0});
   add_to_overlay(data.pupils, {0, 255, 255});
   add_to_overlay(this->eye_ball_centers, {255, 0, 255});
-  // add_to_overlay(world_landmarks, {0, 255, 0});
+  add_to_overlay(world_landmarks, {0, 255, 0});
+
+  std::vector<dlib::chip_details> chips =
+    util::get_eyes_chip_details(data.landmarks);
+  std::vector<dlib::point> pupils_image = {data.centers[0], data.centers[1]};
+  for (auto i = decltype(pupils_image.size()){0}; i < pupils_image.size();
+       ++i) {
+    pupils_image[i] += chips[i].rect.tl_corner();
+  }
+  std::vector<cv::Vec3d> pupils_world =
+    this->unprojectPoints({cv::Vec2d(pupils_image[0].x(), pupils_image[0].y()),
+        cv::Vec2d(pupils_image[1].x(), pupils_image[1].y())},
+        data.head_translation, R, distance);
+
+  add_to_overlay(pupils_world, {255, 255, 255});
 
   // Visualize camera position
   cv::Vec3d camera = this->get_camera_pos(camera_dir, distance);

@@ -91,6 +91,10 @@ pipeline:
       [-0.029205, 0.0327, -0.0395],  # Right eye ball center
       [0.029205, 0.0327, -0.0395]  # Left eye ball center
     ]
+    # TODO(shoeffner): The landmark indices and model are reused
+    # from HeadPoseEstimation, the configuration should be moved.
+    # Additionally, GazePointCalculation does not take different model scales
+    # into account.
     landmark_indices: [30, 8, 36, 45, 48, 54]
     model: [
       [0.0, 0.0, 0.0],

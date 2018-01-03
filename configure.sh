@@ -23,11 +23,11 @@ for arg in $*; do
     case "$arg" in
         "--release")
             echo "Configuring release build."
-            BUILD_TYPE=Release
+            CMAKE_BUILD_TYPE=Release
             ;;
         "--debug")
             echo "Configuring debug build."
-            BUILD_TYPE=Debug
+            CMAKE_BUILD_TYPE=Debug
             VERBOSE_MAKEFILE=ON
             ;;
         "--develop")
@@ -78,7 +78,7 @@ mkdir -p "${BUILD_DIR}"
     cmake -DBUILD_CTAGS=${BUILD_CTAGS}
           -DBUILD_DOCS=${BUILD_DOCS}
           -DBUILD_EXAMPLES=${BUILD_EXAMPLES}
-          -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+          -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
           `[[ "${BUILD_DOCS}" == "ON" ]] && echo "-DDOXYGEN_TAGFILES=${DOXYGEN_TAGFILES}"`
           -DCMAKE_EXPORT_COMPILE_COMMANDS=${EXPORT_COMPILE_COMMANDS}
           -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE}

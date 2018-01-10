@@ -35,7 +35,7 @@ meta:
        rows: 3
        cols: 3
        dt: d
-       data: [ 640, 0, 320, 0, 640, 180, 0, 0, 1]
+       data: [640, 0, 320, 0, 640, 180, 0, 0, 1]
     # The distortion coefficients can be created using OpenCV's calibration tool.
     # https://github.com/opencv/opencv/blob/fc9e031454fd456d09e15944c99a419e73d80661/samples/cpp/calibration.cpp
     # In case you do not calibrate it, just use a 4x1 matrix filled with zeros.

@@ -109,7 +109,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mavx2")
 # Library target
 add_library(${PROJECT_NAME} ${LIBRARY_SOURCE_FILES})
 add_dependencies(${PROJECT_NAME} ${LANDMARKS_FILE} ${LANDMARKS_FILE_68} ${YAML_CPP})
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
 set_target_properties(${PROJECT_NAME}
     PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
@@ -122,6 +124,26 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 install(TARGETS ${PROJECT_NAME}
-        ARCHIVE DESTINATION lib)
+        EXPORT ${PROJECT_NAME}
+        ARCHIVE DESTINATION lib
+        INCLUDES DESTINATION include)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/${PROJECT_NAME}
         DESTINATION include)
+
+# Install CMake files to include gaze in other projects
+set(CMAKE_LIB_PATH lib/cmake/gaze)
+install(EXPORT ${PROJECT_NAME}
+        NAMESPACE ${PROJECT_NAME}::
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_LIB_PATH})
+
+configure_file(${CMAKE_SOURCE_DIR}/cmake/gazeConfig.cmake.in
+               config/gazeConfig.cmake @ONLY)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    config/gazeConfigVersion.cmake
+    VERSION ${VERSION}
+    COMPATIBILITY SameMajorVersion)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config/gazeConfig.cmake
+              ${CMAKE_CURRENT_BINARY_DIR}/config/gazeConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_LIB_PATH})

@@ -64,7 +64,7 @@ struct Data {
   dlib::full_object_detection landmarks;
 
   /**
-   * The 0th element is the left eye, the 1st the right eye.
+   * The 0th element is the right eye, the 1st the left eye.
    */
   dlib::array<dlib::array2d<double>> eyes;
   //@}

@@ -97,3 +97,14 @@ Add a pre-commit hook (`.git/hooks/pre-commit`):
 ```
 cpplint --recursive --extensions cpp,h --quiet src tests include
 ```
+
+
+### License issues
+
+Quoting from [dlib-model's README](https://github.com/davisking/dlib-models/blob/ae50fe33583de33c60276611d37915e93d11566b/README.md):
+
+> The license for this dataset excludes commercial use and Stefanos Zafeiriou,
+> one of the creators of the dataset, asked me to include a note here saying that
+> the trained model therefore can’t be used in a commerical product.
+
+Since this model is used in Gaze, unfortunately no commercial use is possible.

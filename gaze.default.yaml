@@ -35,7 +35,7 @@ meta:
        rows: 3
        cols: 3
        dt: d
-       data: [ 640, 0, 320, 0, 640, 180, 0, 0, 1]
+       data: [640, 0, 320, 0, 640, 180, 0, 0, 1]
     # The distortion coefficients can be created using OpenCV's calibration tool.
     # https://github.com/opencv/opencv/blob/fc9e031454fd456d09e15944c99a419e73d80661/samples/cpp/calibration.cpp
     # In case you do not calibrate it, just use a 4x1 matrix filled with zeros.
@@ -85,13 +85,17 @@ pipeline:
 #  - type: EyeLike
 #    relative_threshold: 0.3
   - type: PupilLocalization
-    table_size: 131
     relative_threshold: 0.3
   - type: GazePointCalculation
     eye_ball_centers: [
       [-0.029205, 0.0327, -0.0395],  # Right eye ball center
       [0.029205, 0.0327, -0.0395]  # Left eye ball center
     ]
+    # TODO(shoeffner): The landmark indices and model are reused
+    # from HeadPoseEstimation, the configuration should be moved.
+    # Additionally, GazePointCalculation does not take different model scales
+    # into account.
+    landmark_indices: [30, 8, 36, 45, 48, 54]
     model: [
       [0.0, 0.0, 0.0],
       [0.0, -0.0636, -0.0125],

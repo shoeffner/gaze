@@ -131,7 +131,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>You can always build the documentation using <code>make docs</code>. Or you can find it <a href="https://shoeffner.github.io/gaze">here</a>.</p>
 <h2>Development</h2>
 <p>Install <a href="https://github.com/cpplint/cpplint">cpplint</a>.</p>
-<p>Add a pre-commit hook (<code>.git/hooks/pre-commit</code>): ``` cpplint &ndash;recursive &ndash;extensions cpp,h &ndash;quiet src tests include ``` </p>
+<p>Add a pre-commit hook (<code>.git/hooks/pre-commit</code>): ``` cpplint &ndash;recursive &ndash;extensions cpp,h &ndash;quiet src tests include ```</p>
+<h3>License issues</h3>
+<p>Quoting from https://github.com/davisking/dlib-models/blob/ae50fe33583de33c60276611d37915e93d11566b/README.md "dlib-model's README":</p>
+<blockquote class="doxtable">
+<p>The license for this dataset excludes commercial use and Stefanos Zafeiriou, one of the creators of the dataset, asked me to include a note here saying that the trained model therefore can’t be used in a commerical product.</p>
+<p></p>
+</blockquote>
+<p>Since this model is used in Gaze, unfortunately no commercial use is possible. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

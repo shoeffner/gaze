@@ -1,1 +1,2 @@
 cpplint==1.3.0
+tensorflow==1.4.1

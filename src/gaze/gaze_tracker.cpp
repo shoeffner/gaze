@@ -83,6 +83,8 @@ void GazeTracker::init_pipeline(const std::string subject_id) {
       step = new pipeline::FaceLandmarks();
     } else if (!type.compare("GazePointCalculation")) {
       step = new pipeline::GazePointCalculation();
+    } else if (!type.compare("GazeCapture")) {
+      step = new pipeline::GazeCapture();
     } else if (!type.compare("HeadPoseEstimation")) {
       step = new pipeline::HeadPoseEstimation();
     } else if (!type.compare("PupilLocalization")) {

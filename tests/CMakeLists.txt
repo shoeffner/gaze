@@ -6,7 +6,12 @@ list(APPEND TEST_FILES
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
-
+if(WITH_CAFFE)
+    link_directories(
+        ${CMAKE_BINARY_DIR}/src/itracker/caffe-project-prefix/src/caffe-project/build/lib
+        /usr/local/opt/openblas/lib
+    )
+endif(WITH_CAFFE)
 
 # doctest
 set(DOCTEST doctest)

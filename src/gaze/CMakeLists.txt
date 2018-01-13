@@ -65,6 +65,7 @@ list(APPEND LIBRARY_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/eye_like.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/face_landmarks.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/fallback_step.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/gaze_capture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/gaze_point_calculation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/head_pose_estimation.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/pipeline_steps/pupil_localization.cpp
@@ -103,12 +104,37 @@ ExternalProject_Add(${LANDMARKS_FILE_68}
 )
 
 
+# Adds experimental caffe support to allow GazeTracking using GazeCapture
+if(WITH_CAFFE)
+    message(STATUS "Building with caffe (for iTracker).")
+    # Download GazeCapture models
+    set(GAZE_CAPTURE GazeCapture)
+    ExternalProject_Add(${GAZE_CAPTURE}
+        GIT_REPOSITORY https://github.com/CSAILVision/GazeCapture.git
+        GIT_TAG master
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND cp -r "<SOURCE_DIR>/models" "${CMAKE_BINARY_DIR}"
+        INSTALL_COMMAND ""
+    )
+
+    # Build caffe implementation
+    add_definitions(-DHAS_CAFFE)
+endif(WITH_CAFFE)
+
+
 # Compiler optimizations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mavx2")
 
 # Library target
 add_library(${PROJECT_NAME} ${LIBRARY_SOURCE_FILES})
 add_dependencies(${PROJECT_NAME} ${LANDMARKS_FILE} ${LANDMARKS_FILE_68} ${YAML_CPP})
+
+if(WITH_CAFFE)
+    add_dependencies(${PROJECT_NAME} ${GAZE_CAPTURE} itracker)
+    link_directories(${CMAKE_BINARY_DIR}/src/itracker/caffe-project-prefix/src/caffe-project/build/lib)
+    target_link_libraries(${PROJECT_NAME} itracker)
+endif(WITH_CAFFE)
+
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
@@ -131,19 +157,19 @@ install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/${PROJECT_NAME}
         DESTINATION include)
 
 # Install CMake files to include gaze in other projects
-set(CMAKE_LIB_PATH lib/cmake/gaze)
+set(CMAKE_LIB_PATH lib/cmake/${PROJECT_NAME})
 install(EXPORT ${PROJECT_NAME}
         NAMESPACE ${PROJECT_NAME}::
         DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_LIB_PATH})
 
-configure_file(${CMAKE_SOURCE_DIR}/cmake/gazeConfig.cmake.in
-               config/gazeConfig.cmake @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
+               config/${PROJECT_NAME}Config.cmake @ONLY)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-    config/gazeConfigVersion.cmake
+    config/${PROJECT_NAME}ConfigVersion.cmake
     VERSION ${VERSION}
     COMPATIBILITY SameMajorVersion)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config/gazeConfig.cmake
-              ${CMAKE_CURRENT_BINARY_DIR}/config/gazeConfigVersion.cmake
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config/${PROJECT_NAME}Config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/config/${PROJECT_NAME}ConfigVersion.cmake
         DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_LIB_PATH})

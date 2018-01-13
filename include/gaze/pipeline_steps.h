@@ -13,6 +13,7 @@
 #include "gaze/pipeline_steps/eye_like.h"
 #include "gaze/pipeline_steps/face_landmarks.h"
 #include "gaze/pipeline_steps/fallback_step.h"
+#include "gaze/pipeline_steps/gaze_capture.h"
 #include "gaze/pipeline_steps/gaze_point_calculation.h"
 #include "gaze/pipeline_steps/head_pose_estimation.h"
 #include "gaze/pipeline_steps/pupil_localization.h"

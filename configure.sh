@@ -52,6 +52,10 @@ for arg in $*; do
             echo "Just printing command."
             DRYRUN=1
             ;;
+        "--caffe")
+            echo "Using experimental caffe support."
+            WITH_CAFFE=ON
+            ;;
     esac
 done
 
@@ -64,6 +68,7 @@ DEPENDENCY_GRAPH=${DEPENDENCY_GRAPH:=0}
 DOXYGEN_TAGFILES=${DOXYGEN_TAGFILES:=OFF}
 EXPORT_COMPILE_COMMANDS=${EXPORT_COMPILE_COMMANDS:=OFF}
 VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE:=OFF}
+WITH_CAFFE=${WITH_CAFFE:=OFF}
 
 INSTALL_DIR=${INSTALL_DIR:=/usr/local}
 
@@ -83,6 +88,7 @@ mkdir -p "${BUILD_DIR}"
           -DCMAKE_EXPORT_COMPILE_COMMANDS=${EXPORT_COMPILE_COMMANDS}
           -DCMAKE_VERBOSE_MAKEFILE=${VERBOSE_MAKEFILE}
           `[[ ${DEPENDENCY_GRAPH} -eq 0 ]] || echo --graphviz=dependencies/dependencies.dot`
+          -DWITH_CAFFE=${WITH_CAFFE}
           -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}
           ${PROJECT_DIR}
     "

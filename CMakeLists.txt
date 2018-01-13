@@ -9,6 +9,12 @@ include(MessageVariables)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INSTALL_MESSAGE LAZY)
 
+# Caffe/GazeCapture(iTracker) support
+option(WITH_CAFFE "Build with caffe support." OFF)
+if(WITH_CAFFE)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/src/iTracker)
+endif(WITH_CAFFE)
+
 # Library
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/gaze)
 

@@ -104,3 +104,10 @@ pipeline:
       [-0.0289, -0.0289, -0.0241],
       [0.0289, -0.0289, -0.0241]
     ]
+  - type: GazeCapture
+    name: GazeCapture
+    model: models/itracker_deploy.prototxt
+    weights: models/snapshots/itracker25x_iter_92000.caffemodel
+    mean_left: models/mean_images/mean_left_224_new.binaryproto
+    mean_right: models/mean_images/mean_right_224.binaryproto
+    mean_face: models/mean_images/mean_face_224.binaryproto

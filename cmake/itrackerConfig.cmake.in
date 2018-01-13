@@ -1,0 +1,26 @@
+# ===================================================================================
+#  The @ITRACKER@ CMake configuration file
+#
+#             ** File generated automatically, do not modify **
+#
+#  Usage from an external project:
+#    In your CMakeLists.txt, add these lines:
+#
+#    FIND_PACKAGE(@ITRACKER@ REQUIRED)
+#    TARGET_LINK_LIBRARIES(MY_TARGET_NAME @ITRACKER@::@ITRACKER@)
+#
+#  This file will define the following variables:
+#    - @ITRACKER@_LIBRARIES        : @ITRACKER@::@ITRACKER@
+#    - @ITRACKER@_LIBS             : @ITRACKER@::@ITRACKER@
+#    - @ITRACKER@_INCLUDE_DIRS     : The @ITRACKER@ include directories.
+#
+# ===================================================================================
+
+get_filename_component(@ITRACKER@_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include("${@ITRACKER@_CMAKE_DIR}/@ITRACKER@.cmake")
+
+set(@ITRACKER@_LIBRARIES @ITRACKER@::@ITRACKER@)
+set(@ITRACKER@_LIBS      @ITRACKER@::@ITRACKER@)
+set(@ITRACKER@_INCLUDE_DIRS "@CMAKE_INSTALL_FULL_INCLUDEDIR@")
+
+message(STATUS "@ITRACKER@ found.")

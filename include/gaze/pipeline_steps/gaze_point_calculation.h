@@ -117,16 +117,13 @@ class GazePointCalculation final
    * Calculates the direction vector which points from the model origin
    * to the camera.
    *
-   * @param data The data object
    * @param translation The head translation vector
    * @param rotation The head rotation matrix from cv::Rodrigues()
-   * @param distance The distance from calculate_distance()
    *
    * @return The normal pointing from the model towards the screen.
    */
   cv::Vec3d get_model_to_camera_dir(
-      const util::Data& data, const cv::Vec3d& translation,
-      const cv::Matx33d& rotation, double distance);
+      const cv::Vec3d& translation, const cv::Matx33d& rotation);
 
   /**
    * Calculates the camera position in model coordinates.
@@ -143,16 +140,13 @@ class GazePointCalculation final
    * Returns the four estimated screen corners.
    *
    * @param camera_pos The camera position
-   * @param translation The head translation vector
    * @param rotation The head rotation matrix from cv::Rodrigues()
-   * @param distance The distance from calculate_distance()
    *
    * @return a vector containing the four screen corners in the order:
    *         top left, rop right, bottom right, bottom left
    */
   std::vector<cv::Vec3d> get_screen_corners(
-      const cv::Vec3d& camera_pos, const cv::Vec3d& translation,
-      const cv::Matx33d& rotation, double distance);
+      const cv::Vec3d& camera_pos, const cv::Matx33d& rotation);
 
   /**
    * Calculates the intersection between the line going through

@@ -154,17 +154,8 @@ std::vector<cv::Vec3d> GazePointCalculation::unprojectPoints(
 }
 
 cv::Vec3d GazePointCalculation::get_model_to_camera_dir(
-    const util::Data& data, const cv::Vec3d& translation,
-    const cv::Matx33d& rotation, double distance) {
-  std::vector<cv::Vec2d> ref = {
-    cv::Vec2d(0, 0),
-    cv::Vec2d(data.source_image.cols, 0),
-    cv::Vec2d(0, data.source_image.rows)};
-
-  std::vector<cv::Vec3d> ref3D =
-    this->unprojectPoints(ref, translation, rotation, distance);
-
-  return cv::normalize((ref3D[1] - ref3D[0]).cross(ref3D[2] - ref3D[0]));
+    const cv::Vec3d& translation, const cv::Matx33d& rotation) {
+  return cv::normalize(cv::Vec3d(0, 0, 0) - rotation.t() * translation);
 }
 
 cv::Vec3d GazePointCalculation::get_camera_pos(
@@ -173,26 +164,15 @@ cv::Vec3d GazePointCalculation::get_camera_pos(
 }
 
 std::vector<cv::Vec3d> GazePointCalculation::get_screen_corners(
-    const cv::Vec3d& camera_pos, const cv::Vec3d& translation,
-    const cv::Matx33d& rotation, double distance) {
-  std::vector<cv::Vec3d> screen_directions = this->unprojectPoints(
-      {{0, 0}, {1, 0}, {0, 1}}, translation, rotation, distance);
-  for (auto i = decltype(screen_directions.size()){1};
-       i < screen_directions.size(); ++i) {
-    screen_directions[i] =
-      cv::normalize(screen_directions[i] - screen_directions[0]);
-  }
-
-  cv::Vec3d screen_tl = camera_pos
-    - screen_directions[1] * this->camera_offset_x
-    - screen_directions[2] * this->camera_offset_y;
-  cv::Vec3d screen_tr = screen_tl
-    + screen_directions[1] * screen_width_m;
-  cv::Vec3d screen_br = screen_tr
-    + screen_directions[2] * screen_height_m;
-  cv::Vec3d screen_bl = screen_tl
-    + screen_directions[2] * screen_height_m;
-  return {screen_tl, screen_tr, screen_br, screen_bl};
+    const cv::Vec3d& camera_pos, const cv::Matx33d& rotation) {
+  cv::Vec3d screen_tl = cv::Vec3d(-this->camera_offset_x, -this->camera_offset_y, 0);
+  cv::Vec3d screen_tr = screen_tl + cv::Vec3d(this->screen_width_m, 0, 0);
+  cv::Vec3d screen_br = screen_tr + cv::Vec3d(0, this->screen_height_m, 0);
+  cv::Vec3d screen_bl = screen_br + cv::Vec3d(-this->screen_width_m, 0, 0);
+  auto transform = [&rotation, &camera_pos] (cv::Vec3d in) -> cv::Vec3d {
+    return rotation.t() * in + camera_pos;
+  };
+  return {transform(screen_tl), transform(screen_tr), transform(screen_br), transform(screen_bl)};
 }
 
 cv::Matx32d GazePointCalculation::calculate_gaze_point(
@@ -252,12 +232,12 @@ void GazePointCalculation::process(util::Data& data) {
   cv::Matx33d R;
   cv::Rodrigues(data.head_rotation, R);
 
-  cv::Vec3d model_to_camera_dir = this->get_model_to_camera_dir(
-      data, data.head_translation, R, distance);
+  cv::Vec3d model_to_camera_dir =
+    this->get_model_to_camera_dir(data.head_translation, R);
   cv::Vec3d camera_pos = this->get_camera_pos(model_to_camera_dir, distance);
 
   std::vector<cv::Vec3d> screen_tl_tr_br_bl =
-    this->get_screen_corners(camera_pos, data.head_translation, R, distance);
+    this->get_screen_corners(camera_pos, data.head_translation, R);
 
   // Ray cast
   cv::Vec2d screen_coord_coeffs(0, 0);
@@ -305,14 +285,14 @@ void GazePointCalculation::visualize(util::Data& data) {
       image_landmarks, data.head_translation, R, distance);
 
   // Find camera direction
-  cv::Vec3d camera_dir = this->get_model_to_camera_dir(
-      data, data.head_translation, R, distance);
+  cv::Vec3d camera_dir =
+    this->get_model_to_camera_dir(data.head_translation, R);
 
   cv::Vec3d camera_pos = this->get_camera_pos(camera_dir, distance);
 
   // Calculate screen corners
   std::vector<cv::Vec3d> screen_corners =
-    this->get_screen_corners(camera_pos, data.head_translation, R, distance);
+    this->get_screen_corners(camera_pos, R);
 
   // Helpers to draw points
   std::vector<dlib::perspective_display::overlay_dot>

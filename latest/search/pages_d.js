@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['opencv_20modules',['OpenCV modules',['http://docs.opencv.org/3.4.0/index.html',1,'']]],
   ['opencv_20ios_20hello',['OpenCV iOS Hello',['http://docs.opencv.org/3.4.0/d7/d88/tutorial_hello.html',1,'']]],
   ['opencv_20ios_20_2d_20image_20processing',['OpenCV iOS - Image Processing',['http://docs.opencv.org/3.4.0/d3/def/tutorial_image_manipulation.html',1,'']]],
   ['optical_20flow',['Optical Flow',['http://docs.opencv.org/3.4.0/db/d7f/tutorial_js_lucas_kanade.html',1,'']]],

@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['mathematical_20special_20functions',['Mathematical Special Functions',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/index.html',1,'']]],
   ['machine_20learning_20overview',['Machine Learning Overview',['http://docs.opencv.org/3.4.0/dc/dd6/ml_intro.html',1,'']]],
   ['making_20your_20own_20linear_20filters_21',['Making your own linear filters!',['http://docs.opencv.org/3.4.0/d4/dbd/tutorial_filter_2d.html',1,'']]],
   ['meanshift_20and_20camshift',['Meanshift and Camshift',['http://docs.opencv.org/3.4.0/df/def/tutorial_js_meanshift.html',1,'']]],

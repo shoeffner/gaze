@@ -29,7 +29,8 @@ var searchData=
   ['or_5fpascalobj',['OR_pascalObj',['http://docs.opencv.org/3.4.0/d0/db6/structcv_1_1datasets_1_1OR__pascalObj.html',1,'cv::datasets']]],
   ['or_5fsun',['OR_sun',['http://docs.opencv.org/3.4.0/da/d69/classcv_1_1datasets_1_1OR__sun.html',1,'cv::datasets']]],
   ['or_5fsunobj',['OR_sunObj',['http://docs.opencv.org/3.4.0/d8/d74/structcv_1_1datasets_1_1OR__sunObj.html',1,'cv::datasets']]],
-  ['orb',['ORB',['http://docs.opencv.org/3.4.0/db/d95/classcv_1_1ORB.html',1,'cv::ORB'],['http://docs.opencv.org/3.4.0/da/d44/classcv_1_1cuda_1_1ORB.html',1,'cv::cuda::ORB']]],
+  ['orb',['ORB',['http://docs.opencv.org/3.4.0/da/d44/classcv_1_1cuda_1_1ORB.html',1,'cv::cuda']]],
+  ['orb',['ORB',['http://docs.opencv.org/3.4.0/db/d95/classcv_1_1ORB.html',1,'cv']]],
   ['orbfeaturesfinder',['OrbFeaturesFinder',['http://docs.opencv.org/3.4.0/d7/d59/classcv_1_1detail_1_1OrbFeaturesFinder.html',1,'cv::detail']]],
   ['ostream_5fiterator',['ostream_iterator',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a06924.html',1,'std']]],
   ['ostream_5fjoiner',['ostream_joiner',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a08956.html',1,'std::experimental::fundamentals_v2']]],
@@ -42,7 +43,9 @@ var searchData=
   ['ov_5ftree_5ftag',['ov_tree_tag',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a10172.html',1,'__gnu_pbds']]],
   ['overflow_5ferror',['overflow_error',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a02928.html',1,'std']]],
   ['owner_5fless',['owner_less',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a05948.html',1,'std']]],
-  ['owner_5fless_3c_20shared_5fptr_3c_20_5ftp_20_3e_20_3e',['owner_less&lt; shared_ptr&lt; _Tp &gt; &gt;',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a05956.html',1,'std::owner_less&lt; shared_ptr&lt; _Tp &gt; &gt;'],['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a08872.html',1,'std::experimental::fundamentals_v2::owner_less&lt; shared_ptr&lt; _Tp &gt; &gt;']]],
+  ['owner_5fless_3c_20shared_5fptr_3c_20_5ftp_20_3e_20_3e',['owner_less&lt; shared_ptr&lt; _Tp &gt; &gt;',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a08872.html',1,'std::experimental::fundamentals_v2']]],
+  ['owner_5fless_3c_20shared_5fptr_3c_20_5ftp_20_3e_20_3e',['owner_less&lt; shared_ptr&lt; _Tp &gt; &gt;',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a05956.html',1,'std']]],
   ['owner_5fless_3c_20void_20_3e',['owner_less&lt; void &gt;',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a05952.html',1,'std']]],
-  ['owner_5fless_3c_20weak_5fptr_3c_20_5ftp_20_3e_20_3e',['owner_less&lt; weak_ptr&lt; _Tp &gt; &gt;',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a05960.html',1,'std::owner_less&lt; weak_ptr&lt; _Tp &gt; &gt;'],['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a08876.html',1,'std::experimental::fundamentals_v2::owner_less&lt; weak_ptr&lt; _Tp &gt; &gt;']]]
+  ['owner_5fless_3c_20weak_5fptr_3c_20_5ftp_20_3e_20_3e',['owner_less&lt; weak_ptr&lt; _Tp &gt; &gt;',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a08876.html',1,'std::experimental::fundamentals_v2']]],
+  ['owner_5fless_3c_20weak_5fptr_3c_20_5ftp_20_3e_20_3e',['owner_less&lt; weak_ptr&lt; _Tp &gt; &gt;',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a05960.html',1,'std']]]
 ];

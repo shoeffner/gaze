@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['gaze',['gaze',['../index.html',1,'']]],
   ['geometric_20transformations_20of_20images',['Geometric Transformations of Images',['http://docs.opencv.org/3.4.0/dd/d52/tutorial_js_geometric_transformations.html',1,'']]],
   ['getting_20started_20with_20images',['Getting Started with Images',['http://docs.opencv.org/3.4.0/df/d24/tutorial_js_image_display.html',1,'']]],
   ['gui_20features',['GUI Features',['http://docs.opencv.org/3.4.0/df/d04/tutorial_js_table_of_contents_gui.html',1,'']]],

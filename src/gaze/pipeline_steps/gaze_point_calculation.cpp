@@ -165,14 +165,16 @@ cv::Vec3d GazePointCalculation::get_camera_pos(
 
 std::vector<cv::Vec3d> GazePointCalculation::get_screen_corners(
     const cv::Vec3d& camera_pos, const cv::Matx33d& rotation) {
-  cv::Vec3d screen_tl = cv::Vec3d(-this->camera_offset_x, -this->camera_offset_y, 0);
+  cv::Vec3d screen_tl =
+    cv::Vec3d(-this->camera_offset_x, -this->camera_offset_y, 0);
   cv::Vec3d screen_tr = screen_tl + cv::Vec3d(this->screen_width_m, 0, 0);
   cv::Vec3d screen_br = screen_tr + cv::Vec3d(0, this->screen_height_m, 0);
   cv::Vec3d screen_bl = screen_br + cv::Vec3d(-this->screen_width_m, 0, 0);
   auto transform = [&rotation, &camera_pos] (cv::Vec3d in) -> cv::Vec3d {
     return rotation.t() * in + camera_pos;
   };
-  return {transform(screen_tl), transform(screen_tr), transform(screen_br), transform(screen_bl)};
+  return {transform(screen_tl), transform(screen_tr),
+          transform(screen_br), transform(screen_bl)};
 }
 
 cv::Matx32d GazePointCalculation::calculate_gaze_point(

@@ -16,6 +16,16 @@ namespace gaze {
 
 namespace pipeline {
 
+/**
+ * @class GazeCapture gaze_capture.h "gaze/pipeline_steps/gaze_capture.h"
+ * @brief Uses iTracker to track Gaze.
+ *
+ * This step does nothing if not compiled using the -DWITH_CAFFE=ON option.
+ *
+ * If it is compiled, it holds a pointer to an instance of itracker::ITracker,
+ * which it passes extracted eyes, the face, and a face mask to. It then maps
+ * the result to the target area on the screen.
+ */
 class GazeCapture final
     : public PipelineStep,
       public gui::ImageVisualizeable {

@@ -9,6 +9,9 @@
 
 namespace itracker {
 
+/**
+ * Private Implementation pattern to hide caffe dependency in Gaze.
+ */
 class ITrackerImpl {
   std::unique_ptr<caffe::Net<float>> net;
   std::vector<cv::Mat> means;

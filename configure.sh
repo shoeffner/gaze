@@ -43,6 +43,7 @@ for arg in $*; do
         "--doc" | "--docs" | "--documentation")
             echo "Building documentation."
             BUILD_DOCS=ON
+            EXPORT_COMPILE_COMMANDS=ON
             ;;
         "--tagfiles")
             echo "Linking to external tagfiles."

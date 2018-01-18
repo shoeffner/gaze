@@ -2,9 +2,10 @@ var searchData=
 [
   ['gaze',['gaze',['../namespacegaze.html',1,'']]],
   ['gaze_5fpoints',['gaze_points',['../structgaze_1_1util_1_1_data.html#a1c53807aa254ecc3be1037a64995c0c8',1,'gaze::util::Data']]],
+  ['gazecapture',['GazeCapture',['../classgaze_1_1pipeline_1_1_gaze_capture.html',1,'gaze::pipeline']]],
   ['gazepointcalculation',['GazePointCalculation',['../classgaze_1_1pipeline_1_1_gaze_point_calculation.html',1,'gaze::pipeline']]],
-  ['gazetracker',['GazeTracker',['../classgaze_1_1_gaze_tracker.html',1,'gaze']]],
   ['gazetracker',['GazeTracker',['../classgaze_1_1_gaze_tracker.html#a21e26f7e540e02c2d4775e6128dd0d58',1,'gaze::GazeTracker']]],
+  ['gazetracker',['GazeTracker',['../classgaze_1_1_gaze_tracker.html',1,'gaze']]],
   ['get_5fand_5fmaybe_5fread_5fdistortions',['get_and_maybe_read_distortions',['../classgaze_1_1pipeline_1_1_head_pose_estimation.html#af1631b6daa2c394812fefc63f8dba33a',1,'gaze::pipeline::HeadPoseEstimation']]],
   ['get_5fconfig',['get_config',['../classwpl_1_1_experiment.html#ae95f2d77581efa9e370a0176ecb4dfa7',1,'wpl::Experiment::get_config()'],['../namespacegaze_1_1util.html#a13f3893ed58ff0693776c7727129dadf',1,'gaze::util::get_config()'],['../namespacegaze_1_1util.html#a78bea599eb39c90c5824a3589584ec09',1,'gaze::util::get_config(int pipeline_step_number)']]],
   ['get_5fcurrent_5fgaze_5fpoint',['get_current_gaze_point',['../classgaze_1_1_gaze_tracker.html#a03913ac81393023fc991d8e877807b87',1,'gaze::GazeTracker']]],

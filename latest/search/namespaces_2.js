@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['traits',['traits',['../namespacetraits.html',1,'']]]
+  ['itracker',['itracker',['../namespaceitracker.html',1,'']]]
 ];

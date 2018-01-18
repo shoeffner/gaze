@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>gaze: include Directory Reference</title>
+<title>gaze: itracker::ITrackerImpl Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -41,7 +41,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -61,6 +61,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -77,24 +85,41 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespaceitracker.html">itracker</a></li><li class="navelem"><a class="el" href="classitracker_1_1_i_tracker_impl.html">ITrackerImpl</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classitracker_1_1_i_tracker_impl-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">include Directory Reference</div>  </div>
+<div class="title">itracker::ITrackerImpl Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A private implementation of <a class="el" href="classitracker_1_1_i_tracker.html" title="Implements a wrapper around the pre-trained caffe model by . ">ITracker</a> to hide dependencies from including classes.  
+ <a href="classitracker_1_1_i_tracker_impl.html#details">More...</a></p>
+
+<p><code>#include &quot;<a class="el" href="itracker_8h_source.html">itracker/itracker.h</a>&quot;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="subdirs"></a>
-Directories</h2></td></tr>
-<tr class="memitem:dir_fc1ab1e3ef5cc41f53ed73a231ff7c72"><td class="memItemLeft" align="right" valign="top">directory &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_fc1ab1e3ef5cc41f53ed73a231ff7c72.html">gaze</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:dir_93533dc74e734e0c0ca67375cc354140"><td class="memItemLeft" align="right" valign="top">directory &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_93533dc74e734e0c0ca67375cc354140.html">itracker</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:dir_ee1044f94e919047e58e74dd18f60018"><td class="memItemLeft" align="right" valign="top">directory &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dir_ee1044f94e919047e58e74dd18f60018.html">where_people_look</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a080fded742e69be63c20b1b66902725e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a080fded742e69be63c20b1b66902725e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ITrackerImpl</b> (const std::string &amp;model_file, const std::string &amp;weights_file, const std::string &amp;mean_left_eye_file, const std::string &amp;mean_right_eye_file, const std::string &amp;mean_face_file)</td></tr>
+<tr class="separator:a080fded742e69be63c20b1b66902725e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55e8a283fa2b5fce5c368bfcab74c09f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55e8a283fa2b5fce5c368bfcab74c09f"></a>
+cv::Vec2f&#160;</td><td class="memItemRight" valign="bottom"><b>predict</b> (const cv::Mat &amp;left_eye, const cv::Mat &amp;right_eye, const cv::Mat &amp;face, const cv::Mat &amp;face_mask)</td></tr>
+<tr class="separator:a55e8a283fa2b5fce5c368bfcab74c09f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A private implementation of <a class="el" href="classitracker_1_1_i_tracker.html" title="Implements a wrapper around the pre-trained caffe model by . ">ITracker</a> to hide dependencies from including classes. </p>
+<p>Private Implementation pattern to hide caffe dependency in Gaze.</p>
+<p>This is only a forward declaration. </p>
+
+<p>Definition at line <a class="el" href="itracker_8cpp_source.html#l00015">15</a> of file <a class="el" href="itracker_8cpp_source.html">itracker.cpp</a>.</p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/itracker/<a class="el" href="itracker_8cpp_source.html">itracker.cpp</a></li>
+</ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

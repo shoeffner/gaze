@@ -145,48 +145,46 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;      <span class="keyword">const</span> std::vector&lt;cv::Vec2d&gt;&amp; points, <span class="keyword">const</span> cv::Vec3d&amp; translation,</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;      <span class="keyword">const</span> cv::Matx33d&amp; rotation, <span class="keywordtype">double</span> distance);</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;  cv::Vec3d get_model_to_camera_dir(</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      <span class="keyword">const</span> <a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a>&amp; data, <span class="keyword">const</span> cv::Vec3d&amp; translation,</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      <span class="keyword">const</span> cv::Matx33d&amp; rotation, <span class="keywordtype">double</span> distance);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  cv::Vec3d get_camera_pos(<span class="keyword">const</span> cv::Vec3d&amp; get_model_to_camera_dir,</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;      <span class="keywordtype">double</span> distance);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  std::vector&lt;cv::Vec3d&gt; get_screen_corners(</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;      <span class="keyword">const</span> cv::Vec3d&amp; camera_pos, <span class="keyword">const</span> cv::Vec3d&amp; translation,</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      <span class="keyword">const</span> cv::Matx33d&amp; rotation, <span class="keywordtype">double</span> distance);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  cv::Matx32d calculate_gaze_point(</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      <span class="keyword">const</span> cv::Vec3d&amp; eye_ball_center, <span class="keyword">const</span> cv::Vec3d&amp; pupil,</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      <span class="keyword">const</span> cv::Vec3d&amp; screen_a, <span class="keyword">const</span> cv::Vec3d&amp; screen_b,</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      <span class="keyword">const</span> cv::Vec3d&amp; screen_c);</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#ae190813d2898f90dc168e641a0c68138">set_sensor_size</a>(<span class="keywordtype">double</span> sensor_diagonal, <span class="keywordtype">double</span> aspect_ratio);</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;  <a class="code" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html">GazePointCalculation</a>();</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#a266cfdb3c307cd31beacd7d2357709ac">process</a>(<a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a>&amp; data) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#acaffe412870ed499be707ead822486bb">visualize</a>(<a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a>&amp; data) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;};</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;}  <span class="comment">// namespace pipeline</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;}  <span class="comment">// namespace gaze</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="preprocessor">#endif  // INCLUDE_GAZE_PIPELINE_STEPS_GAZE_POINT_CALCULATION_H_</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  cv::Vec3d get_model_to_camera_dir(</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      <span class="keyword">const</span> cv::Vec3d&amp; translation, <span class="keyword">const</span> cv::Matx33d&amp; rotation);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;  cv::Vec3d get_camera_pos(<span class="keyword">const</span> cv::Vec3d&amp; get_model_to_camera_dir,</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      <span class="keywordtype">double</span> distance);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  std::vector&lt;cv::Vec3d&gt; get_screen_corners(</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;      <span class="keyword">const</span> cv::Vec3d&amp; camera_pos, <span class="keyword">const</span> cv::Matx33d&amp; rotation);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  cv::Matx32d calculate_gaze_point(</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <span class="keyword">const</span> cv::Vec3d&amp; eye_ball_center, <span class="keyword">const</span> cv::Vec3d&amp; pupil,</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;      <span class="keyword">const</span> cv::Vec3d&amp; screen_a, <span class="keyword">const</span> cv::Vec3d&amp; screen_b,</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;      <span class="keyword">const</span> cv::Vec3d&amp; screen_c);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#ae190813d2898f90dc168e641a0c68138">set_sensor_size</a>(<span class="keywordtype">double</span> sensor_diagonal, <span class="keywordtype">double</span> aspect_ratio);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  <a class="code" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html">GazePointCalculation</a>();</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#a266cfdb3c307cd31beacd7d2357709ac">process</a>(<a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a>&amp; data) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#acaffe412870ed499be707ead822486bb">visualize</a>(<a class="code" href="structgaze_1_1util_1_1_data.html">util::Data</a>&amp; data) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;};</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;}  <span class="comment">// namespace pipeline</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;}  <span class="comment">// namespace gaze</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="preprocessor">#endif  // INCLUDE_GAZE_PIPELINE_STEPS_GAZE_POINT_CALCULATION_H_</span></div>
 <div class="ttc" id="namespacegaze_1_1util_html_a9420aace2ba5209448ba4822eaef94c8"><div class="ttname"><a href="namespacegaze_1_1util.html#a9420aace2ba5209448ba4822eaef94c8">gaze::util::parse_aspect_ratio</a></div><div class="ttdeci">double parse_aspect_ratio(std::string aspect_ratio_string)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__point__calculation_8cpp_source.html#l00020">gaze_point_calculation.cpp:20</a></div></div>
 <div class="ttc" id="classgaze_1_1_pipeline_step_html"><div class="ttname"><a href="classgaze_1_1_pipeline_step.html">gaze::PipelineStep</a></div><div class="ttdoc">Abstract base class for PipelineSteps. Must be inherited from. </div><div class="ttdef"><b>Definition:</b> <a href="pipeline__step_8h_source.html#l00018">pipeline_step.h:18</a></div></div>
 <div class="ttc" id="classgaze_1_1pipeline_1_1_gaze_point_calculation_html"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html">gaze::pipeline::GazePointCalculation</a></div><div class="ttdoc">Calculates the gaze point. </div><div class="ttdef"><b>Definition:</b> <a href="gaze__point__calculation_8h_source.html#l00053">gaze_point_calculation.h:53</a></div></div>
-<div class="ttc" id="classgaze_1_1pipeline_1_1_gaze_point_calculation_html_acaffe412870ed499be707ead822486bb"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#acaffe412870ed499be707ead822486bb">gaze::pipeline::GazePointCalculation::visualize</a></div><div class="ttdeci">void visualize(util::Data &amp;data) override</div><div class="ttdef"><b>Definition:</b> <a href="gaze__point__calculation_8cpp_source.html#l00283">gaze_point_calculation.cpp:283</a></div></div>
+<div class="ttc" id="classgaze_1_1pipeline_1_1_gaze_point_calculation_html_acaffe412870ed499be707ead822486bb"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#acaffe412870ed499be707ead822486bb">gaze::pipeline::GazePointCalculation::visualize</a></div><div class="ttdeci">void visualize(util::Data &amp;data) override</div><div class="ttdef"><b>Definition:</b> <a href="gaze__point__calculation_8cpp_source.html#l00263">gaze_point_calculation.cpp:263</a></div></div>
 <div class="ttc" id="classgaze_1_1gui_1_1_visualizeable_html"><div class="ttname"><a href="classgaze_1_1gui_1_1_visualizeable.html">gaze::gui::Visualizeable</a></div><div class="ttdoc">Implements VisualizeableBase for several widget types. </div><div class="ttdef"><b>Definition:</b> <a href="visualizeable_8h_source.html#l00223">visualizeable.h:223</a></div></div>
-<div class="ttc" id="classgaze_1_1pipeline_1_1_gaze_point_calculation_html_ae190813d2898f90dc168e641a0c68138"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#ae190813d2898f90dc168e641a0c68138">gaze::pipeline::GazePointCalculation::set_sensor_size</a></div><div class="ttdeci">void set_sensor_size(double sensor_diagonal, double aspect_ratio)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__point__calculation_8cpp_source.html#l00216">gaze_point_calculation.cpp:216</a></div></div>
+<div class="ttc" id="classgaze_1_1pipeline_1_1_gaze_point_calculation_html_ae190813d2898f90dc168e641a0c68138"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#ae190813d2898f90dc168e641a0c68138">gaze::pipeline::GazePointCalculation::set_sensor_size</a></div><div class="ttdeci">void set_sensor_size(double sensor_diagonal, double aspect_ratio)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__point__calculation_8cpp_source.html#l00196">gaze_point_calculation.cpp:196</a></div></div>
 <div class="ttc" id="structgaze_1_1util_1_1_data_html_a835ed40d954fb1204babf2f8bf8c8b5f"><div class="ttname"><a href="structgaze_1_1util_1_1_data.html#a835ed40d954fb1204babf2f8bf8c8b5f">gaze::util::Data::landmarks</a></div><div class="ttdeci">dlib::full_object_detection landmarks</div><div class="ttdef"><b>Definition:</b> <a href="data_8h_source.html#l00064">data.h:64</a></div></div>
 <div class="ttc" id="namespacegaze_1_1util_html_a15dc5bd0f165141adfc7473fd9bcfe83"><div class="ttname"><a href="namespacegaze_1_1util.html#a15dc5bd0f165141adfc7473fd9bcfe83">gaze::util::clamp</a></div><div class="ttdeci">double clamp(double value, double min, double max)</div><div class="ttdef"><b>Definition:</b> <a href="gaze__point__calculation_8cpp_source.html#l00036">gaze_point_calculation.cpp:36</a></div></div>
 <div class="ttc" id="structgaze_1_1util_1_1_data_html"><div class="ttname"><a href="structgaze_1_1util_1_1_data.html">gaze::util::Data</a></div><div class="ttdoc">Wraps the data acquired per frame into a single instance. </div><div class="ttdef"><b>Definition:</b> <a href="data_8h_source.html#l00027">data.h:27</a></div></div>
-<div class="ttc" id="classgaze_1_1pipeline_1_1_gaze_point_calculation_html_a266cfdb3c307cd31beacd7d2357709ac"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#a266cfdb3c307cd31beacd7d2357709ac">gaze::pipeline::GazePointCalculation::process</a></div><div class="ttdeci">void process(util::Data &amp;data) override</div><div class="ttdef"><b>Definition:</b> <a href="gaze__point__calculation_8cpp_source.html#l00224">gaze_point_calculation.cpp:224</a></div></div>
+<div class="ttc" id="classgaze_1_1pipeline_1_1_gaze_point_calculation_html_a266cfdb3c307cd31beacd7d2357709ac"><div class="ttname"><a href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#a266cfdb3c307cd31beacd7d2357709ac">gaze::pipeline::GazePointCalculation::process</a></div><div class="ttdeci">void process(util::Data &amp;data) override</div><div class="ttdef"><b>Definition:</b> <a href="gaze__point__calculation_8cpp_source.html#l00204">gaze_point_calculation.cpp:204</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

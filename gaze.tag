@@ -323,6 +323,7 @@
     <class kind="class">gaze::pipeline::EyeLike</class>
     <class kind="class">gaze::pipeline::FaceLandmarks</class>
     <class kind="class">gaze::pipeline::FallbackStep</class>
+    <class kind="class">gaze::pipeline::GazeCapture</class>
     <class kind="class">gaze::pipeline::GazePointCalculation</class>
     <class kind="class">gaze::pipeline::HeadPoseEstimation</class>
     <class kind="class">gaze::pipeline::PupilLocalization</class>
@@ -393,6 +394,26 @@
       <anchorfile>classgaze_1_1pipeline_1_1_fallback_step.html</anchorfile>
       <anchor>a2b59b4dcbc8d104a56fb4bb230f0191a</anchor>
       <arglist>(util::Data &amp;) override</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>gaze::pipeline::GazeCapture</name>
+    <filename>classgaze_1_1pipeline_1_1_gaze_capture.html</filename>
+    <base>gaze::PipelineStep</base>
+    <base>gaze::gui::Visualizeable</base>
+    <member kind="function">
+      <type>void</type>
+      <name>process</name>
+      <anchorfile>classgaze_1_1pipeline_1_1_gaze_capture.html</anchorfile>
+      <anchor>a606b79f68e12476f16e4ae1182747463</anchor>
+      <arglist>(util::Data &amp;data) override</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>visualize</name>
+      <anchorfile>classgaze_1_1pipeline_1_1_gaze_capture.html</anchorfile>
+      <anchor>a1f9c110c7b2ac019530c021deceee5ca</anchor>
+      <arglist>(util::Data &amp;data) override</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -692,6 +713,34 @@
     <filename>namespacegui.html</filename>
   </compound>
   <compound kind="namespace">
+    <name>itracker</name>
+    <filename>namespaceitracker.html</filename>
+    <class kind="class">itracker::ITrackerImpl</class>
+    <class kind="class">itracker::ITracker</class>
+  </compound>
+  <compound kind="class">
+    <name>itracker::ITrackerImpl</name>
+    <filename>classitracker_1_1_i_tracker_impl.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>itracker::ITracker</name>
+    <filename>classitracker_1_1_i_tracker.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>ITracker</name>
+      <anchorfile>classitracker_1_1_i_tracker.html</anchorfile>
+      <anchor>aa731e9c9eee916257609752753ad2871</anchor>
+      <arglist>(const std::string &amp;model_file, const std::string &amp;weights_file, const std::string &amp;mean_left_eye_file, const std::string &amp;mean_right_eye_file, const std::string &amp;mean_face_file)</arglist>
+    </member>
+    <member kind="function">
+      <type>cv::Vec2f</type>
+      <name>predict</name>
+      <anchorfile>classitracker_1_1_i_tracker.html</anchorfile>
+      <anchor>afe65944162ffbe8990acdad0c483fdcf</anchor>
+      <arglist>(const cv::Mat &amp;left_eye, const cv::Mat &amp;right_eye, const cv::Mat &amp;face, const cv::Mat &amp;face_mask)</arglist>
+    </member>
+  </compound>
+  <compound kind="namespace">
     <name>traits</name>
     <filename>namespacetraits.html</filename>
   </compound>
@@ -900,7 +949,20 @@
     <path>/home/runner/gaze/include/</path>
     <filename>dir_d44c64559bbebec7f509842c48db8b23.html</filename>
     <dir>include/gaze</dir>
+    <dir>include/itracker</dir>
     <dir>include/where_people_look</dir>
+  </compound>
+  <compound kind="dir">
+    <name>src/itracker</name>
+    <path>/home/runner/gaze/src/itracker/</path>
+    <filename>dir_1845f3e7afb1f850776048860c0a8972.html</filename>
+    <file>itracker.cpp</file>
+  </compound>
+  <compound kind="dir">
+    <name>include/itracker</name>
+    <path>/home/runner/gaze/include/itracker/</path>
+    <filename>dir_93533dc74e734e0c0ca67375cc354140.html</filename>
+    <file>itracker.h</file>
   </compound>
   <compound kind="dir">
     <name>src/gaze/pipeline_steps</name>
@@ -909,6 +971,7 @@
     <file>eye_like.cpp</file>
     <file>face_landmarks.cpp</file>
     <file>fallback_step.cpp</file>
+    <file>gaze_capture.cpp</file>
     <file>gaze_point_calculation.cpp</file>
     <file>head_pose_estimation.cpp</file>
     <file>pupil_localization.cpp</file>
@@ -921,6 +984,7 @@
     <file>eye_like.h</file>
     <file>face_landmarks.h</file>
     <file>fallback_step.h</file>
+    <file>gaze_capture.h</file>
     <file>gaze_point_calculation.h</file>
     <file>head_pose_estimation.h</file>
     <file>pupil_localization.h</file>
@@ -938,6 +1002,7 @@
     <filename>dir_68267d1309a1af8e8297ef4c3efbcdba.html</filename>
     <dir>src/demo</dir>
     <dir>src/gaze</dir>
+    <dir>src/itracker</dir>
   </compound>
   <compound kind="dir">
     <name>include/gaze/tests</name>

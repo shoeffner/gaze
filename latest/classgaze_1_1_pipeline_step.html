@@ -108,13 +108,14 @@ Inheritance diagram for gaze::PipelineStep:</div>
  <div class="center">
   <img src="classgaze_1_1_pipeline_step.png" usemap="#gaze::PipelineStep_map" alt=""/>
   <map id="gaze::PipelineStep_map" name="gaze::PipelineStep_map">
-<area href="classgaze_1_1pipeline_1_1_eye_like.html" title="Direct copy of https://github.com/trishume/eyelike. " alt="gaze::pipeline::EyeLike" shape="rect" coords="0,56,215,80"/>
-<area href="classgaze_1_1pipeline_1_1_face_landmarks.html" title="Uses dlibs pretrained models to detect face landmarks. " alt="gaze::pipeline::FaceLandmarks" shape="rect" coords="225,56,440,80"/>
-<area href="classgaze_1_1pipeline_1_1_fallback_step.html" title="This pipeline step is used whenever something goes wrong. " alt="gaze::pipeline::FallbackStep" shape="rect" coords="450,56,665,80"/>
-<area href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html" title="Calculates the gaze point. " alt="gaze::pipeline::GazePointCalculation" shape="rect" coords="675,56,890,80"/>
-<area href="classgaze_1_1pipeline_1_1_head_pose_estimation.html" title="Estimates the head pose from landmarks and source image. " alt="gaze::pipeline::HeadPoseEstimation" shape="rect" coords="900,56,1115,80"/>
-<area href="classgaze_1_1pipeline_1_1_pupil_localization.html" title="Implements Timm and Barth (2011)  to detect eye centers. " alt="gaze::pipeline::PupilLocalization" shape="rect" coords="1125,56,1340,80"/>
-<area href="classgaze_1_1pipeline_1_1_source_capture.html" title="Retrieves frames from a webcam or video source. " alt="gaze::pipeline::SourceCapture" shape="rect" coords="1350,56,1565,80"/>
+<area href="classgaze_1_1pipeline_1_1_eye_like.html" title="Direct copy of https://github.com/trishume/eyelike. " alt="gaze::pipeline::EyeLike" shape="rect" coords="225,56,440,80"/>
+<area href="classgaze_1_1pipeline_1_1_face_landmarks.html" title="Uses dlibs pretrained models to detect face landmarks. " alt="gaze::pipeline::FaceLandmarks" shape="rect" coords="225,112,440,136"/>
+<area href="classgaze_1_1pipeline_1_1_fallback_step.html" title="This pipeline step is used whenever something goes wrong. " alt="gaze::pipeline::FallbackStep" shape="rect" coords="225,168,440,192"/>
+<area href="classgaze_1_1pipeline_1_1_gaze_capture.html" title="Uses iTracker to track Gaze. " alt="gaze::pipeline::GazeCapture" shape="rect" coords="225,224,440,248"/>
+<area href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html" title="Calculates the gaze point. " alt="gaze::pipeline::GazePointCalculation" shape="rect" coords="225,280,440,304"/>
+<area href="classgaze_1_1pipeline_1_1_head_pose_estimation.html" title="Estimates the head pose from landmarks and source image. " alt="gaze::pipeline::HeadPoseEstimation" shape="rect" coords="225,336,440,360"/>
+<area href="classgaze_1_1pipeline_1_1_pupil_localization.html" title="Implements Timm and Barth (2011)  to detect eye centers. " alt="gaze::pipeline::PupilLocalization" shape="rect" coords="225,392,440,416"/>
+<area href="classgaze_1_1pipeline_1_1_source_capture.html" title="Retrieves frames from a webcam or video source. " alt="gaze::pipeline::SourceCapture" shape="rect" coords="225,448,440,472"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -285,7 +286,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>via <code>data</code> the modified data object. </dd></dl>
 
-<p>Implemented in <a class="el" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#a266cfdb3c307cd31beacd7d2357709ac">gaze::pipeline::GazePointCalculation</a>, <a class="el" href="classgaze_1_1pipeline_1_1_pupil_localization.html#a3b74257d61a1a0773292c5ad94282cc0">gaze::pipeline::PupilLocalization</a>, <a class="el" href="classgaze_1_1pipeline_1_1_head_pose_estimation.html#ae707709628d06b3a8826dfa15176eb7c">gaze::pipeline::HeadPoseEstimation</a>, <a class="el" href="classgaze_1_1pipeline_1_1_source_capture.html#a5a008007a14ac66b975a8f1f0e02c5c9">gaze::pipeline::SourceCapture</a>, <a class="el" href="classgaze_1_1pipeline_1_1_face_landmarks.html#a4847e5df7d07904e825c3f10efe34980">gaze::pipeline::FaceLandmarks</a>, <a class="el" href="classgaze_1_1pipeline_1_1_eye_like.html#a49e133f95f5629b84ea59306d02cc08b">gaze::pipeline::EyeLike</a>, and <a class="el" href="classgaze_1_1pipeline_1_1_fallback_step.html#a41a5917c0f33488bd8f5a0fb2b407b35">gaze::pipeline::FallbackStep</a>.</p>
+<p>Implemented in <a class="el" href="classgaze_1_1pipeline_1_1_gaze_point_calculation.html#a266cfdb3c307cd31beacd7d2357709ac">gaze::pipeline::GazePointCalculation</a>, <a class="el" href="classgaze_1_1pipeline_1_1_pupil_localization.html#a3b74257d61a1a0773292c5ad94282cc0">gaze::pipeline::PupilLocalization</a>, <a class="el" href="classgaze_1_1pipeline_1_1_head_pose_estimation.html#ae707709628d06b3a8826dfa15176eb7c">gaze::pipeline::HeadPoseEstimation</a>, <a class="el" href="classgaze_1_1pipeline_1_1_source_capture.html#a5a008007a14ac66b975a8f1f0e02c5c9">gaze::pipeline::SourceCapture</a>, <a class="el" href="classgaze_1_1pipeline_1_1_gaze_capture.html#a606b79f68e12476f16e4ae1182747463">gaze::pipeline::GazeCapture</a>, <a class="el" href="classgaze_1_1pipeline_1_1_face_landmarks.html#a4847e5df7d07904e825c3f10efe34980">gaze::pipeline::FaceLandmarks</a>, <a class="el" href="classgaze_1_1pipeline_1_1_eye_like.html#a49e133f95f5629b84ea59306d02cc08b">gaze::pipeline::EyeLike</a>, and <a class="el" href="classgaze_1_1pipeline_1_1_fallback_step.html#a41a5917c0f33488bd8f5a0fb2b407b35">gaze::pipeline::FallbackStep</a>.</p>
 
 </div>
 </div>

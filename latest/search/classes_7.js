@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['sizeable',['sizeable',['../structgaze_1_1gui_1_1traits_1_1sizeable.html',1,'gaze::gui::traits']]],
-  ['sourcecapture',['SourceCapture',['../classgaze_1_1pipeline_1_1_source_capture.html',1,'gaze::pipeline']]]
+  ['pipeline',['Pipeline',['../classgaze_1_1_pipeline.html',1,'gaze']]],
+  ['pipelinestep',['PipelineStep',['../classgaze_1_1_pipeline_step.html',1,'gaze']]],
+  ['pupillocalization',['PupilLocalization',['../classgaze_1_1pipeline_1_1_pupil_localization.html',1,'gaze::pipeline']]]
 ];

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['pipeline',['Pipeline',['../classgaze_1_1_pipeline.html',1,'gaze']]],
-  ['pipelinestep',['PipelineStep',['../classgaze_1_1_pipeline_step.html',1,'gaze']]],
-  ['pupillocalization',['PupilLocalization',['../classgaze_1_1pipeline_1_1_pupil_localization.html',1,'gaze::pipeline']]]
+  ['itracker',['ITracker',['../classitracker_1_1_i_tracker.html',1,'itracker']]],
+  ['itrackerimpl',['ITrackerImpl',['../classitracker_1_1_i_tracker_impl.html',1,'itracker']]]
 ];

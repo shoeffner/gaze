@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wpl',['wpl',['../namespacewpl.html',1,'']]]
+  ['traits',['traits',['../namespacetraits.html',1,'']]]
 ];

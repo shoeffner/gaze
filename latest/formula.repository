@@ -1,0 +1,13 @@
+\form#0:$(-1, -1)$
+\form#1:\[ \left(\begin{array}{c} t \\ u \\ v \end{array}\right) = \left(\begin{array}{ccc} e_x - p_x & b_x - a_x & c_x - a_x \\ e_y - p_y & b_y - a_y & c_y - a_y \\ e_z - p_z & b_z - a_z & c_z - a_z \end{array}\right)^{-1} \left(\begin{array}{c} e_x - a_x \\ e_y - a_y \\ e_z - a_z \end{array}\right), \]
+\form#2:$a, b, c$
+\form#3:$e, p$
+\form#4:\[ \left( \begin{array}{ccc} c & 0 & \frac{c}{2} \\ 0 & c & \frac{r}{2} \\ 0 & 0 & 1 \end{array} \right) \]
+\form#5:$c=\mbox{image columns}, r = \mbox{image rows}$
+\form#6:$d_i$
+\form#7:$3 \times 3$
+\form#8:\[ \left( \begin{array}{ccc} -0.707 & 0 & 0.707 \\ -1 & 0 & 1 \\ -0.707 & 0 & 0.707 \end{array} \right) \]
+\form#9:\[ \left( \begin{array}{ccc} -0.707 & -1 & -0.707 \\ 0 & 0 & 0 \\ 0.707 & 1 & 0.707 \end{array} \right) \]
+\form#10:$(-0.707, -0.707)$
+\form#11:$ M $
+\form#12:$ \theta \max M $

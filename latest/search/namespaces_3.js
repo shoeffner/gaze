@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['traits',['traits',['../namespacetraits.html',1,'']]]
+  ['eyelike',['eyeLike',['../namespaceeye_like.html',1,'']]]
 ];

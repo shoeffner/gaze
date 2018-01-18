@@ -1,0 +1,17 @@
+var searchData=
+[
+  ['sampletype',['sampleType',['http://docs.opencv.org/3.4.0/d8/db1/group__datasets__pd.html#ga53cbd80c15fe793bc8d0c87c57629ccb',1,'cv::datasets::sampleType()'],['http://docs.opencv.org/3.4.0/d8/db1/group__datasets__pd.html#ga53cbd80c15fe793bc8d0c87c57629ccb',1,'sampleType()(Global Namespace)']]],
+  ['sampletypes',['SampleTypes',['http://docs.opencv.org/3.4.0/dd/ded/group__ml.html#ga9c57a2b823008dda53d2c7f7059a8710',1,'cv::ml::SampleTypes()'],['http://docs.opencv.org/3.4.0/dd/ded/group__ml.html#ga9c57a2b823008dda53d2c7f7059a8710',1,'SampleTypes()(Global Namespace)']]],
+  ['scenesettings',['SceneSettings',['http://docs.opencv.org/3.4.0/d2/d17/group__ovis.html#gab053860632281ae40811362b337b564a',1,'cv::ovis::SceneSettings()'],['http://docs.opencv.org/3.4.0/d2/d17/group__ovis.html#gab053860632281ae40811362b337b564a',1,'SceneSettings()(Global Namespace)']]],
+  ['shadingvalues',['ShadingValues',['http://docs.opencv.org/3.4.0/dc/d5c/group__viz__widget.html#gaf05708ceb519dea9e16744b5fd56c5e2',1,'cv::viz::ShadingValues()'],['http://docs.opencv.org/3.4.0/dc/d5c/group__viz__widget.html#gaf05708ceb519dea9e16744b5fd56c5e2',1,'ShadingValues()(Global Namespace)']]],
+  ['shapematchmodes',['ShapeMatchModes',['http://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#gaf2b97a230b51856d09a2d934b78c015f',1,'cv::ShapeMatchModes()'],['http://docs.opencv.org/3.4.0/d3/dc0/group__imgproc__shape.html#gaf2b97a230b51856d09a2d934b78c015f',1,'ShapeMatchModes()(Global Namespace)']]],
+  ['similarityfunction',['SimilarityFunction',['http://docs.opencv.org/3.4.0/d0/d74/classcv_1_1xfeatures2d_1_1PCTSignatures.html#ac72268153bf12925f601c4defe7d5e50',1,'cv::xfeatures2d::PCTSignatures']]],
+  ['slic',['SLIC',['http://docs.opencv.org/3.4.0/df/d6c/group__ximgproc__superpixel.html#ga0024d8bac96a9f0d49bd97665d76ae08',1,'cv::ximgproc::SLIC()'],['http://docs.opencv.org/3.4.0/df/d6c/group__ximgproc__superpixel.html#ga0024d8bac96a9f0d49bd97665d76ae08',1,'SLIC()(Global Namespace)']]],
+  ['smoothmethod_5fc',['SmoothMethod_c',['http://docs.opencv.org/3.4.0/df/d4e/group__imgproc__c.html#ga68a3a4144ad5ad650bed7f0ede3611c2',1,]]],
+  ['solvelpresult',['SolveLPResult',['http://docs.opencv.org/3.4.0/da/d01/group__core__optim.html#ga86a370deffb37af51deb405a634eb14c',1,'cv::SolveLPResult()'],['http://docs.opencv.org/3.4.0/da/d01/group__core__optim.html#ga86a370deffb37af51deb405a634eb14c',1,'SolveLPResult()(Global Namespace)']]],
+  ['sortflags',['SortFlags',['http://docs.opencv.org/3.4.0/db/de0/group__core__utils.html#ga8e88a1f27e41e12f81caab17cf81667b',1,'cv::SortFlags()'],['http://docs.opencv.org/3.4.0/db/de0/group__core__utils.html#ga8e88a1f27e41e12f81caab17cf81667b',1,'SortFlags()(Global Namespace)']]],
+  ['status',['Status',['http://docs.opencv.org/3.4.0/d2/d8d/classcv_1_1Stitcher.html#a507409ce9435dd89857469d12ec06b45',1,'cv::Stitcher']]],
+  ['surfaceformat',['SurfaceFormat',['http://docs.opencv.org/3.4.0/d0/d61/group__cudacodec.html#gaaac1ece32d7b3efa9afc9811315d35cb',1,'cv::cudacodec::SurfaceFormat()'],['http://docs.opencv.org/3.4.0/d0/d61/group__cudacodec.html#gaaac1ece32d7b3efa9afc9811315d35cb',1,'SurfaceFormat()(Global Namespace)']]],
+  ['svmsgdtype',['SvmsgdType',['http://docs.opencv.org/3.4.0/de/d54/classcv_1_1ml_1_1SVMSGD.html#ab028695cc8ec1491888d8d03f80bc8c2',1,'cv::ml::SVMSGD']]],
+  ['syntax_5foption_5ftype',['syntax_option_type',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a01568.html#a510caedb3e640b81620023a85c1280bb',1,'std::regex_constants']]]
+];

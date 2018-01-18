@@ -1,7 +1,25 @@
 var searchData=
 [
-  ['widget_5ftrait',['widget_trait',['../structgaze_1_1gui_1_1traits_1_1widget__trait.html',1,'gaze::gui::traits']]],
-  ['widget_5ftrait_3c_20dlib_3a_3aimage_5fdisplay_20_3e',['widget_trait&lt; dlib::image_display &gt;',['../structgaze_1_1gui_1_1traits_1_1widget__trait_3_01dlib_1_1image__display_01_4.html',1,'gaze::gui::traits']]],
-  ['widget_5ftrait_3c_20dlib_3a_3alabel_20_3e',['widget_trait&lt; dlib::label &gt;',['../structgaze_1_1gui_1_1traits_1_1widget__trait_3_01dlib_1_1label_01_4.html',1,'gaze::gui::traits']]],
-  ['widget_5ftrait_3c_20dlib_3a_3aperspective_5fdisplay_20_3e',['widget_trait&lt; dlib::perspective_display &gt;',['../structgaze_1_1gui_1_1traits_1_1widget__trait_3_01dlib_1_1perspective__display_01_4.html',1,'gaze::gui::traits']]]
+  ['kalmanfilter',['KalmanFilter',['http://docs.opencv.org/3.4.0/dd/d6a/classcv_1_1KalmanFilter.html',1,'cv']]],
+  ['kaze',['KAZE',['http://docs.opencv.org/3.4.0/d3/d61/classcv_1_1KAZE.html',1,'cv']]],
+  ['kdtreeindex',['KDTreeIndex',['http://docs.opencv.org/3.4.0/df/d36/classcvflann_1_1KDTreeIndex.html',1,'cvflann']]],
+  ['kdtreeindexparams',['KDTreeIndexParams',['http://docs.opencv.org/3.4.0/d7/d99/structcvflann_1_1KDTreeIndexParams.html',1,'cvflann::KDTreeIndexParams'],['http://docs.opencv.org/3.4.0/d0/d99/structcv_1_1flann_1_1KDTreeIndexParams.html',1,'cv::flann::KDTreeIndexParams']]],
+  ['kdtreesingleindex',['KDTreeSingleIndex',['http://docs.opencv.org/3.4.0/db/d92/classcvflann_1_1KDTreeSingleIndex.html',1,'cvflann']]],
+  ['kdtreesingleindexparams',['KDTreeSingleIndexParams',['http://docs.opencv.org/3.4.0/d5/d2d/structcvflann_1_1KDTreeSingleIndexParams.html',1,'cvflann']]],
+  ['kernel',['Kernel',['http://docs.opencv.org/3.4.0/d7/db8/classcv_1_1ml_1_1SVM_1_1Kernel.html',1,'cv::ml::SVM::Kernel'],['http://docs.opencv.org/3.4.0/dd/d4c/classcv_1_1ocl_1_1Kernel.html',1,'cv::ocl::Kernel']]],
+  ['kernelarg',['KernelArg',['http://docs.opencv.org/3.4.0/d3/d17/classcv_1_1ocl_1_1KernelArg.html',1,'cv::ocl']]],
+  ['keyboardevent',['KeyboardEvent',['http://docs.opencv.org/3.4.0/d3/d06/classcv_1_1viz_1_1KeyboardEvent.html',1,'cv::viz']]],
+  ['keyline',['KeyLine',['http://docs.opencv.org/3.4.0/d1/dd7/structcv_1_1line__descriptor_1_1KeyLine.html',1,'cv::line_descriptor']]],
+  ['keypoint',['KeyPoint',['http://docs.opencv.org/3.4.0/d2/d29/classcv_1_1KeyPoint.html',1,'cv']]],
+  ['keypointbasedmotionestimator',['KeypointBasedMotionEstimator',['http://docs.opencv.org/3.4.0/d5/dec/classcv_1_1videostab_1_1KeypointBasedMotionEstimator.html',1,'cv::videostab']]],
+  ['keypointsfilter',['KeyPointsFilter',['http://docs.opencv.org/3.4.0/de/db2/classcv_1_1KeyPointsFilter.html',1,'cv']]],
+  ['kl_5fdivergence',['KL_Divergence',['http://docs.opencv.org/3.4.0/d2/dc2/structcvflann_1_1KL__Divergence.html',1,'cvflann']]],
+  ['kmeansdistancecomputer',['KMeansDistanceComputer',['http://docs.opencv.org/3.4.0/d7/d6e/classcvflann_1_1KMeansIndex_1_1KMeansDistanceComputer.html',1,'cvflann::KMeansIndex']]],
+  ['kmeansindex',['KMeansIndex',['http://docs.opencv.org/3.4.0/df/d1f/classcvflann_1_1KMeansIndex.html',1,'cvflann']]],
+  ['kmeansindexparams',['KMeansIndexParams',['http://docs.opencv.org/3.4.0/df/d7a/structcv_1_1flann_1_1KMeansIndexParams.html',1,'cv::flann::KMeansIndexParams'],['http://docs.opencv.org/3.4.0/de/dff/structcvflann_1_1KMeansIndexParams.html',1,'cvflann::KMeansIndexParams']]],
+  ['knearest',['KNearest',['http://docs.opencv.org/3.4.0/dd/de1/classcv_1_1ml_1_1KNearest.html',1,'cv::ml']]],
+  ['knnradiusuniqueresultset',['KNNRadiusUniqueResultSet',['http://docs.opencv.org/3.4.0/d3/dd8/classcvflann_1_1KNNRadiusUniqueResultSet.html',1,'cvflann']]],
+  ['knnresultset',['KNNResultSet',['http://docs.opencv.org/3.4.0/d5/db2/classcvflann_1_1KNNResultSet.html',1,'cvflann']]],
+  ['knnsimpleresultset',['KNNSimpleResultSet',['http://docs.opencv.org/3.4.0/d8/daa/classcvflann_1_1KNNSimpleResultSet.html',1,'cvflann']]],
+  ['knnuniqueresultset',['KNNUniqueResultSet',['http://docs.opencv.org/3.4.0/d0/d5d/classcvflann_1_1KNNUniqueResultSet.html',1,'cvflann']]]
 ];

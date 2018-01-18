@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['ncv_2ehpp',['NCV.hpp',['http://docs.opencv.org/3.4.0/d9/d96/NCV_8hpp.html',1,'']]],
+  ['ncvbroxopticalflow_2ehpp',['NCVBroxOpticalFlow.hpp',['http://docs.opencv.org/3.4.0/d2/d84/NCVBroxOpticalFlow_8hpp.html',1,'']]],
+  ['ncvhaarobjectdetection_2ehpp',['NCVHaarObjectDetection.hpp',['http://docs.opencv.org/3.4.0/d0/d3c/NCVHaarObjectDetection_8hpp.html',1,'']]],
+  ['ncvpyramid_2ehpp',['NCVPyramid.hpp',['http://docs.opencv.org/3.4.0/db/dfa/NCVPyramid_8hpp.html',1,'']]],
+  ['neon_5futils_2ehpp',['neon_utils.hpp',['http://docs.opencv.org/3.4.0/db/d38/neon__utils_8hpp.html',1,'']]],
+  ['nested_5fexception_2eh',['nested_exception.h',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a00419.html',1,'']]],
+  ['new',['new',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a00032.html',1,'']]],
+  ['new_5fallocator_2eh',['new_allocator.h',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a01058.html',1,'']]],
+  ['nn_5findex_2eh',['nn_index.h',['http://docs.opencv.org/3.4.0/d6/d9a/nn__index_8h.html',1,'']]],
+  ['node_5fhandle_2eh',['node_handle.h',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a00422.html',1,'']]],
+  ['non_5flinear_5fsvms_2emarkdown',['non_linear_svms.markdown',['http://docs.opencv.org/3.4.0/da/d42/non__linear__svms_8markdown.html',1,'']]],
+  ['nonfree_2ehpp',['nonfree.hpp',['http://docs.opencv.org/3.4.0/dc/dcb/nonfree_8hpp.html',1,'']]],
+  ['npp_5fstaging_2ehpp',['NPP_staging.hpp',['http://docs.opencv.org/3.4.0/d5/d2c/NPP__staging_8hpp.html',1,'']]],
+  ['null_5fnode_5fmetadata_2ehpp',['null_node_metadata.hpp',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a01235.html',1,'']]],
+  ['numeric',['numeric',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a00113.html',1,'']]],
+  ['numeric_2ehpp',['numeric.hpp',['http://docs.opencv.org/3.4.0/de/dd5/numeric_8hpp.html',1,'']]],
+  ['numeric_5ftraits_2eh',['numeric_traits.h',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a01061.html',1,'']]],
+  ['numericfwd_2eh',['numericfwd.h',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a00914.html',1,'']]]
+];

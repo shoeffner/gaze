@@ -80,6 +80,19 @@ ExternalProject_Add(${LIBSTDCPP_TAG}
     DOWNLOAD_NO_EXTRACT 1
 )
 
+set(OPENCV_TAG opencv.tag)
+ExternalProject_Add(${OPENCV_TAG}
+    URL "https://docs.opencv.org/3.4.0/opencv.tag"
+    URL_HASH "SHA256=26ce0ebe5d19385274e79b653414c9865932b238f1b66eedf08a3495e392ca74"
+    DOWNLOAD_DIR ${CMAKE_BINARY_DIR}/doxy-tags
+    DOWNLOAD_NAME ${OPENCV_TAG}
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+    DOWNLOAD_NO_PROGRESS 1
+    DOWNLOAD_NO_EXTRACT 1
+)
+
 
 # Set doxygen command
 if(NOT WIN32)
@@ -94,7 +107,8 @@ endif(NOT WIN32)
 set(DOCS_TARGET docs)
 add_custom_target(${DOCS_TARGET}
                   DEPENDS ${DOXYFILE_CLANG}
-                          ${LIBSTDCPP_TAG})
+                          ${LIBSTDCPP_TAG}
+                          ${OPENCV_TAG})
 add_custom_command(TARGET ${DOCS_TARGET}
                    COMMAND ${DOXYGEN_COMMAND}
                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

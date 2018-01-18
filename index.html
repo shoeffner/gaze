@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+    <title>Gaze documentation</title>
+</head>
+<body>
+    <h1>Gaze documentation</h1>
+    <p>This is the documentation for <a href="https://github.com/shoeffner/gaze">Gaze</a>,
+    a master's thesis project by <a href="https://sebastian-hoeffner.de/">Sebastian H&ouml;ffner</a>.</p>
+
+    <h2>About and warning</h2>
+    <p>Gaze is a library aimed at calibration free gaze tracking using normal
+    webcams. However, it does not work properly. It might (but more likely
+    might not) work in the future, but due to the nature of thesis projects I
+    will most likely not pick it up anytime soon after I submitted my thesis.</p>
+    <p>If you are still interested in using it or developing it further, you
+    should be able to find all relevant information in my
+    <a href="https://github.com/shoeffner/mthesis">thesis</a>, the
+    <a href="latest">documentation</a>, the
+    <a href="https://github.com/shoeffner/gaze">source code</a>, or by
+    <a href="mailto:shoeffner@uos.de">dropping me a line</a>.</p>
+
+    <h2>Version Documentation</h2>
+    <p>Gaze provides documentation for different versions, and the current
+    master branch tip. Additionally, there is a <a href="gaze.tag">Doxygen tag
+    file</a> available, which matches the latest version.</p>
+    <ul>
+        <li><a href="latest">latest version</a> (HEAD of master branch)</li>
+    </ul>
+
+    <h2>Final note</h2>
+    <p>While the gaze tracking capabilities are very limited, the project still
+    explores various exciting software developing practices:</p>
+    <ul>
+        <li>Using Git for version control</li>
+        <li>Setting up <a href="https://github.com/shoeffner/gaze">GitHub</a> and
+            <a href="https://semaphoreci.com/hoeffner/gaze">Semaphore CI</a> for automated building, testing, and
+            <a href="">documentation deployment (this page you are viewing)</a></li>
+        <li>Modularized C++ code</li>
+        <li>"modern" CMake, i.e. <pre>target_link_libraries(project gaze::gaze)</pre> is
+            (<a href="https://github.com/shoeffner/mthesis/tree/master/assets/examples/simple_gaze_caller/CMakeLists.txt">almost</a>)
+            sufficient to use gaze</li>
+        <li>Example programs</li>
+        <li>Well documented</li>
+        <li>Free and Open Source Software</li>
+    </ul>
+</body>

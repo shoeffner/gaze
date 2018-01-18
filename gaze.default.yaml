@@ -104,10 +104,26 @@ pipeline:
       [-0.0289, -0.0289, -0.0241],
       [0.0289, -0.0289, -0.0241]
     ]
-  - type: GazeCapture
-    name: GazeCapture
-    model: models/itracker_deploy.prototxt
-    weights: models/snapshots/itracker25x_iter_92000.caffemodel
-    mean_left: models/mean_images/mean_left_224_new.binaryproto
-    mean_right: models/mean_images/mean_right_224.binaryproto
-    mean_face: models/mean_images/mean_face_224.binaryproto
+# An alternative to approach to the whole geometric pipeline is using
+# GazeCapture, which is named after the data set used to train the
+# iTracker neural network (see http://gazecapture.csail.mit.edu/).
+# To use it, configure Gaze using the -DWITH_CAFFE=ON cmake flag before
+# compiling it. You will need to link dlib and caffe to the same BLAS
+# implementation, it seems to work best if using openblas. That's why
+# caffe should be installed using its Makefile, not using CMake, as
+# its CMake version does not allow MacOS to link against openblas but
+# only Accelerate.
+# Note that you might have to use make without specifying parallel jobs,
+# as some build dependencies are still experimental and are not yet
+# properly resolved in order.
+# The settings provided here should be fine if running from the
+# build directory after building caffe from source using the WITH_CAFFE
+# flag.
+# GazeCapture relies on the pipeline steps FaceLandmarks and SourceCapture.
+# - type: GazeCapture
+#   name: GazeCapture
+#   model: models/itracker_deploy.prototxt
+#   weights: models/snapshots/itracker25x_iter_92000.caffemodel
+#   mean_left: models/mean_images/mean_left_224_new.binaryproto
+#   mean_right: models/mean_images/mean_right_224.binaryproto
+#   mean_face: models/mean_images/mean_face_224.binaryproto

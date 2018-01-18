@@ -237,7 +237,7 @@ void GazePointCalculation::process(util::Data& data) {
   cv::Vec3d camera_pos = this->get_camera_pos(model_to_camera_dir, distance);
 
   std::vector<cv::Vec3d> screen_tl_tr_br_bl =
-    this->get_screen_corners(camera_pos, data.head_translation, R);
+    this->get_screen_corners(camera_pos, R);
 
   // Ray cast
   cv::Vec2d screen_coord_coeffs(0, 0);

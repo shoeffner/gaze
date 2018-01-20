@@ -190,8 +190,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  this-&gt;pixel_height = this-&gt;sensor_height /</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    camera_config[<span class="stringliteral">&quot;resolution&quot;</span>][<span class="stringliteral">&quot;height&quot;</span>].as&lt;<span class="keywordtype">double</span>&gt;();</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  this-&gt;focus_width = this-&gt;pixel_width * this-&gt;camera_matrix(0, 0);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  this-&gt;focus_height = this-&gt;pixel_height * camera_matrix(1, 1);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  this-&gt;focus_length = camera_config[<span class="stringliteral">&quot;focus_length&quot;</span>] ?</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    camera_config[<span class="stringliteral">&quot;focus_length&quot;</span>].as&lt;<span class="keywordtype">double</span>&gt;() : 0.01;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  this-&gt;camera_offset_x = camera_config[<span class="stringliteral">&quot;position&quot;</span>][<span class="stringliteral">&quot;x&quot;</span>].as&lt;<span class="keywordtype">double</span>&gt;();</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  this-&gt;camera_offset_y = camera_config[<span class="stringliteral">&quot;position&quot;</span>][<span class="stringliteral">&quot;y&quot;</span>].as&lt;<span class="keywordtype">double</span>&gt;();</div>
@@ -212,7 +212,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">const</span> dlib::point&amp; p0, <span class="keyword">const</span> dlib::point&amp; p1,</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordtype">double</span> expected_model_distance) {</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;  <span class="keywordtype">double</span> interex_dist_px = dlib::length(p0 - p1);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordtype">double</span> distance = (this-&gt;focus_width * expected_model_distance) /</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keywordtype">double</span> distance = (this-&gt;focus_length * expected_model_distance) /</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    (interex_dist_px * this-&gt;pixel_width);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  <span class="keywordflow">return</span> <a class="codeRef" doxygen="/home/runner/gaze/build/doxy-tags/libstdc++.tag:https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/" href="https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a01465.html#gade7ee057985825bd6d67e7a1a682dd89">distance</a>;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>

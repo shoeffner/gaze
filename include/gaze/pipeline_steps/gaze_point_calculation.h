@@ -53,7 +53,7 @@ namespace pipeline {
 class GazePointCalculation final
     : public PipelineStep,
       public gui::PerspectiveVisualizeable {
-  double focus_length;
+  double focal_length;
   double sensor_height;
   double sensor_width;
   double pixel_height;

@@ -22,14 +22,29 @@ HeadPoseEstimation::HeadPoseEstimation() {
   this->name = config["name"] ?
     config["name"].as<std::string>() : "HeadPoseEstimation";
 
-  this->index_list = config["landmark_indices"].as<std::vector<int>>();
+  if (config["landmark_indices"]) {
+    this->index_list = config["landmark_indices"].as<std::vector<int>>();
+  } else {
+    this->index_list = {30, 8, 36, 45, 48, 54};
+  }
 
   if (config["model"]) {
     this->model_points = config["model"].as<std::vector<cv::Point3d>>();
+  } else {
+    this->model_points = {
+      {0.0, 0.0, 0.0},
+      {0.0, -0.0636, -0.0125},
+      {-0.0433, 0.0327, -0.026},
+      {0.0433, 0.0327, -0.026},
+      {-0.0289, -0.0289, -0.0241},
+      {0.0289, -0.0289, -0.0241}
+    };
   }
 
   if (config["model_scale"]) {
     this->model_scale = config["model_scale"].as<decltype(this->model_scale)>();
+  } else {
+    this->model_scale = 1;
   }
 
   this->coord_base_overlay.push_back({{-1, -1}, {-1, -1},

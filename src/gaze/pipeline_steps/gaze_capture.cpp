@@ -47,7 +47,6 @@ GazeCapture::GazeCapture() {
 #ifdef HAS_CAFFE
   YAML::Node meta_config = util::get_config()["meta"];
   YAML::Node camera_config = meta_config["camera"];
-  std::cout << meta_config << std::endl;
   this->camera_offset = cv::Vec2d(camera_config["position"]["x"].as<double>(),
                                   camera_config["position"]["y"].as<double>());
 

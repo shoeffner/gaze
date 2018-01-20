@@ -21,6 +21,9 @@ meta:
     # In m.
     sensor_size: 0.00635
     sensor_aspect_ratio: 16:9
+    # The focal length can be measured using the angle of view:
+    # https://en.wikipedia.org/wiki/Angle_of_view
+    focal_length: 0.01
     # The camera matrix can be created using OpenCV's calibration tool.
     # https://github.com/opencv/opencv/blob/fc9e031454fd456d09e15944c99a419e73d80661/samples/cpp/calibration.cpp
     # In case you do not calibrate it, you can either leave out this section,

@@ -98,8 +98,8 @@ GazePointCalculation::GazePointCalculation()
   this->pixel_height = this->sensor_height /
     camera_config["resolution"]["height"].as<double>();
 
-  this->focus_width = this->pixel_width * this->camera_matrix(0, 0);
-  this->focus_height = this->pixel_height * camera_matrix(1, 1);
+  this->focus_length = camera_config["focus_length"] ?
+    camera_config["focus_length"].as<double>() : 0.01;
 
   this->camera_offset_x = camera_config["position"]["x"].as<double>();
   this->camera_offset_y = camera_config["position"]["y"].as<double>();
@@ -120,7 +120,7 @@ double GazePointCalculation::calculate_distance(
     const dlib::point& p0, const dlib::point& p1,
     double expected_model_distance) {
   double interex_dist_px = dlib::length(p0 - p1);
-  double distance = (this->focus_width * expected_model_distance) /
+  double distance = (this->focus_length * expected_model_distance) /
     (interex_dist_px * this->pixel_width);
   return distance;
 }

@@ -134,7 +134,7 @@ var searchData=
   ['_7elist',['~list',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a06712.html#a6520eeff66a82d7b6e5eacffdcb2da6e',1,'list&lt; __inp, __rebind_inp &gt;::~list()'],['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a06712.html#a6520eeff66a82d7b6e5eacffdcb2da6e',1,'std::list::~list()']]],
   ['_7elocale',['~locale',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a04952.html#a45b12cb443002d7995d5a1fd4d2ad179',1,'std::locale']]],
   ['_7elock_5fguard',['~lock_guard',['http://docs.opencv.org/3.4.0/de/d29/classcv_1_1utils_1_1lock__guard.html#afb8ed8974c3f3a9fd2ac3e092619c17d',1,'cv::utils::lock_guard']]],
-  ['_7emap',['~Map',['http://docs.opencv.org/3.4.0/d3/d3c/classcv_1_1reg_1_1Map.html#afaab55825ddfaf5a44de8d8ae69d92e8',1,'cv::reg::Map::~Map()'],['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a06720.html#a2460e7e43dc674a1cb696c4eb1985b5e',1,'std::map::~map()']]],
+  ['_7emap',['~map',['https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a06720.html#a2460e7e43dc674a1cb696c4eb1985b5e',1,'std::map::~map()'],['http://docs.opencv.org/3.4.0/d3/d3c/classcv_1_1reg_1_1Map.html#afaab55825ddfaf5a44de8d8ae69d92e8',1,'cv::reg::Map::~Map()']]],
   ['_7emapaffine',['~MapAffine',['http://docs.opencv.org/3.4.0/d9/de5/classcv_1_1reg_1_1MapAffine.html#ab62885a2fcb44dbd54cc11bf29f6b5ff',1,'cv::reg::MapAffine']]],
   ['_7emapper',['~Mapper',['http://docs.opencv.org/3.4.0/d0/d6c/classcv_1_1reg_1_1Mapper.html#a81420438917d1adeb2395083a087c7bb',1,'cv::reg::Mapper']]],
   ['_7emappergradaffine',['~MapperGradAffine',['http://docs.opencv.org/3.4.0/d0/d89/classcv_1_1reg_1_1MapperGradAffine.html#a217bead73130b7d7abf46a7635ee1db2',1,'cv::reg::MapperGradAffine']]],

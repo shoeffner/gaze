@@ -74,8 +74,8 @@ pipeline:
     model: [
       [0.0, 0.0, 0.0],  # Nosetip (Pronasal prn)
       [0.0, -0.0636, -0.0125],  # Chin tip (Gnathion/Menton gn)
-      [-0.0433, 0.0327, -0.026],  # Right eye outside corner (right exocanthion ex_r)
-      [0.0433, 0.0327, -0.026],  # Left eye outside corner (left exocanthion ex_l)
+      [-0.0433, 0.0327, -0.026],  # Outside right eye (right exocanthion ex_r)
+      [0.0433, 0.0327, -0.026],  # Outside left eye (left exocanthion ex_l)
       [-0.0289, -0.0289, -0.0241],  # Right mouth corner (Cheilion ch_r)
       [0.0289, -0.0289, -0.0241]  # Left mouth corner (Cheilion ch_l)
     ]

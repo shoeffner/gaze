@@ -148,8 +148,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keywordtype">void</span> main_loop(<span class="keyword">const</span> std::function&lt;<a class="codeRef" doxygen="/home/runner/gaze/build/doxy-tags/opencv.tag:http://docs.opencv.org/3.4.0/" href="http://docs.opencv.org/3.4.0/d3/d63/classcv_1_1Mat.html">cv::Mat</a>(<span class="keywordtype">int</span>, <span class="keywordtype">int</span>)&gt; drawing,</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                 <span class="keywordtype">int</span> width = 400,</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                 <span class="keywordtype">int</span> height = 400,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                 <span class="keywordtype">int</span> screen_width = 1920,</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                 <span class="keywordtype">int</span> screen_height = 1080) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                 <span class="keywordtype">int</span> target_width = 1920,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                 <span class="keywordtype">int</span> target_height = 1080) {</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="codeRef" doxygen="/home/runner/gaze/build/doxy-tags/opencv.tag:http://docs.opencv.org/3.4.0/" href="http://docs.opencv.org/3.4.0/d7/dfc/group__highgui.html#ga5afdf8410934fd099df85c75b2e0888b">cv::namedWindow</a>(<span class="stringliteral">&quot;Simple Tracker&quot;</span>);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="codeRef" doxygen="/home/runner/gaze/build/doxy-tags/libstdc++.tag:https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/" href="https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a06956.html">std::unique_ptr&lt;gaze::GazeTracker&gt;</a> tracker(</div>
@@ -164,7 +164,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <a class="codeRef" doxygen="/home/runner/gaze/build/doxy-tags/libstdc++.tag:https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/" href="https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a06756.html">std::pair&lt;int, int&gt;</a> gaze_pair = tracker-&gt;get_current_gaze_point();</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <a class="codeRef" doxygen="/home/runner/gaze/build/doxy-tags/opencv.tag:http://docs.opencv.org/3.4.0/" href="http://docs.opencv.org/3.4.0/db/d4e/classcv_1_1Point__.html">cv::Point</a> gaze_point = map_and_convert(gaze_pair,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;          width, height, screen_width, screen_height);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;          width, height, target_width, target_height);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;      <a class="codeRef" doxygen="/home/runner/gaze/build/doxy-tags/opencv.tag:http://docs.opencv.org/3.4.0/" href="http://docs.opencv.org/3.4.0/d6/d6e/group__imgproc__draw.html#ga482fa7b0f578fcdd8a174904592a6250">cv::drawMarker</a>(image, gaze_point, <a class="codeRef" doxygen="/home/runner/gaze/build/doxy-tags/opencv.tag:http://docs.opencv.org/3.4.0/" href="http://docs.opencv.org/3.4.0/d1/da0/classcv_1_1Scalar__.html">cv::Scalar</a>(0, 255, 0));</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      <a class="codeRef" doxygen="/home/runner/gaze/build/doxy-tags/opencv.tag:http://docs.opencv.org/3.4.0/" href="http://docs.opencv.org/3.4.0/d7/dfc/group__highgui.html#ga453d42fe4cb60e5723281a89973ee563">cv::imshow</a>(<span class="stringliteral">&quot;Simple Tracker&quot;</span>, image);</div>
@@ -181,9 +181,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keywordtype">int</span> main(<span class="keyword">const</span> <span class="keywordtype">int</span>, <span class="keyword">const</span> <span class="keywordtype">char</span>** <span class="keyword">const</span>) {</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keywordtype">int</span> width = 960;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keywordtype">int</span> height = 540;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordtype">int</span> screen_width = 2880;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">int</span> screen_height = 1800;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  main_loop(&amp;::Blank, width, height, screen_width, screen_height);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  <span class="keywordtype">int</span> target_width = 72;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordtype">int</span> target_height = 45;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  main_loop(&amp;::Blank, width, height, target_width, target_height);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
 <div class="ttc" id="a00215_html"><div class="ttname"><a href="https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a00215.html">cmath</a></div></div>

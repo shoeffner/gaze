@@ -61,6 +61,12 @@ GazeCapture::GazeCapture() {
   this->itracker = std::unique_ptr<itracker::ITracker>(
       new itracker::ITracker(model_file, weights_file,
         mean_left_file, mean_right_file, mean_face_file));
+
+  if (meta_config["target"]) {
+    this->target_size =
+      cv::Vec2d(meta_config["target"]["width"].as<int>(),
+                meta_config["target"]["height"].as<int>());
+  }
 #endif
 }
 

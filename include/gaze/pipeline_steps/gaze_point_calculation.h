@@ -67,6 +67,8 @@ class GazePointCalculation final
   double screen_height_m;
   double screen_width_px;
   double screen_height_px;
+  double target_width;
+  double target_height;
   double camera_offset_x;
   double camera_offset_y;
 

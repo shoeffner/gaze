@@ -114,6 +114,14 @@ GazePointCalculation::GazePointCalculation()
     screen_config["resolution"]["width"].as<int>();
   this->screen_height_px =
     screen_config["resolution"]["height"].as<int>();
+
+  if (meta_config["target"]) {
+    this->target_width = meta_config["target"]["width"].as<int>();
+    this->target_height = meta_config["target"]["height"].as<int>();
+  } else {
+    this->target_width = this->screen_width_px;
+    this->target_height = this->screen_height_px;
+  }
 }
 
 double GazePointCalculation::calculate_distance(
@@ -254,12 +262,13 @@ void GazePointCalculation::process(util::Data& data) {
     screen_coord_coeffs[1] += gaze_point(1, 2);
   }
   screen_coord_coeffs /= 2;
-  screen_coord_coeffs[0] = util::clamp(screen_coord_coeffs[0], 0, 1);
+  // swap left and right
+  screen_coord_coeffs[0] = 1 - util::clamp(screen_coord_coeffs[0], 0, 1);
   screen_coord_coeffs[1] = util::clamp(screen_coord_coeffs[1], 0, 1);
 
   data.estimated_gaze_point = cv::Vec2d(
-      this->screen_width_px * screen_coord_coeffs[0],
-      this->screen_height_px * screen_coord_coeffs[1]);
+      this->target_width * screen_coord_coeffs[0],
+      this->target_height * screen_coord_coeffs[1]);
 }
 
 void GazePointCalculation::visualize(util::Data& data) {

@@ -7,9 +7,11 @@
 Gaze aims at providing an easy to use gaze tracking library. It was the project for my master's thesis.
 It is inspired by [eyeLike](https://github.com/trishume/eyeLike), and performs well in the task of eye tracking.
 
-*Warning:* Gaze tracking does not work!
+**Warning:** *Gaze tracking does not work!*
 
 But you can try the `GazeCapture` pipeline step by modifying the `gaze.yaml` and configuring Gaze with `--caffe`. However, since the underlying CNN is trained on iPhone and iPad screens, it is most accurate in a smaller screen area around the camera.
+
+![Gaze's UI](docs/gazedebuggui.png)
 
 If you are interested in picking up the project or have some ideas on how to best fix the gaze tracking, make sure to drop me a line! [shoeffner@uos.de](mailto:shoeffner@uos.de)
 

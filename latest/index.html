@@ -84,8 +84,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><p><a href="https://semaphoreci.com/hoeffner/gaze">![Build Status](https://semaphoreci.com/api/v1/projects/1c4f3523-8438-462d-a344-993e66c7f978/1574305/badge.svg)</a></p>
 <p><a href="https://shoeffner.github.io/gaze">Documentation</a> &ndash; <a href="https://shoeffner.github.io/mthesis">Thesis</a></p>
 <p>Gaze aims at providing an easy to use gaze tracking library. It was the project for my master's thesis. It is inspired by <a href="https://github.com/trishume/eyeLike">eyeLike</a>, and performs well in the task of eye tracking.</p>
-<p><em>Warning:</em> Gaze tracking does not work!</p>
+<p><b>Warning:</b> <em>Gaze tracking does not work!</em></p>
 <p>But you can try the <code>GazeCapture</code> pipeline step by modifying the <code>gaze.yaml</code> and configuring Gaze with <code>--caffe</code>. However, since the underlying CNN is trained on iPhone and iPad screens, it is most accurate in a smaller screen area around the camera.</p>
+<div class="image">
+<img src="docs/gazedebuggui.png"  alt="Gaze&apos;s UI"/>
+</div>
 <p>If you are interested in picking up the project or have some ideas on how to best fix the gaze tracking, make sure to drop me a line! <a href="#" onclick="location.href='mai'+'lto:'+'sho'+'ef'+'fne'+'r@'+'uos'+'.d'+'e'; return false;">shoeffner@uos.de</a></p>
 <h2>Dependencies</h2>
 <p>You need the following dependencies to build gaze (tested versions in parentheses):</p>

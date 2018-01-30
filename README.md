@@ -5,7 +5,7 @@
 [Documentation](https://shoeffner.github.io/gaze) &ndash; [Thesis](https://shoeffner.github.io/mthesis)
 
 Gaze aims at providing an easy to use gaze tracking library. It was the project for my master's thesis.
-It is inspired by [eyeLike](https://github.com/trishume/eyeLike), and performs well in the task of eye tracking.
+Inspired by [eyeLike](https://github.com/trishume/eyeLike), it performs eye tracking well.
 
 **Warning:** *Gaze tracking does not work!*
 

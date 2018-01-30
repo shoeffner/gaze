@@ -82,63 +82,72 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a href="https://semaphoreci.com/hoeffner/gaze">![Build Status](https://semaphoreci.com/api/v1/projects/1c4f3523-8438-462d-a344-993e66c7f978/1574305/badge.svg)</a></p>
+<p><a href="https://shoeffner.github.io/gaze">Documentation</a> &ndash; <a href="https://shoeffner.github.io/mthesis">Thesis</a></p>
+<p>Gaze aims at providing an easy to use gaze tracking library. It was the project for my master's thesis. It is inspired by <a href="https://github.com/trishume/eyeLike">eyeLike</a>, and performs well in the task of eye tracking.</p>
+<p><em>Warning:</em> Gaze tracking does not work!</p>
+<p>But you can try the <code>GazeCapture</code> pipeline step by modifying the <code>gaze.yaml</code> and configuring Gaze with <code>--caffe</code>. However, since the underlying CNN is trained on iPhone and iPad screens, it is most accurate in a smaller screen area around the camera.</p>
+<p>If you are interested in picking up the project or have some ideas on how to best fix the gaze tracking, make sure to drop me a line! <a href="#" onclick="location.href='mai'+'lto:'+'sho'+'ef'+'fne'+'r@'+'uos'+'.d'+'e'; return false;">shoeffner@uos.de</a></p>
 <h2>Dependencies</h2>
 <p>You need the following dependencies to build gaze (tested versions in parentheses):</p>
 <ul>
-<li>C++17</li>
-<li>CMake (3.10.0-rc2)</li>
-<li>OpenCV (3.3.0)</li>
-<li>dlib (19.7)</li>
+<li>C++17 (clang-900.0.39.2)</li>
+<li>CMake (3.10.0-rc2, 3.10.2)</li>
+<li>OpenCV (3.3.0, 3.4.0)</li>
+<li>dlib (at least 19.8 (requires davisking/dlib#957))</li>
 <li>yaml-cpp (<a href="https://github.com/jbeder/yaml-cpp/commit/5a519a4c6cb03a2aa440b8d53a829ef2db30bb9e">5a519a4</a>, will be cloned)</li>
 </ul>
-<h3>Demos</h3>
 <p>For the examples/demo projects you need:</p>
-<p><b>Simple Tracking</b>:</p>
 <ul>
 <li>OpenCV (3.3.0)</li>
-</ul>
-<p><b>Where People Look</b>:</p>
-<ul>
 <li>Boost (1.65.1)</li>
 <li>pkg-config (0.29.2)</li>
 <li>gtk+3 (3.22.24)</li>
 <li>glib (2.54.1)</li>
 </ul>
-<h3>Documentation</h3>
+<p>For the documentation you need:</p>
 <ul>
 <li>Doxygen (1.8.13)</li>
 <li>Python 3 (3.6.3)</li>
 <li>git (2.14.2)</li>
 </ul>
-<h3>Additional gimmicks and gadgets</h3>
-<p><b>ctags</b>: You can build ctags files (e.g. to navigate around the source in vim).</p>
+<p>For the development you need:</p>
+<ul>
+<li>cpplint</li>
+</ul>
+<p>Optional:</p>
 <ul>
 <li>ctags (5.8)</li>
 </ul>
 <h2>Building</h2>
-<h3>Library</h3>
-<p>Create a <code>build</code> directory and call <code>cmake</code>, followed by <code>make</code> to build the gaze library:</p>
-<p>```bash mkdir build cd build cmake .. make make install ```</p>
-<h3>Demos</h3>
-<p>To build the demo programs, you need to call cmake with <code>-DBUILD_EXAMPLES=ON</code>:</p>
-<p>```bash mkdir build cd build cmake -DBUILD_EXAMPLES=ON .. make make install ```</p>
-<h4><code>where_people_look</code></h4>
+<p>To build gaze, simply run</p>
+<p>```bash ./configure.sh cd build make install ```</p>
+<p><code>configure.sh</code> comes with some options:</p>
+<ul>
+<li><code>--release</code>: Enables compiler optimizations</li>
+<li><code>--debug</code>: Disables compiler optimizations, builds debug symbols and creates verbose makefiles.</li>
+<li><code>--examples</code>: Configures cmake to create build files for the examples.</li>
+<li><code>--doc</code>: Configures cmake to create build files for the documentation.</li>
+<li><code>--tagfiles</code>: Links the documentation to other projects (OpenCV and the C++ standard library)</li>
+<li><code>--dry</code>: Just prints the <code>cmake ..</code> command without executing it</li>
+<li><code>--caffe</code>: Enables a build with Caffe support. This allows to use the experimental pipeline step <code>GazeCapture</code>.</li>
+</ul>
+<h2>Demo programs</h2>
+<h3><code>where_people_look</code></h3>
 <p>This is a reimplementation of Judd et al. (2009)'s data acquisition experiment <a class="el" href="citelist.html#CITEREF_Judd2009">Judd2009</a>.</p>
 <p>It needs to be <em>installed</em> using <code>make install</code> to put the images into the correct location. You can run it by simply typing <code>./where_people_look</code> from the build directory.</p>
-<h4><code>simple_tracking</code></h4>
+<h3><code>simple_tracking</code></h3>
 <p>This program just starts a small window with an "experiment" and tracks gaze. Starts the gaze tracker in debug mode to see what is tracked.</p>
-<h3>Documentation</h3>
-<p>You can always build the documentation using <code>make docs</code>. Or you can find it <a href="https://shoeffner.github.io/gaze">here</a>.</p>
 <h2>Development</h2>
 <p>Install <a href="https://github.com/cpplint/cpplint">cpplint</a>.</p>
 <p>Add a pre-commit hook (<code>.git/hooks/pre-commit</code>): ``` cpplint &ndash;recursive &ndash;extensions cpp,h &ndash;quiet src tests include ```</p>
-<h3>License issues</h3>
-<p>Quoting from https://github.com/davisking/dlib-models/blob/ae50fe33583de33c60276611d37915e93d11566b/README.md "dlib-model's README":</p>
+<h3>License</h3>
+<p>Gaze is released under the MIT License.</p>
+<p>But it cannot be used for commercial use without a modification, quoting from https://github.com/davisking/dlib-models/blob/ae50fe33583de33c60276611d37915e93d11566b/README.md "dlib-model's README":</p>
 <blockquote class="doxtable">
 <p>The license for this dataset excludes commercial use and Stefanos Zafeiriou, one of the creators of the dataset, asked me to include a note here saying that the trained model therefore can’t be used in a commerical product.</p>
 <p></p>
 </blockquote>
-<p>Since this model is used in Gaze, unfortunately no commercial use is possible. </p>
+<p>Since this model is used in Gaze, no commercial use is possible. The <code>GazeCapture</code> pipeline makes use of the <a href="http://gazecapture.csail.mit.edu">CNN iTracker</a> by Krafka et al., which also only allows research usage. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
